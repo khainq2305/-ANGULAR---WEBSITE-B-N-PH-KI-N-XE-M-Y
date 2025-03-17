@@ -1,0 +1,23 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+      <mat-card-title class="m-b-0">Thêm Danh Mục</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="b-t-1">
+      <form>
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- input -->
+            <mat-label class="f-w-600 m-b-8 d-block">Tên Danh Mục</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput placeholder="Tên danh mục" />
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="m-t-12">
+          <button mat-flat-button color="primary" class="m-r-8">Thêm mới</button>
+          <button mat-stroked-button color="warn" [routerLink]="['/ui-components/category/list']">Hủy</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>

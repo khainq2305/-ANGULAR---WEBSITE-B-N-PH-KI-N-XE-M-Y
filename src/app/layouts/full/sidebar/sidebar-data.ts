@@ -2,25 +2,32 @@ import { NavItem } from './nav-item/nav-item';
 // NavItem là một interface định nghĩa cấu trúc của từng mục menu.
 export const navItems: NavItem[] = [
   {
-    navCap: 'Home',
+    navCap: 'Trang chủ',
   },
   {
-    displayName: 'Dashboard',
+    displayName: 'Thống kê',
     iconName: 'layout-grid-add',
     route: '/dashboard',
   },
   {
-    navCap: 'Ui Components',
+    navCap: 'Thành phần giao diện',
   },
   {
-    displayName: 'Chips',
-    iconName: 'info-circle',
-    route: '/ui-components/chips',
-  },
-  {
-    displayName: 'Lists',
+    displayName: 'Danh mục',
     iconName: 'list-details',
-    route: '/ui-components/lists',
+    route: '/ui-components/category',
+    children: [
+      {
+        displayName: 'Danh sách',
+        iconName: 'list',
+        route: '/ui-components/category/list',
+      },
+      {
+        displayName: 'Thêm mới',
+        iconName: 'plus',
+        route: '/ui-components/category/add',
+      },
+    ],
   },
   {
     displayName: 'Sản phẩm',
@@ -28,42 +35,32 @@ export const navItems: NavItem[] = [
     route: '/ui-components/product',
     children: [
       {
-        displayName: 'Danh sách sản phẩm',
+        displayName: 'Danh sách',
         iconName: 'list',
         route: '/ui-components/product/product-list',
       },
       {
-        displayName: 'Thêm sản phẩm',
+        displayName: 'Thêm mới',
         iconName: 'plus',
         route: '/ui-components/product/product-create',
       }
     ]
   },
-  {
-    displayName: 'Forms',
-    iconName: 'clipboard-text',
-    route: '/ui-components/forms',
-  },
-  {
-    displayName: 'Tables',
-    iconName: 'table',
-    route: '/ui-components/tables',
-  },
 
   {
-    displayName: 'User',
+    displayName: 'Người dùng',
     iconName: 'user', 
     route: '/ui-components/user',
     children: [
       {
-        displayName: 'User-list',
+        displayName: 'Danh sách',
         iconName: 'list', 
         route: '/ui-components/user/user-list',
       },
 
       {
-        displayName: 'User-create',
-        iconName: 'clipboard-text', 
+        displayName: 'Thêm mới',
+        iconName: 'plus', 
         route: '/ui-components/user/user-create',
       },
      

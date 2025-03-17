@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-
+import { ListComponent } from './category/list/list.component';
+import { AddComponent } from './category/add/add.component';
+import { EditComponent } from './category/edit/edit.component';
 // ui
-import { AppChipsComponent } from './chips/chips.component';
-import { AppListsComponent } from './lists/lists.component';
-import { AppFormsComponent } from './forms/forms.component';
-import { AppTablesComponent } from './tables/tables.component';
+
 // Import các component Product
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductCreateComponent } from './product/product-create/product-create.component';
@@ -16,22 +15,7 @@ export const UiComponentsRoutes: Routes = [
   {
     path: '',
     children: [
-      {
-        path: 'chips',
-        component: AppChipsComponent,
-      },
-      {
-        path: 'lists',
-        component: AppListsComponent,
-      },
-      {
-        path: 'forms',
-        component: AppFormsComponent,
-      },
-      {
-        path: 'tables',
-        component: AppTablesComponent,
-      },
+
       // Route cho Product
       {
         path: 'product/product-list',
@@ -51,7 +35,18 @@ export const UiComponentsRoutes: Routes = [
       },
       { path: 'user/user-create', component: UserCreateComponent },
       { path: 'user/user-list', component: UserListComponent },
-      
+      {
+        path: 'category/list',
+        component: ListComponent,
+      },
+      {
+        path: 'category/add',
+        component: AddComponent,
+      },
+      {
+        path: 'category/edit/:id',
+        component: EditComponent,
+      },
     ],
   },
 ];

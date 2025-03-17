@@ -60,7 +60,7 @@ export class UserListComponent implements AfterViewInit {
       phone: '+84 987 654 321',
       gender: 'Nữ',
       dob: '1998-09-12',
-      status: 'Chờ duyệt'
+      status: 'Hoạt động'
     },
     {
       id: 'U003',
@@ -90,7 +90,7 @@ export class UserListComponent implements AfterViewInit {
       phone: '+84 777 888 999',
       gender: 'Nữ',
       dob: '1993-04-30',
-      status: 'Chờ duyệt'
+      status: 'Hoạt động'
     },
     {
       id: 'U006',
@@ -100,7 +100,7 @@ export class UserListComponent implements AfterViewInit {
       phone: '+84 999 123 456',
       gender: 'Nam',
       dob: '1990-11-05',
-      status: 'Tạm ngưng'
+      status: 'Hoạt động'
     },
     {
       id: 'U007',
@@ -120,7 +120,7 @@ export class UserListComponent implements AfterViewInit {
       phone: '+84 777 999 555',
       gender: 'Nữ',
       dob: '1997-02-17',
-      status: 'Chờ duyệt'
+      status: 'Hoạt động'
     },
     {
       id: 'U009',
@@ -160,7 +160,7 @@ export class UserListComponent implements AfterViewInit {
       phone: '+84 333 789 456',
       gender: 'Nam',
       dob: '1991-05-29',
-      status: 'Chờ duyệt'
+      status: 'Hoạt động'
     },
     {
       id: 'U013',
