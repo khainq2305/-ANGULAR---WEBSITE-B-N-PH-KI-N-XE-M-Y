@@ -1,0 +1,17 @@
+<mat-dialog-content class="status-dialog">
+    <h2>🛠 Chỉnh sửa trạng thái</h2>
+  
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Chọn trạng thái</mat-label>
+      <mat-select [formControl]="statusControl">
+        <mat-option value="Hoạt động">🟢 Hoạt động</mat-option>
+        <mat-option value="Tạm ngưng">🔴 Ngưng hoạt động</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <div class="dialog-actions">
+      <button mat-stroked-button (click)="dialogRef.close()">❌ Hủy</button>
+      <button mat-flat-button color="primary" (click)="updateStatus()">✔ Lưu</button>
+    </div>
+  </mat-dialog-content>
+  

@@ -1,0 +1,101 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">Tạo Người Dùng</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Mã Người Dùng</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="id" readonly />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Họ và Tên</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput placeholder="Nhập họ và tên" formControlName="name" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Email</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="email" placeholder="Nhập email" formControlName="email" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Số Điện Thoại</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="tel" placeholder="Nhập số điện thoại" formControlName="phone" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Mật Khẩu</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="password" placeholder="Nhập mật khẩu" formControlName="password" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Giới Tính</mat-label>
+          <mat-radio-group formControlName="gender" class="d-flex gap-3">
+            <mat-radio-button value="Nam">Nam</mat-radio-button>
+            <mat-radio-button value="Nữ">Nữ</mat-radio-button>
+            <mat-radio-button value="Khác">Khác</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Ngày Sinh</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput [matDatepicker]="picker" formControlName="dob" required />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Quốc Gia</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="country">
+              <mat-option *ngFor="let option of countries" [value]="option.value">
+                {{ option.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Tỉnh/Thành Phố</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="state">
+              <mat-option *ngFor="let option of states" [value]="option.value">
+                {{ option.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Quận/Huyện</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="city">
+              <mat-option *ngFor="let option of cities" [value]="option.value">
+                {{ option.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="m-t-12">
+        <button mat-flat-button color="primary" type="submit" class="m-r-8" [disabled]="userForm.invalid">Tạo Người Dùng</button>
+        <button mat-stroked-button color="warn" type="reset">Hủy Bỏ</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

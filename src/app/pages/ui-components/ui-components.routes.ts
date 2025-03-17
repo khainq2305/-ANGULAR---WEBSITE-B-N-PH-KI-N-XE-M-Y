@@ -10,6 +10,8 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { ProductCreateComponent } from './product/product-create/product-create.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 import {DeletedProductsComponent } from './product/deleted-products/deleted-products.component'; // 🔥 Thêm component này
+import { UserCreateComponent } from './user/user-create/user-create.component';
+import { UserListComponent } from './user/user-list/user-list.component';
 export const UiComponentsRoutes: Routes = [
   {
     path: '',
@@ -44,9 +46,11 @@ export const UiComponentsRoutes: Routes = [
         component: ProductEditComponent,
       },
       {
-        path: 'product/deleted-products',  // 🔥 Route cho sản phẩm đã xóa
+        path: 'product/deleted-products',  
         component: DeletedProductsComponent,
       },
+      { path: 'user/user-create', component: UserCreateComponent },
+      { path: 'user/user-list', component: UserListComponent },
       
     ],
   },
