@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Xác nhận xử lý</h2>
+<mat-dialog-content>
+  <p>Bạn có chắc chắn muốn đánh dấu <strong>{{ data.name }}</strong> là đã xử lý không?</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Hủy</button>
+  <button mat-flat-button color="primary" (click)="confirmHandle()">Xác nhận</button>
+</mat-dialog-actions>

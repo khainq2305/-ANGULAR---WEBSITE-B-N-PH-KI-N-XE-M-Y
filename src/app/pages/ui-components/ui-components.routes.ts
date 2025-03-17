@@ -2,15 +2,19 @@ import { Routes } from '@angular/router';
 import { ListComponent } from './category/list/list.component';
 import { AddComponent } from './category/add/add.component';
 import { EditComponent } from './category/edit/edit.component';
-// ui
-
 // Import các component Product
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductCreateComponent } from './product/product-create/product-create.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
-import {DeletedProductsComponent } from './product/deleted-products/deleted-products.component'; // 🔥 Thêm component này
+import {DeletedProductsComponent } from './product/deleted-products/deleted-products.component'; 
+// user
 import { UserCreateComponent } from './user/user-create/user-create.component';
 import { UserListComponent } from './user/user-list/user-list.component';
+// order
+import { OrderListComponent } from './order/order-list/order-list.component';
+import { OrderDetailComponent } from './order/order-detail/order-detail.component';
+// 📌 Import Contact List Component
+import { ContactListComponent } from './contact/contact-list/contact-list.component';
 export const UiComponentsRoutes: Routes = [
   {
     path: '',
@@ -46,6 +50,18 @@ export const UiComponentsRoutes: Routes = [
       {
         path: 'category/edit/:id',
         component: EditComponent,
+      },
+      {
+        path: 'order/order-list',
+        component: OrderListComponent,
+      },
+      {
+        path: 'order/order-detail/:id',  // 🔥 Truyền ID đơn hàng
+        component: OrderDetailComponent,
+      },
+      {
+        path: 'contact/contact-list',
+        component: ContactListComponent,
       },
     ],
   },

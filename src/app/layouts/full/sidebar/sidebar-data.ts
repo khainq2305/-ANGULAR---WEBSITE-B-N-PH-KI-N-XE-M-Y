@@ -67,6 +67,47 @@ export const navItems: NavItem[] = [
       
     ],
   },
+  {
+    displayName: 'Đơn hàng',
+    iconName: 'shopping-bag', 
+    route: '/ui-components/order',
+    children: [
+      {
+        displayName: 'Danh sách đơn hàng',
+        iconName: 'list',
+        route: '/ui-components/order/order-list',
+      },
+    ],
+  },
+  {
+    displayName: 'Bình luận',
+    iconName: 'message-circle',
+    route: '/ui-components/comment',
+    children: [
+      {
+        displayName: 'Danh sách bình luận',
+        iconName: 'list',
+        route: '/ui-components/comment/comment-list',
+      }
+    ],
+  },
+  {
+    displayName: 'Liên hệ',
+    iconName: 'phone',
+    route: '/ui-components/contact',
+    children: [
+      {
+        displayName: 'Danh sách liên hệ',
+        iconName: 'list',
+        route: '/ui-components/contact/contact-list',
+      },
+      {
+        displayName: 'Hỗ trợ khách hàng',
+        iconName: 'help-circle',
+        route: '/ui-components/contact/contact-support',
+      },
+    ],
+  },
   
   {
     navCap: 'Auth',

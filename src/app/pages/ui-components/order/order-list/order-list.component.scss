@@ -1,0 +1,161 @@
+/* ✅ Thiết lập chung cho toàn bộ giao diện */
+.order-table-container {
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Tiêu đề danh sách đơn hàng */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+/* ✅ Căn chỉnh bộ lọc trạng thái và ô tìm kiếm */
+.status-filter-container {
+  display: flex;
+  margin: 25px 0;
+  align-items: center;
+  justify-content: flex-start; /* 🔥 Căn trái thay vì space-between */
+  gap: 16px;
+  flex-wrap: wrap; /* Đảm bảo không bị tràn nếu màn hình nhỏ */
+}
+
+/* ✅ Căn chỉnh các nút trạng thái */
+.status-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ✅ Định dạng chung cho nút trạng thái */
+.status-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  height: 40px; /* 🔥 Giữ chiều cao đồng nhất */
+}
+
+/* ✅ Hover mượt mà */
+.status-button:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+/* ✅ Màu sắc theo trạng thái */
+.status-pending { background: #ffeeba; color: #856404; }
+.status-confirmed { background: #cce5ff; color: #004085; }
+.status-shipping { background: #d4edda; color: #155724; }
+.status-delivered { background: #e2e3e5; color: #383d41; }
+.status-canceled { background: #f8d7da; color: #721c24; }
+
+/* ✅ Căn chỉnh ô tìm kiếm */
+.search-box {
+  flex-grow: 1; /* 🔥 Mở rộng linh hoạt */
+  max-width: 300px; /* Giữ kích thước phù hợp */
+  display: flex;
+  align-items: center;
+  height: 40px !important; /* 🔥 Đồng bộ với các nút */
+  margin-bottom: 0 !important; /* 🔥 Bỏ khoảng cách dư */
+}
+
+/* ✅ Cố định chiều rộng input */
+.search-box mat-form-field {
+  width: 240px;
+  margin-bottom: 0 !important;
+}
+
+/* ✅ Nút tìm kiếm */
+.search-box button {
+  height: 40px;
+  font-weight: 600;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+}
+
+.search-box button:hover {
+  background-color: #0056b3;
+}
+
+/* ✅ Tiêu đề danh sách */
+.order-list-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 16px 0 8px;
+  color: #333;
+}
+
+/* ✅ Căn chỉnh bảng */
+.table-container {
+  overflow-x: auto;
+}
+
+/* ✅ Căn giữa nội dung bảng */
+th, td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* ✅ Header của bảng */
+th {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+
+/* ✅ Căn trái cột tên sản phẩm, cho phép xuống dòng */
+td:nth-child(2) { 
+  text-align: left;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 200px; /* Giữ chiều rộng phù hợp */
+}
+
+/* ✅ Căn giữa và đồng bộ độ dài trạng thái */
+.status-label {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-weight: 600;
+  min-width: 120px;
+  text-align: center;
+}
+
+/* ✅ Màu sắc trạng thái */
+.status-label.pending { background: #ffeeba; color: #856404; }
+.status-label.confirmed { background: #cce5ff; color: #004085; }
+.status-label.shipping { background: #d4edda; color: #155724; }
+.status-label.delivered { background: #e2e3e5; color: #383d41; }
+.status-label.canceled { background: #f8d7da; color: #721c24; }
+
+/* ✅ Thanh toán */
+.paid, .unpaid {
+  font-weight: bold;
+  min-width: 120px;
+  display: inline-block;
+  text-align: center;
+}
+
+.paid { color: green; }
+.unpaid { color: red; }
+
+/* ✅ Căn chỉnh các nút hành động */
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* ✅ Hover menu */
+.mat-menu-item:hover {
+  background: #f0f0f0;
+}

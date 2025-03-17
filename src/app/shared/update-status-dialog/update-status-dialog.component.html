@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Cập nhật trạng thái đơn hàng</h2>
+<mat-dialog-content>
+    <mat-form-field appearance="fill" class="full-width">
+
+        <mat-label>Trạng thái mới</mat-label>
+        <mat-select [(ngModel)]="selectedStatus">
+          <mat-option *ngFor="let status of statusList" [value]="status">
+            {{ status }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Hủy</button>
+  <button mat-flat-button color="primary" (click)="save()">Lưu</button>
+</mat-dialog-actions>

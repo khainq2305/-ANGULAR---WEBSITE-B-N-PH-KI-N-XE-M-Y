@@ -1,0 +1,72 @@
+.cardWithShadow {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.invoice-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+/* ✅ Định dạng cột "Tên sản phẩm" */
+.product-table td:nth-child(2) { /* Cột thứ 2 là "Tên sản phẩm" */
+    text-align: left; /* Căn trái thay vì căn giữa */
+    white-space: normal; /* Cho phép xuống dòng */
+    word-wrap: break-word; /* Tự động xuống dòng khi quá dài */
+    max-width: 200px; /* Giới hạn chiều rộng để tránh quá dài */
+}
+
+.invoice-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ✅ Căn chỉnh hình ảnh sản phẩm */
+.product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* ✅ Hiển thị giá gốc gạch ngang */
+.original-price {
+    text-decoration: line-through;
+    color: gray;
+}
+
+/* ✅ Hiển thị giá giảm nổi bật */
+.discount-price {
+    font-weight: bold;
+    color: red;
+}
+
+/* ✅ Định dạng bảng sản phẩm */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.product-table th {
+    background: #f5f5f5;
+    font-weight: bold;
+}
+.product-list-title{
+    margin-top: 10px 0 !important ;
+}

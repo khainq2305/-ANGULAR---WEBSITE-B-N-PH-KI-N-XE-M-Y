@@ -1,0 +1,123 @@
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-container {
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 320px;
+}
+
+mat-form-field {
+  width: 100%;
+  
+  // ✅ Định dạng dropdown giống ảnh 2
+  &.mat-form-field-appearance-fill,
+  &.mat-form-field-appearance-outline {
+    .mat-form-field-flex {
+      background-color: white !important; // Nền trắng
+      border-radius: 6px; // Bo tròn
+    }
+
+    .mat-form-field-outline {
+      color: #ff6b6b !important; // Viền cam
+      border: 2px solid #ff6b6b !important;
+      border-radius: 6px; // Bo góc viền
+    }
+
+    .mat-form-field-label {
+      color: #ff6b6b !important; // Label cam
+      font-weight: 500;
+    }
+  }
+
+  // ✅ Khi focus vào dropdown
+  &.mat-focused {
+    .mat-form-field-outline {
+      border-color: #e63946 !important; // Màu đậm hơn khi focus
+    }
+
+    .mat-form-field-label {
+      color: #e63946 !important;
+    }
+  }
+
+  // ✅ Khi có lỗi (nếu cần)
+  &.mat-form-field-invalid {
+    .mat-form-field-outline {
+      border-color: #d32f2f !important; // Viền đỏ khi có lỗi
+    }
+
+    .mat-form-field-label {
+      color: #d32f2f !important;
+    }
+  }
+}
+
+/* ✅ Định dạng dropdown item giống ảnh 2 */
+.mat-select-panel {
+  background: white !important;
+  border-radius: 6px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Định dạng từng option */
+.mat-option {
+  padding: 12px 16px !important;
+  font-size: 16px;
+  color: #333;
+  transition: background 0.3s ease-in-out;
+
+  &:hover {
+    background: rgba(255, 107, 107, 0.1);
+  }
+}
+
+/* ✅ Định dạng option khi được chọn */
+.mat-option.mat-selected {
+  background: #ffe2e2 !important;
+  font-weight: 600;
+  color: #e63946;
+}
+
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+button {
+  min-width: 80px;
+}
+
+button[mat-button] {
+  color: #ff6b6b; // Màu đỏ nhẹ cho nút hủy
+}
+
+button[mat-flat-button] {
+  background-color: #ff6b6b;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+}
+
+button[mat-flat-button]:hover {
+  background-color: #e63946; // Đỏ đậm hơn khi hover
+}
