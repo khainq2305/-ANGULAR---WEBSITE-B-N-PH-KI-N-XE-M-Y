@@ -1,0 +1,90 @@
+<mat-card class="product-card">
+  <mat-card-header>
+    <mat-card-title>Thêm sản phẩm</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form>
+      <div class="row">
+        <div class="col-lg-6">
+          <label for="product-name" class="form-label">Tên sản phẩm</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input id="product-name" matInput placeholder="Nhập tên sản phẩm" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <label for="product-category" class="form-label">Danh mục</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select id="product-category">
+              <mat-option value="po-xe">Pô xe</mat-option>
+              <mat-option value="phu-kien">Phụ kiện</mat-option>
+              <mat-option value="den-xe">Đèn xe</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <label for="product-price" class="form-label">Giá</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input id="product-price" matInput type="number" placeholder="Nhập giá sản phẩm" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <label for="product-discount" class="form-label">Giá giảm</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input id="product-discount" matInput type="number" placeholder="Nhập giá giảm (nếu có)" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <label for="product-quantity" class="form-label">Số lượng</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input id="product-quantity" matInput type="number" placeholder="Nhập số lượng" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <label class="form-label">Sản phẩm nổi bật</label>
+          <mat-slide-toggle class="toggle-full-width" color="accent">Bật / Tắt</mat-slide-toggle>
+        </div>
+
+        <div class="col-lg-6">
+          <label for="product-status" class="form-label">Trạng thái</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select id="product-status">
+              <mat-option value="con-hang">Còn hàng</mat-option>
+              <mat-option value="het-hang">Hết hàng</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <label class="form-label">Hình ảnh sản phẩm</label>
+          <label class="custom-file-upload">
+            <input type="file" (change)="onImageUpload($event)" accept="image/*" hidden />
+            <mat-icon class="upload-icon">cloud_upload</mat-icon> Chọn ảnh sản phẩm
+          </label>
+          <div class="image-preview">
+            <div *ngFor="let img of productImages" class="image-container">
+              <img [src]="img" alt="Ảnh sản phẩm" class="preview-img" />
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-12">
+          <label for="product-description" class="form-label">Mô tả sản phẩm</label>
+          <editor id="product-description" [init]="editorConfig" apiKey="bewh19a1ebdfak2pubhewmu1t078n01k6vrvg9c9rfw8r7tc"></editor>
+        </div>
+      </div>
+
+
+      <div class="m-t-12 d-flex justify-content-end">
+        <button mat-flat-button color="primary" class="m-r-8">Thêm sản phẩm</button>
+        <button mat-stroked-button color="warn">Hủy</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

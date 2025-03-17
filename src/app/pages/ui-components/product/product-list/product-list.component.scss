@@ -1,0 +1,32 @@
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .filter-input {
+    width: 250px;
+    margin-right: 12px;
+  }
+  
+  .sort-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #ff5722;
+    font-weight: bold;
+    background: #fff;
+    border: 1px solid #ff5722;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .sort-button:hover {
+    background: #ff5722;
+    color: white;
+  }
+  
