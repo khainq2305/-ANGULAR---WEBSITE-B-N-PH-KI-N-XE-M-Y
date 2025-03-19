@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Phản hồi bình luận của {{ data?.user || 'người dùng' }}</h2>
+
+<mat-dialog-content>
+  <p><strong>Bình luận:</strong> {{ data.content }}</p>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nội dung phản hồi</mat-label>
+    <textarea matInput [(ngModel)]="replyText" placeholder="Nhập phản hồi của bạn..."></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Hủy</button>
+  <button mat-raised-button color="primary" (click)="submitReply()" [disabled]="!replyText.trim()">Gửi</button>
+</mat-dialog-actions>

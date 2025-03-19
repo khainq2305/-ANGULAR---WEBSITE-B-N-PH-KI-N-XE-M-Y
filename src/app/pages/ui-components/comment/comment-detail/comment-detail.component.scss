@@ -1,0 +1,65 @@
+.cardWithShadow {
+    border-radius: 12px;
+    padding: 16px;
+    background-color: #f9f9f9;
+  }
+  
+  .title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+  }
+  
+  .comment-icon {
+    color: #ff9800;
+    margin-right: 8px;
+  }
+  
+  .product-title {
+    color: #009688;
+  }
+  
+  .filter-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .filter-field {
+    flex: 1;
+  }
+  
+  .star-icon {
+    color: #ffb400;
+  }
+  
+  .star-icon-empty {
+    color: #bdbdbd;
+  }
+  
+  .table-container {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #eeeeee;
+  }
+  
+  .reply-button {
+    background-color: #ff9800;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px 10px;
+    &:hover {
+      background-color: #f57c00;
+    }
+  }
+  

@@ -7,7 +7,7 @@ import { DeleteComponent } from './category/delete/delete.component'
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductCreateComponent } from './product/product-create/product-create.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
-import {DeletedProductsComponent } from './product/deleted-products/deleted-products.component'; 
+import { DeletedProductsComponent } from './product/deleted-products/deleted-products.component';
 // user
 import { UserCreateComponent } from './user/user-create/user-create.component';
 import { UserListComponent } from './user/user-list/user-list.component';
@@ -16,11 +16,14 @@ import { OrderListComponent } from './order/order-list/order-list.component';
 import { OrderDetailComponent } from './order/order-detail/order-detail.component';
 // 📌 Import Contact List Component
 import { ContactListComponent } from './contact/contact-list/contact-list.component';
+
+import { CommentComponent } from './comment/comment-list/comment.component';
+import { CommentDetailComponent } from './comment/comment-detail/comment-detail.component';
+
 export const UiComponentsRoutes: Routes = [
   {
     path: '',
     children: [
-
       // Route cho Product
       {
         path: 'product/product-list',
@@ -35,7 +38,7 @@ export const UiComponentsRoutes: Routes = [
         component: ProductEditComponent,
       },
       {
-        path: 'product/deleted-products',  
+        path: 'product/deleted-products',
         component: DeletedProductsComponent,
       },
       { path: 'user/user-create', component: UserCreateComponent },
@@ -61,13 +64,15 @@ export const UiComponentsRoutes: Routes = [
         component: OrderListComponent,
       },
       {
-        path: 'order/order-detail/:id',  // 🔥 Truyền ID đơn hàng
+        path: 'order/order-detail/:id', // 🔥 Truyền ID đơn hàng
         component: OrderDetailComponent,
       },
       {
         path: 'contact/contact-list',
         component: ContactListComponent,
       },
+      { path: 'comment/comment-list', component: CommentComponent },
+      { path: 'comment/comment-detail/:id', component: CommentDetailComponent },
     ],
   },
 ];
