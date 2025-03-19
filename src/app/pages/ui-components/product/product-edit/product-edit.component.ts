@@ -37,6 +37,7 @@ export class ProductEditComponent {
   productImages: string[] = []; // ✅ Biến lưu danh sách ảnh sản phẩm
   editorConfig = { // ✅ Cấu hình TinyMCE
     height: 200,
+    
     menubar: false,
     plugins: 'lists link image',
     toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent'

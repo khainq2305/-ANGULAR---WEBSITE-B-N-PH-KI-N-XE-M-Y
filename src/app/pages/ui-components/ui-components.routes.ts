@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ListComponent } from './category/list/list.component';
 import { AddComponent } from './category/add/add.component';
 import { EditComponent } from './category/edit/edit.component';
+import { DeleteComponent } from './category/delete/delete.component'
 // Import các component Product
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductCreateComponent } from './product/product-create/product-create.component';
@@ -50,6 +51,10 @@ export const UiComponentsRoutes: Routes = [
       {
         path: 'category/edit/:id',
         component: EditComponent,
+      },
+      {
+        path: 'category/delete',  
+        component: DeleteComponent,
       },
       {
         path: 'order/order-list',
