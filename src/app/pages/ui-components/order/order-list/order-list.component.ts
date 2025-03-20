@@ -9,8 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdateStatusDialogComponent } from 'src/app/shared/update-status-dialog/update-status-dialog.component';
-import { ConfirmCancelDialogComponent } from 'src/app/shared/confirm-cancel-dialog/confirm-cancel-dialog.component';
+import { UpdateStatusDialogComponent } from 'src/app/components/shared/update-status-dialog/update-status-dialog.component';
+import { ConfirmCancelDialogComponent } from 'src/app/components/shared/confirm-cancel-dialog/confirm-cancel-dialog.component';
 
 @Component({
   selector: 'app-order-list',

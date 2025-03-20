@@ -2,24 +2,29 @@
     <mat-card-content>
      
       <mat-card-title>Danh sách các danh mục</mat-card-title>
-      <div class="row m-t-10">
-        <div class="col-sm-3">
+      <div class="row m-t-10 align-items-center">
+        <!-- Ô tìm kiếm (dài hơn và có icon) -->
+        <div class="col-sm-6">
           <mat-label class="f-w-600 m-b-8 d-block">Tìm kiếm</mat-label>
-          <mat-form-field appearance="outline" color="primary" class="mat-mdc-form-field w-100 p-y-0">
-            <input matInput (keyup)="applyFilter($event)" placeholder="Tên sản phẩm" class="mat-mdc-input-element py-0" #input>
+          <mat-form-field appearance="outline" class="mat-mdc-form-field w-100 p-y-0">
+            <mat-icon matPrefix>search</mat-icon> <!-- Thêm icon -->
+            <input matInput (keyup)="applyFilter($event)" placeholder="Nhập tên sản phẩm..." class="mat-mdc-input-element py-0">
           </mat-form-field>
         </div>
-        <div class="col-sm-2">
+      
+        <!-- Ô lọc trạng thái (sát lề phải) -->
+        <div class="col-sm-3 ms-auto">
           <mat-label class="f-w-600 m-b-8 d-block">Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <mat-select [(ngModel)]="filterStatus" (selectionChange)="setFilterStatus($event.value)" class="f-w-700" >
+            <mat-select [(ngModel)]="filterStatus" (selectionChange)="setFilterStatus($event.value)" class="f-w-700">
               <mat-option [value]="'all'">Tất cả</mat-option>
               <mat-option [value]="1">Đang hoạt động</mat-option>
               <mat-option [value]="0">Dừng hoạt động</mat-option>
             </mat-select>
           </mat-form-field>
-        </div>         
+        </div>
       </div>
+      
       <div class="mt-2 d-flex">
         <button mat-raised-button color="warn" class="rounded px-3 py-2 d-flex align-items-center gap-2"
           [routerLink]="['/ui-components/category/delete']">
@@ -29,6 +34,16 @@
       </div>
       <div class="table-responsive">
         <table mat-table [dataSource]="dataSource1" matSort matSortActive="name" matSortDirection="asc" class="w-100">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="toggleSelectAll($event)" [checked]="isAllSelected()" [indeterminate]="isIndeterminate()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox [(ngModel)]="element.selected"></mat-checkbox>
+            </td>
+          </ng-container>
+          
           <ng-container matColumnDef="index">
             <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14 p-l-0">
               #
@@ -43,6 +58,15 @@
               </div>
             </td>
           </ng-container>
+          <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14 p-l-16">
+              Hình ảnh
+            </th>
+            <td mat-cell *matCellDef="let element" class="p-l-0">
+              <img [src]="element.imageUrl" alt="{{ element.uname }}" class="img-thumbnail" width="50" height="50">
+            </td>
+          </ng-container>
+          
           <!-- Position Column -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="uname" class="f-w-600 f-s-14 p-l-16">
@@ -83,14 +107,15 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item>
+                <button mat-menu-item [routerLink]="['/ui-components/category/edit', element.id]">
                   <mat-icon>edit</mat-icon>
-                  <span [routerLink]="['/ui-components/category/edit', 1]">Chỉnh sửa</span>
+                  <span>Chỉnh sửa</span>
                 </button>
-                <button mat-menu-item>
-                  <mat-icon>delete</mat-icon>
-                  <span >Xóa</span>
-                </button>
+            <button mat-menu-item (click)="confirmDelete(element)">
+  <mat-icon>delete</mat-icon>
+  <span>Xóa</span>
+</button>
+
               </mat-menu>
             </td>
           </ng-container>

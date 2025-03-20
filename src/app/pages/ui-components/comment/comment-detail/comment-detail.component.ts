@@ -44,7 +44,7 @@ export class CommentDetailComponent implements OnInit {
   productId!: number;
   productName: string = '';
   dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['avatar', 'user', 'rating', 'content', 'date', 'actions'];
+  displayedColumns: string[] = ['stt', 'avatar', 'user', 'rating', 'content', 'date', 'actions'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

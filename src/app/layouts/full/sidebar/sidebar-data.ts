@@ -101,11 +101,7 @@ export const navItems: NavItem[] = [
         iconName: 'list',
         route: '/ui-components/contact/contact-list',
       },
-      {
-        displayName: 'Hỗ trợ khách hàng',
-        iconName: 'help-circle',
-        route: '/ui-components/contact/contact-support',
-      },
+     
     ],
   },
   

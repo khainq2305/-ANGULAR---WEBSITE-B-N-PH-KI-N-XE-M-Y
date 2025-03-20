@@ -14,14 +14,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';  // ✅ Thêm vào đây
+import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog/confirm-dialog.component';
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [
     CommonModule,
     MatTableModule,
+    FormsModule , // ✅ Thêm FormsModule vào đây
+    MatCheckboxModule, // 🔴 Thêm dòng này
     MatProgressBarModule,
     MatCardModule,
     MatIconModule,
@@ -39,7 +42,8 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent {
-  displayedColumns = ['stt', 'image', 'price', 'discount', 'category', 'quantity', 'status', 'action'];
+  displayedColumns = ['select', 'stt', 'image', 'price', 'discount', 'category', 'quantity', 'status', 'action'];
+
 
   dataSource = [
     {
@@ -50,7 +54,8 @@ export class ProductListComponent {
       price: 2500000,
       discount: 2200000,
       stock: 15,
-      priority: 'confirmed'
+      priority: 'confirmed',
+      selected: false // ✅ Thêm thuộc tính này
     },
     {
       id: 2,
@@ -60,7 +65,8 @@ export class ProductListComponent {
       price: 500000,
       discount: 450000,
       stock: 30,
-      priority: 'cancelled'
+      priority: 'cancelled',
+      selected: false // ✅ Thêm thuộc tính này
     },
     {
       id: 3,
@@ -70,7 +76,8 @@ export class ProductListComponent {
       price: 800000,
       discount: 750000,
       stock: 10,
-      priority: 'cancelled'
+      priority: 'cancelled',
+      selected: false // ✅ Thêm thuộc tính này
     },
     {
       id: 4,
@@ -80,7 +87,8 @@ export class ProductListComponent {
       price: 800000,
       discount: 750000,
       stock: 10,
-      priority: 'cancelled'
+      priority: 'cancelled',
+      selected: false // ✅ Thêm thuộc tính này
     },
     {
       id: 5,
@@ -90,7 +98,8 @@ export class ProductListComponent {
       price: 800000,
       discount: 750000,
       stock: 10,
-      priority: 'cancelled'
+      priority: 'cancelled',
+      selected: false // ✅ Thêm thuộc tính này
     },
   ];
    
@@ -111,4 +120,19 @@ export class ProductListComponent {
        }
      });
    }
+   // ✅ Hàm chọn/bỏ chọn tất cả
+toggleSelectAll(event: any) {
+  this.dataSource.forEach(p => p.selected = event.checked);
+}
+
+// ✅ Kiểm tra nếu đã chọn tất cả sản phẩm
+isAllSelected() {
+  return this.dataSource.every(p => p.selected);
+}
+
+// ✅ Kiểm tra trạng thái "chưa chọn hết"
+isIndeterminate() {
+  return this.dataSource.some(p => p.selected) && !this.isAllSelected();
+}
+
 }

@@ -47,6 +47,14 @@
   
     <div class="table-responsive">
       <table mat-table [dataSource]="filteredProducts" class="w-100 mat-elevation-z8">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="toggleSelectAll($event)" [checked]="isAllSelected()" [indeterminate]="isIndeterminate()"></mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [(ngModel)]="element.selected"></mat-checkbox>
+          </td>
+        </ng-container>
         
         <ng-container matColumnDef="stt">
           <th mat-header-cell *matHeaderCellDef>#</th>

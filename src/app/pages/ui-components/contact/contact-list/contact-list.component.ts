@@ -8,9 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmHandleDialogComponent } from 'src/app/shared/confirm-handle-dialog/confirm-handle-dialog.component';
+import { ConfirmHandleDialogComponent } from 'src/app/components/shared/confirm-handle-dialog/confirm-handle-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip'; // 🔥 Thêm dòng này
-import { MessageDialogComponent } from 'src/app/shared/message-dialog/message-dialog.component';
+import { MessageDialogComponent } from 'src/app/components/shared/message-dialog/message-dialog.component';
 
 
 @Component({

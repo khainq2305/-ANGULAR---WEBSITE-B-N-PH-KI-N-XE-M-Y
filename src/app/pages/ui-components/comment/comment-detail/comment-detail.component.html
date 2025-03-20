@@ -1,22 +1,28 @@
 <mat-card class="cardWithShadow">
   <mat-card-content>
     <h2 class="title">
-      <mat-icon class="comment-icon">comment</mat-icon> Chi tiết bình luận - <span class="product-title">{{ productName }}</span>
+      <mat-icon class="comment-icon">comment</mat-icon> Chi tiết bình luận - 
+      <span class="product-title">{{ productName }}</span>
     </h2>
 
+    <!-- ✅ Giãn cách phần tìm kiếm và lọc -->
     <div class="filter-container">
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Tìm kiếm bình luận</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
         <input matInput [(ngModel)]="searchText" (ngModelChange)="applyFilter()" placeholder="Nhập từ khóa...">
       </mat-form-field>
+      
 
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Lọc theo số sao</mat-label>
         <mat-select [(value)]="selectedRating" (selectionChange)="applyFilter()">
           <mat-option [value]="'all'">Tất cả</mat-option>
           <mat-option *ngFor="let star of ratingOptions" [value]="star.value">
-            <mat-icon *ngFor="let s of [].constructor(star.value)" class="star-icon">star</mat-icon>
-            <mat-icon *ngFor="let e of [].constructor(5 - star.value)" class="star-icon-empty">star_border</mat-icon>
+            <div class="star-option">
+              <mat-icon *ngFor="let s of [].constructor(star.value)" class="star-icon">star</mat-icon>
+              <mat-icon *ngFor="let e of [].constructor(5 - star.value)" class="star-icon-empty">star_border</mat-icon>
+            </div>
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -24,6 +30,13 @@
 
     <div class="table-container">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="stt">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let comment; let i = index">
+            {{ i + 1 }}
+          </td>
+        </ng-container>
+        
         <ng-container matColumnDef="avatar">
           <th mat-header-cell *matHeaderCellDef>Avatar</th>
           <td mat-cell *matCellDef="let comment">
@@ -54,21 +67,22 @@
           <td mat-cell *matCellDef="let comment">{{ comment.date }}</td>
         </ng-container>
 
-<ng-container matColumnDef="actions">
-  <th mat-header-cell *matHeaderCellDef>Hành động</th>
-  <td mat-cell *matCellDef="let comment">
-    <button mat-raised-button color="primary" (click)="openReplyDialog(comment)">
-      <mat-icon>reply</mat-icon> Phản hồi
-    </button>
-  </td>
-</ng-container>
-
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Hành động</th>
+          <td mat-cell *matCellDef="let comment">
+            <button mat-raised-button color="primary" (click)="openReplyDialog(comment)">
+              <mat-icon>reply</mat-icon> Phản hồi
+            </button>
+          </td>
+        </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
       </table>
     </div>
 
+    <!-- ✅ Form phản hồi rộng hơn -->
     <div *ngFor="let comment of dataSource.data">
       <div *ngIf="showReplyForm[comment.id]" class="reply-container">
         <mat-card class="reply-card">
@@ -76,8 +90,15 @@
             <h3>Phản hồi bình luận của {{ comment.user }}</h3>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Nội dung phản hồi</mat-label>
-              <textarea matInput [(ngModel)]="replyInput[comment.id]" placeholder="Nhập phản hồi..."></textarea>
+              <textarea
+                matInput
+                [(ngModel)]="replyInput[comment.id]"
+                placeholder="Nhập phản hồi..."
+                class="big-textarea"
+                rows="8">
+              </textarea>
             </mat-form-field>
+            
             <div class="reply-actions">
               <button mat-raised-button color="primary" (click)="submitReply(comment.id)">Gửi</button>
               <button mat-stroked-button color="warn" (click)="toggleReplyForm(comment.id)">Hủy</button>
