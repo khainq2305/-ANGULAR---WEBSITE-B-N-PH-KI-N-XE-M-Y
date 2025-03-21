@@ -47,16 +47,15 @@ export class CommentComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   comments = [
-    { productId: 1, productName: 'Đĩa Kingspeed 260mm', imageUrl: '...', totalComments: 120 },
-    { productId: 2, productName: 'Phuộc RCB Flow Pro', imageUrl: '...', totalComments: 85 },
-    { productId: 3, productName: 'Nhớt Liqui Moly 5W30', imageUrl: '...', totalComments: 45 },
-    { productId: 4, productName: 'Dây ga đôi Uma Racing', imageUrl: '...', totalComments: 79 },
-    { productId: 5, productName: 'Bình ắc quy GS GTZ6V', imageUrl: '...', totalComments: 40 },
-    { productId: 6, productName: 'Cặp vỏ Dunlop TT902', imageUrl: '...', totalComments: 88 },
-    { productId: 7, productName: 'Lốp Michelin City Grip 2', imageUrl: '...', totalComments: 95 },
-    { productId: 8, productName: 'Nhớt Motul 7100 10W40', imageUrl: '...', totalComments: 110 },
-    { productId: 9, productName: 'Baga trước Winner X', imageUrl: '...', totalComments: 47 },
-    { productId: 10, productName: 'Cùm thắng RCB S1', imageUrl: '...', totalComments: 128 }
+    { productId: 1, productName: 'Đĩa Kingspeed 260mm', imageUrl: 'https://shop2banh.vn/images/thumbs/2023/06/gu-carbon-fiber-chong-rung-dam-tay-lai-cho-ab-160-vario-160-products-2039.jpg', totalComments: 120 },
+    { productId: 2, productName: 'Phuộc RCB Flow Pro', imageUrl: 'https://shop2banh.vn/images/thumbs/2022/11/tay-thang-cnc-cho-honda-vario-products-1927.jpg', totalComments: 85 },
+    { productId: 3, productName: 'Nhớt Liqui Moly 5W30', imageUrl: 'https://shop2banh.vn/images/thumbs/2024/04/phuoc-profender-x-series-cho-pcx-160-products-2298.png', totalComments: 45 },
+    { productId: 4, productName: 'Dây ga đôi Uma Racing', imageUrl: 'https://shop2banh.vn/images/thumbs/2023/06/loc-nhot-vespa-chinh-hang-products-2114.png', totalComments: 79 },
+    { productId: 5, productName: 'Bình ắc quy GS GTZ6V', imageUrl: 'https://shop2banh.vn/images/thumbs/2024/01/vo-swallow-9090-14-s-222-products-2236.jpg', totalComments: 40 },
+    { productId: 6, productName: 'Cặp vỏ Dunlop TT902', imageUrl: 'https://shop2banh.vn/images/thumbs/2024/08/nhot-motul-7100-10w40-1lit-products-2346.jpg', totalComments: 88 },
+    { productId: 7, productName: 'Lốp Michelin City Grip 2', imageUrl: 'https://shop2banh.vn/images/thumbs/2023/07/ve-sinh-kim-phun-xang-dien-tu-fi-products-1373.jpg', totalComments: 95 },
+    { productId: 8, productName: 'Nhớt Motul 7100 10W40', imageUrl: 'https://shop2banh.vn/images/thumbs/2024/04/goi-bao-duong-xe-tay-ga-tieu-chuan-11-buoc-products-2276.jpg', totalComments: 110 },
+
   ];
 
   constructor(private router: Router) {  

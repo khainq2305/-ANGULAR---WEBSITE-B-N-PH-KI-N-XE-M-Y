@@ -82,32 +82,63 @@
     margin-top: 20px;
   }
   
-  .large-table {
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  .mat-header-cell {
-    font-weight: bold;
-    background: #f5f6fa;
-    color: #2c3e50;
-    font-size: 18px;
-    padding: 16px;
-  }
-  
-  .mat-cell {
-    font-size: 18px;
-    padding: 16px;
-  }
-  
-  /* Ảnh sản phẩm */
-  .product-image {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 12px;
-    transition: transform 0.3s ease-in-out;
-  }
+  /* Căn giữa tất cả nội dung của bảng */
+.large-table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+/* Căn giữa tiêu đề bảng */
+.mat-header-cell {
+  font-weight: bold;
+  background: #f5f6fa;
+  color: #2c3e50;
+  font-size: 18px;
+  padding: 16px;
+  text-align: center;
+}
+
+/* Căn giữa nội dung bảng */
+.mat-cell {
+  font-size: 18px;
+  padding: 16px;
+  text-align: center;
+  vertical-align: middle; /* Giúp nội dung không bị lệch */
+}
+
+/* ✅ Gộp ảnh và tên sản phẩm vào một cột */
+.mat-column-product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+}
+
+
+/* ✅ Ảnh nhỏ gọn để cân đối */
+.product-image {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px; /* Thêm khoảng cách giữa ảnh */
+  margin-top: 10px;
+}
+.mat-row td {
+  padding: 12px 16px;
+  vertical-align: middle; /* Giữ ảnh căn giữa */
+}
+
+
+/* ✅ Khoảng cách giữa ảnh và chữ */
+.product-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
   
   .product-image:hover {
     transform: scale(1.1);
