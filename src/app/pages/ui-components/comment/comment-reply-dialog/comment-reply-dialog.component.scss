@@ -1,0 +1,10 @@
+.textarea-wide {
+    width: 100%; /* Bảo đảm chiếm toàn bộ chiều rộng */
+}
+
+textarea[matInput] {
+    width: 100%; /* Ô nhập rộng ra */
+    min-width: 400px; /* Điều chỉnh kích thước tối thiểu */
+    max-width: 100%; /* Không vượt quá hộp thoại */
+    min-height: 120px; /* Đảm bảo chiều cao phù hợp */
+}

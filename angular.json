@@ -24,11 +24,44 @@
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss", "src/assets/scss/style.scss"],
-            "scripts": [
-              
-            ]
+            "assets": [
+  "src/favicon.ico",
+  "src/assets",
+  {
+    "glob": "**/*",
+    "input": "node_modules/tinymce/skins",
+    "output": "assets/tinymce/skins"
+  },
+  {
+    "glob": "**/*",
+    "input": "node_modules/tinymce/plugins",
+    "output": "assets/tinymce/plugins"
+  },
+  {
+    "glob": "**/*",
+    "input": "node_modules/tinymce/themes",
+    "output": "assets/tinymce/themes"
+  },
+  {
+    "glob": "**/*",
+    "input": "node_modules/tinymce/icons",
+    "output": "assets/tinymce/icons"
+  },
+  {
+    "glob": "**/*",
+    "input": "node_modules/tinymce/models",
+    "output": "assets/tinymce/models"
+  }
+]
+,
+            "styles": ["src/styles.scss",
+             "src/assets/scss/style.scss",
+            "node_modules/bootstrap/dist/css/bootstrap.min.css"],
+            
+           "scripts": [
+  "node_modules/tinymce/tinymce.min.js"
+]
+
           },
           "configurations": {
             "production": {

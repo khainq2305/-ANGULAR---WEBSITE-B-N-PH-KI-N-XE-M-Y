@@ -11,7 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { EditorComponent } from 'src/app/components/editor/editor.component'; // ✅ Import đúng component
 import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
@@ -32,7 +32,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSlideToggleModule,
     MatIconModule,
     MatChipsModule,
-    EditorModule
+    EditorComponent, 
   ],
   templateUrl: './product-create.component.html',
   styleUrls: ['./product-create.component.scss'],
@@ -43,21 +43,8 @@ export class ProductCreateComponent {
   public isAddingCategory = signal(false);
   public newCategory = signal('');
 
-  // Cấu hình TinyMCE
-  public editorConfig = {
-    height: 300,
-    menubar: false,
-    plugins: [
-      'advlist autolink lists link image charmap print preview anchor',
-      'searchreplace visualblocks code fullscreen',
-      'insertdatetime media table paste code help wordcount'
-    ],
-    toolbar:
-      'undo redo | formatselect | bold italic backcolor | ' +
-      'alignleft aligncenter alignright alignjustify | ' +
-      'bullist numlist outdent indent | removeformat | help'
-  };
-
+ 
+  public description: string = '';
   // Mở form nhập danh mục
   openCategoryForm() {
     this.isAddingCategory.set(true);

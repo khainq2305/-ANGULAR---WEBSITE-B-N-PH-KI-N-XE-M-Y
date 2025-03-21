@@ -39,19 +39,19 @@ export class DeleteComponent {
   deleteCategory = [
     { 
       id: 1,
-      imagePath: 'https://shop2banh.vn/images/thumbs/2022/07/dia-kingspeed-260mm-mau-moi-4-lo-1860-slide-categorys-62ce51d3a941b.jpg',
+      imagePath: 'https://shop2banh.vn/images/thumbs/2024/11/nhot-fuchs-silkolene-max-10w40-4t-08l-products-2374.png',
       name: 'Đĩa KingSpeed 260mm mẫu mới 4 lỗ',
       deletedAt: new Date('2025-03-10')
     },
     { 
       id: 2,
-      imagePath: 'https://shop2banh.vn/images/thumbs/2024/10/phuoc-rcb-flow-pro-cho-vario-click-chinh-hang-2365-slide-categorys-670784b987c3c.jpg',
+      imagePath: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg',
       name: 'Phuộc RCB Flow Pro cho Vario, Click chính hãng',
       deletedAt: new Date('2025-03-12')
     },
     { 
       id: 3,
-      imagePath: 'https://shop2banh.vn/images/thumbs/2024/10/nhot-liqui-moly-molygen-scooter-5w30-08l-2368-slide-categorys-66fe088d4c7fb.png',
+      imagePath: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg',
       name: 'Nhớt Liqui Moly Molygen Scooter 5W30 0.8L',
       deletedAt: new Date('2025-03-14')
     }

@@ -29,20 +29,20 @@ export interface CategoryData {
 const PRODUCT_DATA: CategoryData[] = [
   {
     id: 1,
-    uname: 'iPhone 13 Pro Max - Pacific Blue - 128GB',
+    uname: 'Vỏ xe',
     created_at: '2025-03-01',
     status: 1,  
     updated_at: '2025-03-14',
-    imageUrl: 'https://via.placeholder.com/50',
+    imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg',
     selected: false
   },
   {
     id: 2,
-    uname: 'Apple MacBook Pro 13 inch - M1 - 8/256GB',
+    uname: 'Đèn xe máy',
     created_at: '2025-02-28',
     status: 0,  
     updated_at: '2025-03-10',
-    imageUrl: 'https://via.placeholder.com/50',
+    imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg',
     selected: false
   },
   ...Array.from({ length: 50 }, (_, i) => ({
@@ -51,7 +51,7 @@ const PRODUCT_DATA: CategoryData[] = [
     created_at: `2025-02-${String((i % 28) + 1).padStart(2, '0')}`,
     status: i % 2,
     updated_at: `2025-03-${String((i % 28) + 1).padStart(2, '0')}`,
-    imageUrl: 'https://via.placeholder.com/50',
+    imageUrl: 'https://shop2banh.vn/images/thumbs/2024/11/nhot-fuchs-silkolene-max-10w40-4t-08l-products-2374.png',
     selected: false
   })),
 ];
@@ -82,7 +82,8 @@ export class ListComponent {
   showNotFound: boolean = false;
   searchText: string = '';
 
-  displayedColumns1: string[] = ['select', 'index', 'image', 'name', 'status', 'budget'];
+  displayedColumns1: string[] = ['select', 'index', 'image', 'name', 'status', 'actions'];
+
 
   dataSource1 = new MatTableDataSource(PRODUCT_DATA);
   

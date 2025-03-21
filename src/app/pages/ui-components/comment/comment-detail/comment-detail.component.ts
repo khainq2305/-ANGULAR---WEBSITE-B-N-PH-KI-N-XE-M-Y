@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommentReplyDialogComponent } from '../comment-reply-dialog/comment-reply-dialog.component';
-
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-comment-detail',
@@ -35,7 +35,7 @@ import { CommentReplyDialogComponent } from '../comment-reply-dialog/comment-rep
     MatDialogModule, // ✅ Thêm MatDialog để hiển thị form phản hồi dạng dialog
     FormsModule,
     CommentReplyDialogComponent,
-    
+    MatMenuModule,  // ✅ Thêm MatMenuModule
   ],
   templateUrl: './comment-detail.component.html',
   styleUrls: ['./comment-detail.component.scss']
@@ -44,7 +44,9 @@ export class CommentDetailComponent implements OnInit {
   productId!: number;
   productName: string = '';
   dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['stt', 'avatar', 'user', 'rating', 'content', 'date', 'actions'];
+  displayedColumns: string[] = ['stt', 'avatar', 'user', 'rating', 'content', 'status', 'adminReply', 'actions'];
+
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -58,6 +60,7 @@ export class CommentDetailComponent implements OnInit {
     { value: 1, label: '1 sao' }
   ];
   
+  selectedStatus: string = 'all'; // ✅ Thêm biến lọc trạng thái
   selectedRating: string | number = 'all';
   searchText: string = '';
 
@@ -70,12 +73,14 @@ export class CommentDetailComponent implements OnInit {
       rating: number;
       content: string;
       date: string;
+      reply?: string;
+      replyDate?: string; // Thêm ngày phản hồi
     }[];
   }> = {
     1: {
       productName: 'Đĩa Kingspeed 260mm',
       comments: [
-        { id: 101, user: 'Nguyễn Văn A', avatar: 'https://i.pravatar.cc/50?img=1', rating: 5, content: 'Sản phẩm rất tốt!', date: '2024-03-19' },
+        { id: 101, user: 'Nguyễn Văn A', avatar: 'https://i.pravatar.cc/50?img=1', rating: 5, content: 'Sản phẩm rất tốt!', date: '2024-03-19', reply: 'Cảm ơn bạn đã ủng hộ!', replyDate: '2024-03-20' },
         { id: 102, user: 'Trần Thị B', avatar: 'https://i.pravatar.cc/50?img=2', rating: 4, content: 'Hàng đẹp, sẽ mua lần sau!', date: '2024-03-20' },
       ]
     }
@@ -116,18 +121,22 @@ export class CommentDetailComponent implements OnInit {
   }
 
 
-  openReplyDialog(comment: any) {
+  openReplyDialog(comment: any, isEdit: boolean = false) {
     const dialogRef = this.dialog.open(CommentReplyDialogComponent, {
       width: '500px',
-      data: { user: comment.user }  // ✅ Truyền dữ liệu user
+      data: { user: comment.user, reply: isEdit ? comment.reply : '' }  // ✅ Truyền phản hồi cũ nếu sửa
     });
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(`Phản hồi từ ${comment.user}: ${result}`);
+        if (isEdit) {
+          comment.reply = result;  // ✅ Cập nhật phản hồi đã sửa
+        }
       }
     });
   }
+  
   
 
   submitReply(commentId: number) {

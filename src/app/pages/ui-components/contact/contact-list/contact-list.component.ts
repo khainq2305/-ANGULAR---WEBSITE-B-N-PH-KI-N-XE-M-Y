@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmHandleDialogComponent } from 'src/app/components/shared/confirm-handle-dialog/confirm-handle-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip'; // 🔥 Thêm dòng này
 import { MessageDialogComponent } from 'src/app/components/shared/message-dialog/message-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { MessageDialogComponent } from 'src/app/components/shared/message-dialog
   imports: [
     CommonModule, MatCardModule, MatTableModule, 
     MatIconModule, MatButtonModule, MatInputModule, 
-    FormsModule, MatMenuModule, MatTooltipModule
+    FormsModule, MatMenuModule, MatTooltipModule, MatSelectModule
   ],
   templateUrl: './contact-list.component.html',
   styleUrls: ['./contact-list.component.scss']

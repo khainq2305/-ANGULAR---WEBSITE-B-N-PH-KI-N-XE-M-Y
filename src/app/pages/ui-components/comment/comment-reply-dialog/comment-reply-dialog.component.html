@@ -2,11 +2,11 @@
 
 <mat-dialog-content>
   <p><strong>Bình luận:</strong> {{ data.content }}</p>
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field appearance="outline" class="full-width textarea-wide">
     <mat-label>Nội dung phản hồi</mat-label>
-    <textarea matInput [(ngModel)]="replyText" placeholder="Nhập phản hồi của bạn..."></textarea>
-  </mat-form-field>
-</mat-dialog-content>
+    <textarea matInput [(ngModel)]="replyText" placeholder="Nhập phản hồi của bạn..." rows="6"></textarea>
+</mat-form-field>
+
 <mat-dialog-actions align="end">
   <button mat-button (click)="closeDialog()">Hủy</button>
   <button mat-raised-button color="primary" (click)="submitReply()" [disabled]="!replyText.trim()">Gửi</button>

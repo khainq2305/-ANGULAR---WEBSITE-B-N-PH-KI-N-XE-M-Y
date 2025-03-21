@@ -7,8 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { EditorModule } from '@tinymce/tinymce-angular';
-
+import { EditorComponent } from 'src/app/components/editor/editor.component'; // ✅ Import đúng component
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-add',
@@ -22,7 +21,8 @@ import { CommonModule } from '@angular/common';
     RouterModule,
     MatSelectModule,
     MatIconModule,
-    EditorModule,
+    EditorComponent, // ✅ Chỉ import EditorComponent, KHÔNG import CKEditorModule
+
     CommonModule
   ],
   templateUrl: './add.component.html',
@@ -31,21 +31,7 @@ import { CommonModule } from '@angular/common';
 export class AddComponent {
   selectedFileName: string = '';
   public categoryImages: string[] = [];
-  public editorConfig = {
-    height: 300,
-    statusbar: false,
-    wordcount: true,
-    menubar: false,
-    plugins: [
-      'advlist autolink lists link image charmap print preview anchor',
-      'searchreplace visualblocks code fullscreen',
-      'insertdatetime media table paste code help wordcount'
-    ],
-    toolbar:
-      'undo redo | formatselect | bold italic backcolor | ' +
-      'alignleft aligncenter alignright alignjustify | ' +
-      'bullist numlist outdent indent | removeformat | help'
-  };
+ 
   selectedImage: string | null = null;
 
 onImageUpload(event: any) {
@@ -59,7 +45,8 @@ onImageUpload(event: any) {
     this.selectedFileName = file.name;
   }
 }
-
+  // ✅ Khai báo biến description
+  public description: string = '';
 removeImage() {
   this.selectedImage = null;
   this.selectedFileName = '';

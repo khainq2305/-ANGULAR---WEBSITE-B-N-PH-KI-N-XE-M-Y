@@ -41,14 +41,17 @@
         </div>
 
       </div>
+      <!-- EditorComponent -->
       <div class="row">
         <div class="col-12">
           <mat-label for="category-description" class="f-w-600 m-b-8 d-block">Mô tả danh mục</mat-label>
           <div class="editor-container w-100 border rounded p-1">
-            <editor id="product-description" [init]="editorConfig" apiKey="bewh19a1ebdfak2pubhewmu1t078n01k6vrvg9c9rfw8r7tc"></editor>
+            <app-editor [(data)]="description"></app-editor>
           </div>
         </div>
       </div>
+
+      
       <div class="m-t-12">
         <button mat-flat-button color="primary" class="m-r-8">Thêm mới</button>
         <button mat-stroked-button color="warn" [routerLink]="['/ui-components/category/list']">Hủy</button>

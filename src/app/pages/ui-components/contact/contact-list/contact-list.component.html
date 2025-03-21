@@ -3,13 +3,29 @@
         <h2 class="title">Danh sách liên hệ</h2>
 
         <!-- 🔍 Ô tìm kiếm -->
-        <div class="search-container">
-            <mat-form-field appearance="outline">
-                <mat-label>Tìm kiếm</mat-label>
-                <input matInput placeholder="Nhập tên hoặc email..." [(ngModel)]="searchQuery" (input)="filterContacts()">
-                <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
+        <div class="row mb-3">
+            <!-- Ô tìm kiếm -->
+            <div class="col-md-8">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Tìm kiếm</mat-label>
+                    <input matInput placeholder="Nhập tên hoặc email...">
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+        
+            <!-- Bộ lọc trạng thái -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Trạng thái</mat-label>
+                    <mat-select>
+                        <mat-option value="all">Tất cả</mat-option>
+                        <mat-option value="pending">Chưa xử lý</mat-option>
+                        <mat-option value="processed">Đã xử lý</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
+        
 
         <!-- 📋 Danh sách liên hệ -->
         <table mat-table [dataSource]="filteredContacts" class="w-100 mat-elevation-z4">

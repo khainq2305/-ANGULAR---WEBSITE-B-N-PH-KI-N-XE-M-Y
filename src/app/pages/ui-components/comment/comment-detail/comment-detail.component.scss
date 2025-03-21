@@ -68,64 +68,27 @@
   border-radius: 50%;
   border: 2px solid #eeeeee;
 }
-
-/* ✅ Form phản hồi rộng hơn */
-.reply-container {
-  width: 100%;
+/* ✅ Căn chỉnh nội dung bình luận */
+.comment-content {
   display: flex;
-  justify-content: center;
-}
-.reply-card {
-  width: 95%;
-  max-width: 700px;
-  margin-top: 20px;
-  padding: 16px;
-  box-sizing: border-box;
+  flex-direction: column; /* Xếp nội dung và ngày theo chiều dọc */
+  gap: 4px; /* Tạo khoảng cách nhỏ */
 }
 
-.full-width {
-  width: 100% !important;
+/* ✅ Làm ngày nhỏ hơn và mờ đi */
+.comment-date {
+  font-size: 12px;
+  color: #888; /* Màu xám nhẹ */
+  margin-top: 2px;
 }
-/* Make the dialog content take up more space */
-.mat-dialog-content {
-  width: 100%;
-  min-width: 300px;
-  box-sizing: border-box;
-}
-
-/* Make the form field take full width */
-mat-form-field.full-width {
-  width: 100% !important;
-  display: block;
-}
-
-/* Ensure the textarea expands properly */
-textarea.mat-input-element {
-  width: 100% !important;
-  box-sizing: border-box;
-  min-height: 120px;
-}
-
-/* Make the input container expand */
-.mat-form-field-infix {
-  width: 100% !important;
-}
-.big-textarea {
-  min-height: 150px;
-  font-size: 16px;
-  padding: 12px;
-  resize: vertical;
-}
-
-/* Make sure mat-form-field takes full width */
-.reply-card mat-form-field {
-  width: 100%;
-  display: block;
-}
-
-/* ✅ Căn chỉnh nút trong form phản hồi */
-.reply-actions {
+.admin-reply-content {
   display: flex;
-  justify-content: space-between;
-  margin-top: 12px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-reply-date {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
 }

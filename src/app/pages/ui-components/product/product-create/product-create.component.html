@@ -14,10 +14,10 @@
           </mat-form-field>
 
           <label for="product-description" class="form-label">Mô tả sản phẩm</label>
-          <editor id="product-description" [init]="editorConfig" apiKey="your-tinymce-api-key"></editor>
+          <app-editor [(data)]="description"></app-editor>
 
    <!-- Media Upload -->
-<label class="form-label">Media</label>
+<label style="margin-top: 5px;" class="form-label">Media</label>
 <div class="media-upload">
   <input #mediaInput type="file" (change)="onImageUpload($event, 'media')" accept="image/*,video/*,application/pdf" multiple hidden />
   <div class="upload-box" (click)="mediaInput.click()">Drag 'n' drop files here, or click to select</div>
@@ -99,12 +99,12 @@
   </mat-chip>
 </mat-chip-listbox>
 
-  <p class="category-helper-text">Add product to a category.</p>
+<p class="category-helper-text">Add product to a category.</p>
 
-  <!-- Nút mở form thêm danh mục -->
-  <button mat-stroked-button class="create-category-btn" (click)="openCategoryForm()">
-    + Create New Category
-  </button>
+<!-- Nút "Create New Category" -->
+<button mat-stroked-button class="create-category-btn" (click)="openCategoryForm()">
+  + Create New Category
+</button>
 
   <!-- Form nhập danh mục mới -->
   <div *ngIf="isAddingCategory()" class="add-category-form">
@@ -122,7 +122,7 @@
 
      
 
-          <label for="product-tags" class="form-label">Tags</label>
+          <label style="margin-top: 7px;" for="product-tags" class="form-label ">Tags</label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select id="product-tags" multiple>
               <mat-option value="new">New</mat-option>
