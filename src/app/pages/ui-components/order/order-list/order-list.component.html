@@ -24,12 +24,44 @@
           </button>
         </div>
     
-        <!-- ✅ Đặt ô tìm kiếm cùng hàng với bộ lọc -->
-        <mat-form-field appearance="outline" class="search-box">
-          <mat-label>Tìm kiếm đơn hàng</mat-label>
-          <mat-icon matPrefix>search</mat-icon>
-          <input matInput [(ngModel)]="searchOrderId" (keyup.enter)="searchOrders()" placeholder="Nhập mã đơn hàng..." />
-        </mat-form-field>
+        <div class="d-flex flex-wrap gap-3 align-items-start w-100">
+
+          <!-- Ô tìm kiếm -->
+          <mat-form-field appearance="outline" class="flex-grow-1 min-w-200">
+            <mat-label>Tìm kiếm đơn hàng</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput placeholder="Nhập mã đơn hàng..." />
+          </mat-form-field>
+        
+          <!-- Ô chọn ngày đặt -->
+          <mat-form-field appearance="outline" class="min-w-200">
+            <mat-label>Ngày đặt</mat-label>
+            <input matInput [matDatepicker]="orderDatePicker" placeholder="Chọn ngày đặt" />
+            <mat-datepicker-toggle matSuffix [for]="orderDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #orderDatePicker></mat-datepicker>
+          </mat-form-field>
+        
+          <!-- Ô sắp xếp ngày -->
+          <mat-form-field appearance="outline" class="min-w-200">
+            <mat-label>Sắp xếp</mat-label>
+            <mat-select>
+              <mat-option value="desc">Ngày đặt mới nhất</mat-option>
+              <mat-option value="asc">Ngày đặt cũ nhất</mat-option>
+            </mat-select>
+          </mat-form-field>
+        
+          <!-- Ô lọc trạng thái thanh toán -->
+          <mat-form-field appearance="outline" class="min-w-200">
+            <mat-label>Trạng thái thanh toán</mat-label>
+            <mat-select>
+              <mat-option value="">Tất cả</mat-option>
+              <mat-option value="Đã thanh toán">Đã thanh toán</mat-option>
+              <mat-option value="Chưa thanh toán">Chưa thanh toán</mat-option>
+            </mat-select>
+          </mat-form-field>
+        
+        </div>
+        
     </div>
     
       <!-- ✅ Danh sách đơn hàng -->

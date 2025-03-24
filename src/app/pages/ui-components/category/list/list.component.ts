@@ -12,7 +12,10 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog/confirm-dialog.component';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { HighlightDirective } from '../../hightlight/highlight.pipe';
 
@@ -24,27 +27,12 @@ export interface CategoryData {
   updated_at: string;
   imageUrl: string;
   selected?: boolean;
+  productCount?: number;
 }
 
 const PRODUCT_DATA: CategoryData[] = [
-  {
-    id: 1,
-    uname: 'Vỏ xe',
-    created_at: '2025-03-01',
-    status: 1,  
-    updated_at: '2025-03-14',
-    imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg',
-    selected: false
-  },
-  {
-    id: 2,
-    uname: 'Đèn xe máy',
-    created_at: '2025-02-28',
-    status: 0,  
-    updated_at: '2025-03-10',
-    imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg',
-    selected: false
-  },
+  { id: 1, uname: 'Vỏ xe', created_at: '2025-03-01', status: 1, updated_at: '2025-03-14', imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg', selected: false },
+  { id: 2, uname: 'Đèn xe máy', created_at: '2025-02-28', status: 0, updated_at: '2025-03-10', imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg', selected: false },
   ...Array.from({ length: 50 }, (_, i) => ({
     id: i + 5,
     uname: `Sản phẩm ${i + 5}`,
@@ -56,12 +44,24 @@ const PRODUCT_DATA: CategoryData[] = [
   })),
 ];
 
+// Giả lập danh sách sản phẩm đang tồn tại
+const PRODUCTS = [
+  { id: 1, name: 'Nhớt A', categoryId: 1 },
+  { id: 2, name: 'Đèn B', categoryId: 2 },
+  { id: 3, name: 'Nhớt C', categoryId: 1 },
+  { id: 4, name: 'Gương D', categoryId: 1 }
+];
+
 @Component({
   selector: 'app-list',
   standalone: true,
   imports: [
     MatTableModule,
     CommonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatCardModule,
     MaterialModule,
     MatIconModule,
@@ -79,20 +79,28 @@ export class ListComponent {
   constructor(private dialog: MatDialog, private _liveAnnouncer: LiveAnnouncer) {}
 
   filterStatus: number | string = 'all';
-  showNotFound: boolean = false;
+  filterCreatedAt: string = '';
+  filterDescription: string = '';
   searchText: string = '';
+  showNotFound: boolean = false;
 
-  displayedColumns1: string[] = ['select', 'index', 'image', 'name', 'status', 'actions'];
+  displayedColumns1: string[] = ['select', 'index', 'image', 'name', 'productCount', 'status', 'actions'];
 
+  dataSource1 = new MatTableDataSource<CategoryData>(PRODUCT_DATA);
 
-  dataSource1 = new MatTableDataSource(PRODUCT_DATA);
-  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
+
+    this.dataSource1.data.forEach(category => {
+      const count = PRODUCTS.filter(p => p.categoryId === category.id).length;
+      category.productCount = count;
+    });
+
     this.dataSource1.paginator = this.paginator;
     this.dataSource1.sort = this.sort;
+
     this.dataSource1.sortingDataAccessor = (item: CategoryData, sortHeaderId: string): string | number => {
       switch (sortHeaderId) {
         case 'uname': return item.uname.toLowerCase(); 
@@ -101,35 +109,20 @@ export class ListComponent {
     };
   }
 
+  applyAdvancedFilter() {
+    this.dataSource1.filterPredicate = (data: CategoryData) => {
+      const matchStatus = this.filterStatus === 'all' || data.status === this.filterStatus;
+      const matchDate = this.filterCreatedAt ? data.created_at.includes(this.filterCreatedAt) : true;
+      const matchDescription = this.filterDescription ? data.uname.toLowerCase().includes(this.filterDescription.toLowerCase()) : true;
+      return matchStatus && matchDate && matchDescription;
+    };
+    this.dataSource1.filter = Math.random().toString(); 
+    this.showNotFound = this.dataSource1.filteredData.length === 0;
+  }
+
   setFilterStatus(status: number | string) {
     this.filterStatus = status === 'all' ? 'all' : (typeof status === 'string' ? parseInt(status, 10) : status);
-    this.applyStatusFilter();
-  }
-
-  applyStatusFilter() {
-    this.dataSource1.filterPredicate = (data: CategoryData) => {
-      return this.filterStatus === 'all' || data.status === this.filterStatus;
-    };
-    this.dataSource1.filter = Math.random().toString();
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.searchText = filterValue;
-  
-    this.dataSource1.filterPredicate = (data: CategoryData, filter: string) => {
-      return Object.values(data).some(value => {
-        let strValue = String(value).trim().toLowerCase();
-        if (strValue.match(/^\d{4}-\d{2}-\d{2}$/)) {
-          const [year, month, day] = strValue.split("-");
-          strValue = `${day}/${month}/${year}`;
-        }
-        return strValue.includes(filter);
-      });
-    };
-  
-    this.dataSource1.filter = filterValue;
-    this.showNotFound = this.dataSource1.filteredData.length === 0;
+    this.applyAdvancedFilter();
   }
 
   announceSortChange(sortState: Sort) {
@@ -153,7 +146,6 @@ export class ListComponent {
     return this.dataSource1.data.some(row => row.selected) && !this.isAllSelected();
   }
 
-  // ✅ Hàm mở Dialog Xác Nhận Xóa
   confirmDelete(category: any) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
@@ -167,7 +159,6 @@ export class ListComponent {
     });
   }
 
-  // ✅ Hàm Xóa danh mục
   deleteCategory(category: any) {
     alert(`Danh mục "${category.uname}" đã bị xóa!`);
     this.dataSource1.data = this.dataSource1.data.filter(item => item.id !== category.id);

@@ -4,8 +4,8 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/cor
   selector: '[appHighlight]',
 })
 export class HighlightDirective implements OnChanges {
-  @Input() appHighlight: string | number = ''; // Văn bản gốc
-  @Input() searchText: string = '';   // Từ khóa tìm kiếm
+  @Input() appHighlight: string | number = '';
+  @Input() searchText: string = ''; 
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
@@ -18,12 +18,12 @@ export class HighlightDirective implements OnChanges {
       return;
     }
 
-    // Nếu là số, chuyển thành chuỗi
+   
     if (typeof this.appHighlight === 'number') {
       text = String(this.appHighlight);
     }
 
-    // Tạo regex để tìm kiếm chính xác
+   
     const regex = new RegExp(`(${keyword})`, 'gi');
     const highlightedText = text.replace(regex, `<mark>$1</mark>`);
 

@@ -15,7 +15,7 @@ import { MatNativeDateModule } from '@angular/material/core';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,  // ✅ Quan trọng! Thêm ReactiveFormsModule để tránh lỗi
+    ReactiveFormsModule,  
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -49,7 +49,7 @@ export class UserCreateComponent {
 
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
-      id: ['U' + Math.floor(Math.random() * 1000)], // Random ID
+      id: ['U' + Math.floor(Math.random() * 1000)], 
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,12}$')]],

@@ -32,10 +32,10 @@ import { MatMenuModule } from '@angular/material/menu';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatDialogModule, // ✅ Thêm MatDialog để hiển thị form phản hồi dạng dialog
+    MatDialogModule, 
     FormsModule,
-    CommentReplyDialogComponent,
-    MatMenuModule,  // ✅ Thêm MatMenuModule
+ 
+    MatMenuModule, 
   ],
   templateUrl: './comment-detail.component.html',
   styleUrls: ['./comment-detail.component.scss']
@@ -60,7 +60,7 @@ export class CommentDetailComponent implements OnInit {
     { value: 1, label: '1 sao' }
   ];
   
-  selectedStatus: string = 'all'; // ✅ Thêm biến lọc trạng thái
+  selectedStatus: string = 'all';
   selectedRating: string | number = 'all';
   searchText: string = '';
 
@@ -74,7 +74,7 @@ export class CommentDetailComponent implements OnInit {
       content: string;
       date: string;
       reply?: string;
-      replyDate?: string; // Thêm ngày phản hồi
+      replyDate?: string; 
     }[];
   }> = {
     1: {
@@ -124,14 +124,14 @@ export class CommentDetailComponent implements OnInit {
   openReplyDialog(comment: any, isEdit: boolean = false) {
     const dialogRef = this.dialog.open(CommentReplyDialogComponent, {
       width: '500px',
-      data: { user: comment.user, reply: isEdit ? comment.reply : '' }  // ✅ Truyền phản hồi cũ nếu sửa
+      data: { user: comment.user, reply: isEdit ? comment.reply : '' }  
     });
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(`Phản hồi từ ${comment.user}: ${result}`);
         if (isEdit) {
-          comment.reply = result;  // ✅ Cập nhật phản hồi đã sửa
+          comment.reply = result; 
         }
       }
     });
@@ -143,8 +143,8 @@ export class CommentDetailComponent implements OnInit {
     const replyContent = this.replyInput[commentId]?.trim();
     if (replyContent) {
       console.log(`Reply for comment ${commentId}: ${replyContent}`);
-      this.replyInput[commentId] = ''; // Reset nội dung phản hồi sau khi gửi
-      this.showReplyForm[commentId] = false; // Ẩn form sau khi gửi
+      this.replyInput[commentId] = ''; 
+      this.showReplyForm[commentId] = false; 
     }
   }
   toggleReplyForm(commentId: number) {

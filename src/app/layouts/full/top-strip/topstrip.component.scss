@@ -1,0 +1,11 @@
+.app-topstrip {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; // đẩy các phần trái - phải ra xa nhau
+    padding: 10px 20px;
+    background-color: #0b1629; // bg-dark
+    color: white;
+    z-index: 1000;
+  }
+  

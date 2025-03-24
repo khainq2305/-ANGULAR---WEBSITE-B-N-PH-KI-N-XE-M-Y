@@ -4,7 +4,7 @@
   background-color: #f9f9f9;
 }
 
-/* ✅ Tiêu đề bình luận */
+
 .title {
   font-size: 22px;
   font-weight: bold;
@@ -13,7 +13,7 @@
   align-items: center;
 }
 
-/* ✅ Căn chỉnh icon */
+
 .comment-icon {
   color: #ff9800;
   margin-right: 8px;
@@ -23,7 +23,7 @@
   color: #009688;
 }
 
-/* ✅ Giãn cách phần lọc và tìm kiếm */
+
 .filter-container {
   display: flex;
   gap: 16px;
@@ -32,20 +32,18 @@
   align-items: center;
 }
 
-/* ✅ Tăng khoảng cách ô lọc và tìm kiếm */
+
 .filter-field {
   flex: 1;
   min-width: 250px;
 }
 
-/* ✅ Dropdown lọc số sao trông đẹp hơn */
 .star-option {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-/* ✅ Chỉnh icon sao */
 .star-icon {
   color: #ffb400;
 }
@@ -54,31 +52,30 @@
   color: #bdbdbd;
 }
 
-/* ✅ Căn chỉnh bảng dữ liệu */
+
 .table-container {
   background: white;
   border-radius: 8px;
   padding: 16px;
 }
 
-/* ✅ Avatar người dùng */
 .avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   border: 2px solid #eeeeee;
 }
-/* ✅ Căn chỉnh nội dung bình luận */
+
 .comment-content {
   display: flex;
-  flex-direction: column; /* Xếp nội dung và ngày theo chiều dọc */
-  gap: 4px; /* Tạo khoảng cách nhỏ */
+  flex-direction: column; 
+  gap: 4px; 
 }
 
-/* ✅ Làm ngày nhỏ hơn và mờ đi */
+
 .comment-date {
   font-size: 12px;
-  color: #888; /* Màu xám nhẹ */
+  color: #888; 
   margin-top: 2px;
 }
 .admin-reply-content {

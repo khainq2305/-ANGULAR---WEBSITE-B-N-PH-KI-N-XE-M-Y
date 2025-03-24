@@ -3,7 +3,7 @@ import { ListComponent } from './category/list/list.component';
 import { AddComponent } from './category/add/add.component';
 import { EditComponent } from './category/edit/edit.component';
 import { DeleteComponent } from './category/delete/delete.component'
-// Import các component Product
+
 import { ProductListComponent } from './product/product-list/product-list.component';
 import { ProductCreateComponent } from './product/product-create/product-create.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
@@ -14,7 +14,7 @@ import { UserListComponent } from './user/user-list/user-list.component';
 // order
 import { OrderListComponent } from './order/order-list/order-list.component';
 import { OrderDetailComponent } from './order/order-detail/order-detail.component';
-// 📌 Import Contact List Component
+
 import { ContactListComponent } from './contact/contact-list/contact-list.component';
 
 import { CommentComponent } from './comment/comment-list/comment.component';
@@ -24,7 +24,7 @@ export const UiComponentsRoutes: Routes = [
   {
     path: '',
     children: [
-      // Route cho Product
+
       {
         path: 'product/product-list',
         component: ProductListComponent,
@@ -64,7 +64,7 @@ export const UiComponentsRoutes: Routes = [
         component: OrderListComponent,
       },
       {
-        path: 'order/order-detail/:id', // 🔥 Truyền ID đơn hàng
+        path: 'order/order-detail/:id', 
         component: OrderDetailComponent,
       },
       {

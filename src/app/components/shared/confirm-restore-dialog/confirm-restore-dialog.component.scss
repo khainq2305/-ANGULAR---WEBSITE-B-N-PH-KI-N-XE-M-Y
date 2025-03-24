@@ -1,0 +1,22 @@
+.custom-dialog-content {
+    padding: 24px 24px 12px;
+    font-family: 'Segoe UI', sans-serif;
+    .dialog-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .dialog-message {
+      font-size: 16px;
+      color: #444;
+    }
+  }
+  
+  .dialog-actions {
+    padding: 12px 24px 24px;
+    button {
+      min-width: 100px;
+      font-weight: 600;
+    }
+  }
+  

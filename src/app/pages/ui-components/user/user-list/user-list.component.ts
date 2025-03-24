@@ -192,10 +192,9 @@ export class UserListComponent implements AfterViewInit {
     this.dataSource1.filter = status.trim().toLowerCase();
   }
   resetPassword(user: any) {
-    // Giả lập hành động cấp lại mật khẩu
-    console.log(`Cấp lại mật khẩu cho: ${user.name} (${user.email})`);
   
-    // Hiển thị thông báo
+    console.log(`Cấp lại mật khẩu cho: ${user.name} (${user.email})`);
+
     alert(`Mật khẩu mới đã được gửi đến email của ${user.name}`);
   }
 

@@ -15,7 +15,10 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';  // ✅ Thêm vào đây
+import { FormsModule } from '@angular/forms'; 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog/confirm-dialog.component';
 @Component({
   selector: 'app-product-list',
@@ -23,8 +26,10 @@ import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog
   imports: [
     CommonModule,
     MatTableModule,
-    FormsModule , // ✅ Thêm FormsModule vào đây
-    MatCheckboxModule, // 🔴 Thêm dòng này
+    MatDatepickerModule,      
+    MatNativeDateModule,
+    FormsModule , 
+    MatCheckboxModule, 
     MatProgressBarModule,
     MatCardModule,
     MatIconModule,
@@ -55,7 +60,7 @@ export class ProductListComponent {
       discount: 2200000,
       stock: 15,
       priority: 'confirmed',
-      selected: false // ✅ Thêm thuộc tính này
+      selected: false 
     },
     {
       id: 2,
@@ -66,7 +71,7 @@ export class ProductListComponent {
       discount: 450000,
       stock: 30,
       priority: 'cancelled',
-      selected: false // ✅ Thêm thuộc tính này
+      selected: false 
     },
     {
       id: 3,
@@ -77,7 +82,7 @@ export class ProductListComponent {
       discount: 750000,
       stock: 10,
       priority: 'cancelled',
-      selected: false // ✅ Thêm thuộc tính này
+      selected: false 
     },
     {
       id: 4,
@@ -88,7 +93,7 @@ export class ProductListComponent {
       discount: 750000,
       stock: 10,
       priority: 'cancelled',
-      selected: false // ✅ Thêm thuộc tính này
+      selected: false
     },
     {
       id: 5,
@@ -99,7 +104,7 @@ export class ProductListComponent {
       discount: 750000,
       stock: 10,
       priority: 'cancelled',
-      selected: false // ✅ Thêm thuộc tính này
+      selected: false 
     },
   ];
    
@@ -120,17 +125,17 @@ export class ProductListComponent {
        }
      });
    }
-   // ✅ Hàm chọn/bỏ chọn tất cả
+
 toggleSelectAll(event: any) {
   this.dataSource.forEach(p => p.selected = event.checked);
 }
 
-// ✅ Kiểm tra nếu đã chọn tất cả sản phẩm
+
 isAllSelected() {
   return this.dataSource.every(p => p.selected);
 }
 
-// ✅ Kiểm tra trạng thái "chưa chọn hết"
+
 isIndeterminate() {
   return this.dataSource.some(p => p.selected) && !this.isAllSelected();
 }

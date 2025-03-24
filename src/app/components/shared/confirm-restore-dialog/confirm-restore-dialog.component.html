@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Xác nhận khôi phục</h2>
+<mat-dialog-content>
+  <p>Bạn có chắc chắn muốn khôi phục danh mục "{{ data.name }}" không?</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Hủy</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Khôi phục</button>
+</mat-dialog-actions>

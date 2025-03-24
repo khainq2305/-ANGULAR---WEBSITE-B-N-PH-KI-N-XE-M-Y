@@ -52,16 +52,7 @@
           </mat-form-field>
         </div>
 
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Quốc Gia</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select formControlName="country">
-              <mat-option *ngFor="let option of countries" [value]="option.value">
-                {{ option.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        
 
         <div class="col-lg-6">
           <mat-label class="f-w-600 m-b-8 d-block">Tỉnh/Thành Phố</mat-label>

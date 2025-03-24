@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { EditorComponent } from 'src/app/components/editor/editor.component'; // ✅ Import đúng component
+import { EditorComponent } from 'src/app/components/editor/editor.component';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-add',
@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
     RouterModule,
     MatSelectModule,
     MatIconModule,
-    EditorComponent, // ✅ Chỉ import EditorComponent, KHÔNG import CKEditorModule
+    EditorComponent, 
 
     CommonModule
   ],
@@ -45,7 +45,7 @@ onImageUpload(event: any) {
     this.selectedFileName = file.name;
   }
 }
-  // ✅ Khai báo biến description
+
   public description: string = '';
 removeImage() {
   this.selectedImage = null;

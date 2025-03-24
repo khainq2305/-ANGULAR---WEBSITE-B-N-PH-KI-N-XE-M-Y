@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EditorModule } from '@tinymce/tinymce-angular';
-
 @Component({
   selector: 'app-editor',
   standalone: true,
@@ -21,7 +20,8 @@ export class EditorComponent {
   @Output() dataChange = new EventEmitter<string>(); 
 
   editorConfig = {
-    base_url: '/assets/tinymce', // 🔥 Chỉ định đường dẫn TinyMCE trong assets
+    menubar: false,
+    base_url: '/assets/tinymce',
     skin_url: '/assets/tinymce/skins/ui/oxide',
     content_css: '/assets/tinymce/skins/content/default/content.css',
     icons: '/assets/tinymce/icons/default',

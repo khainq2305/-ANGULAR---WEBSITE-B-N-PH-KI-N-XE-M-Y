@@ -6,7 +6,6 @@
   <mat-card-content>
     <form>
       <div class="row">
-        <!-- Cột trái: Thông tin sản phẩm -->
         <div class="col-lg-8">
           <label for="product-name" class="form-label">Tên sản phẩm *</label>
           <mat-form-field appearance="outline" class="w-100">
@@ -16,53 +15,76 @@
           <label for="product-description" class="form-label">Mô tả sản phẩm</label>
           <app-editor [(data)]="description"></app-editor>
 
-   <!-- Media Upload -->
-<label style="margin-top: 5px;" class="form-label">Media</label>
-<div class="media-upload">
-  <input #mediaInput type="file" (change)="onImageUpload($event, 'media')" accept="image/*,video/*,application/pdf" multiple hidden />
-  <div class="upload-box" (click)="mediaInput.click()">Drag 'n' drop files here, or click to select</div>
-</div>
+          <label style="margin-top: 5px" class="form-label">Media</label>
+          <div class="media-upload">
+            <input #mediaInput type="file" (change)="onImageUpload($event, 'media')" accept="image/*,video/*,application/pdf" multiple hidden />
+            <div class="upload-box" (click)="mediaInput.click()">Kéo thả tệp vào đây hoặc bấm để chọn</div>
+          </div>
 
-<!-- Hiển thị danh sách file đã chọn cho Media -->
-<div class="file-list" *ngIf="productMedia.length > 0">
-  <label class="form-label">Selected Media:</label>
-  <div class="file-item" *ngFor="let file of productMedia">
-    <!-- Hiển thị ảnh preview -->
-    <img *ngIf="file.type === 'image'" [src]="file.url" class="file-preview" />
-    
-    <!-- Hiển thị icon video 🎥 -->
-    <span *ngIf="file.type === 'video'">🎥 {{ file.name }}</span>
-
-    <!-- Hiển thị icon file 📄 -->
-    <span *ngIf="file.type === 'file'">📄 {{ file.name }}</span>
-
-    <span class="file-size">{{ (file.size / 1024).toFixed(2) }} KB</span>
-  </div>
-</div>
-
-          <!-- HÀNG CHỨA GIÁ, GIÁ GIẢM & VAT -->
-          <div class="row">
-            <div class="col-lg-4">
-              <label for="product-price" class="form-label">Giá *</label>
-              <mat-form-field appearance="outline" class="w-100">
-                <input id="product-price" matInput type="number" placeholder="Nhập giá sản phẩm" required />
-              </mat-form-field>
-            </div>
-
-            <div class="col-lg-4">
-              <label for="product-discount" class="form-label">Giá giảm</label>
-              <mat-form-field appearance="outline" class="w-100">
-                <input id="product-discount" matInput type="number" placeholder="Nhập giá giảm (nếu có)" />
-              </mat-form-field>
-            </div>
-
-            <div class="col-lg-4">
-              <label for="product-tax" class="form-label">VAT (%)</label>
-              <mat-form-field appearance="outline" class="w-100">
-                <input id="product-tax" matInput type="number" placeholder="Nhập VAT" />
-              </mat-form-field>
+          <div class="file-list" *ngIf="productMedia.length > 0">
+            <label class="form-label">Media đã chọn:</label>
+            <div class="file-item" *ngFor="let file of productMedia">
+              <img *ngIf="file.type === 'image'" [src]="file.url" class="file-preview" />
+              <span *ngIf="file.type === 'video'">🎥 {{ file.name }}</span>
+              <span *ngIf="file.type === 'file'">📄 {{ file.name }}</span>
+              <span class="file-size">{{ (file.size / 1024).toFixed(2) }} KB</span>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-lg-8" style="width: 100%;">
+              <label for="product-price" class="form-label">Giá gốc *</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input id="product-price" matInput type="number" [(ngModel)]="basePrice" placeholder="Giá sản phẩm" required />
+              </mat-form-field>
+              
+            </div>
+
+          </div>
+<!-- Chọn loại giảm giá -->
+<label class="form-label">Hình thức giảm giá *</label>
+<mat-radio-group
+  [(ngModel)]="discountType"
+  name="discountType"
+  class="custom-radio-group">
+  <mat-radio-button class="custom-radio" value="none">Không giảm giá</mat-radio-button>
+  <mat-radio-button class="custom-radio" value="percentage">Giảm theo %</mat-radio-button>
+  <mat-radio-button class="custom-radio" value="fixed">Giảm còn giá cố định</mat-radio-button>
+</mat-radio-group>
+
+<!-- Nếu chọn giảm phần trăm -->
+<div *ngIf="discountType === 'percentage'" class="discount-section">
+  <label class="form-label">Phần trăm giảm giá *</label>
+  <div class="slider-value-label">
+    {{ discountPercentage }}%
+  </div>
+  <mat-slider
+    class="full-width-slider"
+    min="0"
+    max="100"
+    step="1"
+    tickInterval="10">
+    <input matSliderThumb [(ngModel)]="discountPercentage" />
+  </mat-slider>
+  <p *ngIf="basePrice">Giá sau khi giảm: {{ getDiscountedPrice() | number:'1.0-0' }}₫</p>
+</div>
+
+
+<!-- Nếu chọn giảm còn giá cố định -->
+<div *ngIf="discountType === 'fixed'" class="discount-section">
+  <label class="form-label">Giá sau khi giảm *</label>
+  <mat-form-field appearance="outline" class="w-100">
+    <input
+      matInput
+      type="number"
+      placeholder="Nhập giá đã giảm"
+      [(ngModel)]="discountFixedPrice"
+      name="discountFixedPrice"
+      required />
+  </mat-form-field>
+  <p *ngIf="discountFixedPrice">Sẽ bán với giá: {{ discountFixedPrice | number:'1.0-0' }}₫</p>
+</div>
+
 
           <label for="product-quantity" class="form-label">Số lượng</label>
           <mat-form-field appearance="outline" class="w-100">
@@ -71,62 +93,57 @@
         </div>
 
         <div class="col-lg-4">
-          <label class="form-label">Thumbnail</label>
+          <label class="form-label">Hình ảnh đại diện</label>
           <div class="thumbnail-upload">
             <input #thumbnailInput type="file" (change)="onImageUpload($event, 'thumbnail')" accept="image/*" hidden />
-            <div class="upload-box" (click)="thumbnailInput.click()">Drag 'n' drop files here, or click to select</div>
+            <div class="upload-box" (click)="thumbnailInput.click()">Kéo thả hình vào đây hoặc bấm để chọn</div>
           </div>
 
           <div class="file-list" *ngIf="productThumbnail">
             <img [src]="productThumbnail.url" class="file-preview" />
           </div>
-         <!-- Danh mục -->
-<div class="category-container">
-  <label class="form-label">Categories</label>
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Categories</mat-label>
-    <mat-select (selectionChange)="onCategorySelect($event)" multiple>
-      <mat-option *ngFor="let category of categories()" [value]="category">
-        {{ category }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-<!-- Hiển thị danh sách danh mục đã chọn bằng mat-chip-listbox -->
-<mat-chip-listbox #chipList aria-label="Danh mục đã chọn">
-  <mat-chip *ngFor="let category of selectedCategories()" selectable="true" [removable]="true" (removed)="removeCategory(category)">
-    {{ category }}
-    <mat-icon matChipRemove>cancel</mat-icon>
-  </mat-chip>
-</mat-chip-listbox>
 
-<p class="category-helper-text">Add product to a category.</p>
+          <div class="category-container">
+            <label class="form-label">Danh mục</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Danh mục</mat-label>
+              <mat-select (selectionChange)="onCategorySelect($event)" multiple>
+                <mat-option *ngFor="let category of categories()" [value]="category">
+                  {{ category }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-<!-- Nút "Create New Category" -->
-<button mat-stroked-button class="create-category-btn" (click)="openCategoryForm()">
-  + Create New Category
-</button>
+            <mat-chip-listbox #chipList aria-label="Danh mục đã chọn">
+              <mat-chip *ngFor="let category of selectedCategories()" selectable="true" [removable]="true" (removed)="removeCategory(category)">
+                {{ category }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-listbox>
 
-  <!-- Form nhập danh mục mới -->
-  <div *ngIf="isAddingCategory()" class="add-category-form">
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Enter new category</mat-label>
-      <input matInput [value]="newCategory()" (input)="updateNewCategory($event)">
-    </mat-form-field>
-    <div class="category-actions">
-      <button mat-flat-button color="primary" (click)="addCategory()">Save</button>
-      <button mat-stroked-button color="warn" (click)="closeCategoryForm()">Cancel</button>
-    </div>
-  </div>
-</div>
+            <p class="category-helper-text">Thêm sản phẩm vào danh mục mong muốn.</p>
 
+            <button mat-stroked-button class="create-category-btn" (click)="openCategoryForm()">
+              + Thêm danh mục mới
+            </button>
 
-     
+            <div *ngIf="isAddingCategory()" class="add-category-form">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Nhập danh mục mới</mat-label>
+                <input matInput [value]="newCategory()" (input)="updateNewCategory($event)">
+              </mat-form-field>
+              <div class="category-actions">
+                <button mat-flat-button color="primary" (click)="addCategory()">Lưu</button>
+                <button mat-stroked-button color="warn" (click)="closeCategoryForm()">Hủy</button>
+              </div>
+            </div>
+          </div>
 
-          <label style="margin-top: 7px;" for="product-tags" class="form-label ">Tags</label>
+          <label style="margin-top: 7px;" for="product-tags" class="form-label">Thẻ</label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select id="product-tags" multiple>
-              <mat-option value="new">New</mat-option>
-              <mat-option value="sale">Sale</mat-option>
+              <mat-option value="new">Mới</mat-option>
+              <mat-option value="sale">Giảm giá</mat-option>
               <mat-option value="hot">Hot</mat-option>
             </mat-select>
           </mat-form-field>
@@ -134,8 +151,8 @@
           <label class="form-label" style="margin-top: 10px;">Trạng thái</label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select id="product-status">
-              <mat-option value="published">Published</mat-option>
-              <mat-option value="draft">Draft</mat-option>
+              <mat-option value="published">Xuất bản</mat-option>
+              <mat-option value="draft">Nháp</mat-option>
             </mat-select>
           </mat-form-field>
 

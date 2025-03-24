@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';  // ✅ Fix lỗi [(ngModel)]
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';  
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';  // ✅ Fix lỗi <mat-form-field>
-import { MatInputModule } from '@angular/material/input';  // ✅ Fix lỗi <input matInput>
-import { MatSelectModule } from '@angular/material/select';  // ✅ Fix lỗi <mat-select>
-import { MatOptionModule } from '@angular/material/core';  // ✅ Fix lỗi <mat-option>
+import { MatFormFieldModule } from '@angular/material/form-field';  
+import { MatInputModule } from '@angular/material/input';  
+import { MatSelectModule } from '@angular/material/select'; 
+import { MatOptionModule } from '@angular/material/core'; 
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -20,10 +20,10 @@ import { ActivatedRoute } from '@angular/router';
     MatCardModule,
     MatTableModule,
     MatIconModule,
-    MatFormFieldModule,  // ✅ Fix lỗi <mat-form-field>
-    MatInputModule,  // ✅ Fix lỗi <input matInput>
-    MatSelectModule,  // ✅ Fix lỗi <mat-select>
-    MatOptionModule,  // ✅ Fix lỗi <mat-option>
+    MatFormFieldModule,  
+    MatInputModule,  
+    MatSelectModule, 
+    MatOptionModule, 
   ],
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.scss']

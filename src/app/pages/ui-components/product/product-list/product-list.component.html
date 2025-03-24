@@ -5,15 +5,16 @@
 
    
  
-    <div class="d-flex justify-content-between align-items-center mt-3 m-b-3 p-3 rounded">
-      <mat-form-field appearance="outline" class="filter-input flex-grow-1">
-        <mat-label>Tìm kiếm sản phẩm</mat-label>
-        <mat-icon matPrefix>search</mat-icon>
-        <input matInput placeholder="Nhập tên sản phẩm..." />
-      </mat-form-field>
-  
-      <div class="d-flex gap-4">
-        <mat-form-field appearance="outline" class="filter-select">
+      <div class="d-flex align-items-center flex-wrap gap-3 mt-3 mb-3 p-3 rounded">
+        <!-- Ô tìm kiếm chiếm phần lớn -->
+        <mat-form-field appearance="outline" class="flex-grow-1">
+          <mat-label>Tìm kiếm sản phẩm</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput placeholder="Nhập tên sản phẩm..." />
+        </mat-form-field>
+      
+        <!-- 3 ô lọc nằm bên phải và không rớt dòng -->
+        <mat-form-field appearance="outline" style="min-width: 160px;">
           <mat-label>Lọc theo danh mục</mat-label>
           <mat-select>
             <mat-option value="Tất cả">Tất cả</mat-option>
@@ -22,8 +23,15 @@
             <mat-option value="Đèn xe">Đèn xe</mat-option>
           </mat-select>
         </mat-form-field>
-    
-        <mat-form-field appearance="outline" class="filter-select">
+      
+        <mat-form-field appearance="outline" style="min-width: 140px;">
+          <mat-label>Ngày tạo</mat-label>
+          <input matInput [matDatepicker]="createdAtPicker" placeholder="Chọn ngày tạo">
+          <mat-datepicker-toggle matSuffix [for]="createdAtPicker"></mat-datepicker-toggle>
+          <mat-datepicker #createdAtPicker></mat-datepicker>
+        </mat-form-field>
+      
+        <mat-form-field appearance="outline" style="min-width: 140px;">
           <mat-label>Sắp xếp giá</mat-label>
           <mat-select>
             <mat-option value="asc">
@@ -35,7 +43,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </div>
+      
     <div class="mt-2 d-flex">
       <button mat-raised-button color="warn" class="rounded px-3 py-2 d-flex align-items-center gap-2"
         [routerLink]="['/ui-components/product/deleted-products']">

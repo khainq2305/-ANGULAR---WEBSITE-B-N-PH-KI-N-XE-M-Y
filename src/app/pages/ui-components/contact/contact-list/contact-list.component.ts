@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmHandleDialogComponent } from 'src/app/components/shared/confirm-handle-dialog/confirm-handle-dialog.component';
-import { MatTooltipModule } from '@angular/material/tooltip'; // 🔥 Thêm dòng này
+import { MatTooltipModule } from '@angular/material/tooltip'; 
 import { MessageDialogComponent } from 'src/app/components/shared/message-dialog/message-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -30,27 +30,31 @@ export class ContactListComponent {
 
   displayedColumns = ['name', 'email', 'phone', 'message', 'status', 'actions'];
 
+
   contacts = [
     { 
       name: 'Nguyễn Văn A', 
       email: 'nguyenvana@example.com', 
       phone: '0123 456 789',
       message: 'Tôi muốn hỏi về sản phẩm mới.',
-      status: 'Chưa xử lý' 
+      status: 'Chưa xử lý' ,
+      date: new Date('2025-03-23T09:10:00') 
     },
     { 
       name: 'Trần Thị B', 
       email: 'tranthib@example.com', 
       phone: '0987 654 321',
       message: 'Đơn hàng của tôi bị trễ, có thể kiểm tra giúp không?',
-      status: 'Đã phản hồi' 
+      status: 'Đã phản hồi' ,
+      date: new Date('2025-03-23T09:10:00') 
     },
     { 
       name: 'Lê Văn C', 
       email: 'khainqpc08388@gmail.com', 
       phone: '0912 345 678',
       message: 'Tôi cần báo giá số lượng lớn.',
-      status: 'Chưa xử lý' 
+      status: 'Chưa xử lý' ,
+      date: new Date('2025-03-23T09:10:00') 
     }
   ];
 
@@ -58,7 +62,7 @@ export class ContactListComponent {
 
   constructor(public dialog: MatDialog) {}
 
-  // 🔍 Lọc danh sách theo từ khóa
+ 
   filterContacts() {
     this.filteredContacts = this.contacts.filter(contact => 
       contact.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
@@ -66,7 +70,6 @@ export class ContactListComponent {
     );
   }
 
-  // ✅ Mở hộp thoại xác nhận xử lý liên hệ
   openConfirmHandleDialog(contact: any) {
     const dialogRef = this.dialog.open(ConfirmHandleDialogComponent, {
       width: '400px',
@@ -81,7 +84,7 @@ export class ContactListComponent {
     });
   }
 
-  // ✅ Gửi phản hồi email
+  
   sendEmail(contact: any) {
     const emailSubject = encodeURIComponent(`Phản hồi liên hệ từ ${contact.name}`);
     const emailBody = encodeURIComponent(
@@ -92,7 +95,7 @@ export class ContactListComponent {
       window.location.href = `mailto:${contact.email}?subject=${emailSubject}&body=${emailBody}`;
     }, 300);
   }
-  // 🆕 Hàm mở hộp thoại hiển thị nội dung
+
 openMessageDialog(contact: any) {
   this.dialog.open(MessageDialogComponent, {
     width: '400px',

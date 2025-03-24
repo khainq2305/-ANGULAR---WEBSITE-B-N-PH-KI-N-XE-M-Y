@@ -11,6 +11,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateStatusDialogComponent } from 'src/app/components/shared/update-status-dialog/update-status-dialog.component';
 import { ConfirmCancelDialogComponent } from 'src/app/components/shared/confirm-cancel-dialog/confirm-cancel-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'; // Nếu bạn dùng kiểu date mặc định (native)
+``
 
 @Component({
   selector: 'app-order-list',
@@ -22,6 +28,11 @@ import { ConfirmCancelDialogComponent } from 'src/app/components/shared/confirm-
     MatIconModule, 
     MatButtonModule, 
     MatInputModule, 
+    MatDatepickerModule,      
+    MatNativeDateModule,  
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
     RouterModule, 
     FormsModule,
     MatMenuModule

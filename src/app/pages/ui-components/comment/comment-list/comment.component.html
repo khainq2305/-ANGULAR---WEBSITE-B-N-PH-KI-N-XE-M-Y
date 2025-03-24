@@ -35,33 +35,53 @@
 
       
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 large-table">
+        <!-- STT -->
         <ng-container matColumnDef="stt">
           <th mat-header-cell *matHeaderCellDef>#</th>
           <td mat-cell *matCellDef="let element; let i = index">
             {{ getIndex(i) }}
           </td>
         </ng-container>
-        
-
+      
+        <!-- Ảnh sản phẩm -->
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Ảnh</th>
           <td mat-cell *matCellDef="let element">
             <img [src]="element.imageUrl" class="product-image" alt="{{ element.productName }}">
           </td>
         </ng-container>
-
+      
+        <!-- Tên sản phẩm -->
         <ng-container matColumnDef="productName">
           <th mat-header-cell *matHeaderCellDef>Sản phẩm</th>
           <td mat-cell *matCellDef="let element">{{ element.productName }}</td>
         </ng-container>
-
+      
+        <!-- Tổng bình luận -->
         <ng-container matColumnDef="totalComments">
           <th mat-header-cell *matHeaderCellDef>Tổng bình luận</th>
           <td mat-cell *matCellDef="let element">
             <span class="comment-count">{{ element.totalComments }}</span>
           </td>
         </ng-container>
-
+      
+        <ng-container matColumnDef="avgRating">
+          <th mat-header-cell *matHeaderCellDef>Sao trung bình</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="star-rating" *ngIf="element.avgRating !== undefined; else noRating">
+              <ng-container *ngFor="let star of [1,2,3,4,5]">
+                <mat-icon [ngClass]="{ 'filled': star <= Math.round(element.avgRating) }">
+                  {{ star <= Math.round(element.avgRating) ? 'star' : 'star_border' }}
+                </mat-icon>
+              </ng-container>
+              <span class="rating-value">({{ element.avgRating.toFixed(1) }})</span>
+            </div>
+            <ng-template #noRating><span class="text-muted">Chưa có</span></ng-template>
+          </td>
+        </ng-container>
+        
+      
+        <!-- Hành động -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Hành động</th>
           <td mat-cell *matCellDef="let element">
@@ -70,10 +90,12 @@
             </button>
           </td>
         </ng-container>
-
+      
+        <!-- Header + Row -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      
     </div>
 
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

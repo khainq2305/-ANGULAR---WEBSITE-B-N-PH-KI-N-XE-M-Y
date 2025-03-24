@@ -11,13 +11,16 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
-import { EditorComponent } from 'src/app/components/editor/editor.component'; // ✅ Import đúng component
+import { EditorComponent } from 'src/app/components/editor/editor.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 
 @Component({
   selector: 'app-product-create',
   standalone: true,
   imports: [
+    MatSliderModule,
     CommonModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -25,6 +28,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     FormsModule,
     ReactiveFormsModule,
     MatRadioModule,
+    MatButtonToggleModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,
@@ -43,13 +47,31 @@ export class ProductCreateComponent {
   public isAddingCategory = signal(false);
   public newCategory = signal('');
 
- 
+  discountType: string = 'none';
+  discountPercentage: number = 0;
+  discountFixedPrice: number | null = null;
+  basePrice: number = 0;
+  ngDoCheck() {
+    document.documentElement.style.setProperty('--percent', this.discountPercentage.toString());
+  }
   public description: string = '';
-  // Mở form nhập danh mục
+
   openCategoryForm() {
     this.isAddingCategory.set(true);
   }
-
+  getDiscountedPrice(): number {
+    if (this.discountType === 'percentage') {
+      return this.basePrice * (1 - this.discountPercentage / 100);
+    }
+    if (this.discountType === 'fixed' && this.discountFixedPrice !== null) {
+      return this.discountFixedPrice;
+    }
+    return this.basePrice;
+  }
+  onSliderChange(value: number) {
+    this.discountPercentage = value;
+  }
+  
   closeCategoryForm() {
     this.isAddingCategory.set(false);
     this.newCategory.set('');
@@ -77,11 +99,11 @@ export class ProductCreateComponent {
     this.selectedCategories.update((selected) => selected.filter(c => c !== category));
   }
   updateNewCategory(event: Event) {
-    const inputElement = event.target as HTMLInputElement; // ✅ Ép kiểu đúng
+    const inputElement = event.target as HTMLInputElement; 
     this.newCategory.set(inputElement.value);
   }
   
-  // Xử lý upload ảnh
+  
   onImageUpload(event: any, type: string) {
     if (event.target.files.length) {
       for (let file of event.target.files) {

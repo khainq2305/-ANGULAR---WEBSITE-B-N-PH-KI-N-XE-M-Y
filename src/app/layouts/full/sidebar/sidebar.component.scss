@@ -1,0 +1,9 @@
+.sidebar-branding {
+  height: 64px !important; // Phải match 100% với topstrip
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;         // 🟡 ĐỪNG có padding-top hay bottom nữa
+  margin: 0;               // ✅ Xóa mọi khoảng dư
+  box-sizing: border-box;
+}

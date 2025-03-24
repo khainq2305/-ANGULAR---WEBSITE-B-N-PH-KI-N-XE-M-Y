@@ -39,7 +39,7 @@
     min-width: 350px;
   }
   
-  /* Nút lọc */
+  
   .status-button {
     display: flex;
     align-items: center;
@@ -77,19 +77,17 @@
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
   }
   
-  /* Bảng */
+
   .table-container {
     margin-top: 20px;
   }
   
-  /* Căn giữa tất cả nội dung của bảng */
 .large-table {
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
 }
 
-/* Căn giữa tiêu đề bảng */
 .mat-header-cell {
   font-weight: bold;
   background: #f5f6fa;
@@ -99,15 +97,15 @@
   text-align: center;
 }
 
-/* Căn giữa nội dung bảng */
+
 .mat-cell {
   font-size: 18px;
   padding: 16px;
   text-align: center;
-  vertical-align: middle; /* Giúp nội dung không bị lệch */
+  vertical-align: middle; 
 }
 
-/* ✅ Gộp ảnh và tên sản phẩm vào một cột */
+
 .mat-column-product {
   display: flex;
   align-items: center;
@@ -116,22 +114,21 @@
 }
 
 
-/* ✅ Ảnh nhỏ gọn để cân đối */
+
 .product-image {
   width: 90px;
   height: 90px;
   object-fit: cover;
   border-radius: 10px;
-  margin-bottom: 10px; /* Thêm khoảng cách giữa ảnh */
+  margin-bottom: 10px;
   margin-top: 10px;
 }
 .mat-row td {
   padding: 12px 16px;
-  vertical-align: middle; /* Giữ ảnh căn giữa */
+  vertical-align: middle; 
 }
 
 
-/* ✅ Khoảng cách giữa ảnh và chữ */
 .product-info {
   display: flex;
   flex-direction: column;
@@ -144,7 +141,7 @@
     transform: scale(1.1);
   }
   
-  /* Hành động */
+  
   .actions-menu {
     display: flex;
     justify-content: center;
@@ -153,5 +150,29 @@
   td {
     font-weight: bold;
     font-size: 15px;
+  }
+  .star-rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  
+    mat-icon {
+      font-size: 20px;
+      color: #fbc02d; // màu vàng của sao
+      &.filled {
+        color: #ff9800; // đậm hơn cho sao đầy
+      }
+    }
+  
+    .rating-value {
+      margin-left: 6px;
+      font-weight: 500;
+      color: #333;
+    }
+  }
+  
+  .text-muted {
+    color: #888;
+    font-style: italic;
   }
   
