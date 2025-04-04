@@ -1,0 +1,116 @@
+<div class="main-container">
+    <div class="checkout-container">
+      <!-- Left Side - Form -->
+      <form class="checkout-form">
+        <div class="section">
+          <h1>Thông tin liên hệ</h1>
+        </div>
+  
+        <div class="section">
+          <h2>Giao hàng</h2>
+          <div class="radio-group">
+            <select name="selected_address">
+              <option>123 Đường A, Phường B, Quận C, Tỉnh D</option>
+            </select>
+          </div>
+  
+          <div class="location-fields">
+            <div class="select-wrapper">
+              <select class="input-field">
+                <option>Chọn tỉnh/thành</option>
+              </select>
+            </div>
+            <div class="select-wrapper">
+              <select class="input-field">
+                <option>Chọn quận/huyện</option>
+              </select>
+            </div>
+            <div class="select-wrapper">
+              <select class="input-field">
+                <option>Chọn phường/xã</option>
+              </select>
+            </div>
+          </div>
+  
+          <input class="input-field detailed-address" placeholder="Địa chỉ chi tiết" />
+          <div class="name-fields">
+            <input class="input-field" placeholder="Tên người nhận" />
+            <input class="input-field" placeholder="Điện thoại" />
+          </div>
+        </div>
+  
+        <div class="section">
+          <h2>Phương thức vận chuyển</h2>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="delivery-method" checked />
+              Miễn phí Cần Thơ (trong ngày)
+              <span class="price-label">MIỄN PHÍ</span>
+            </label>
+            <label>
+              <input type="radio" name="delivery-method" />
+              Ship nhanh toàn quốc (2-3 ngày)
+              <span class="price-label">33.000 đ</span>
+            </label>
+          </div>
+        </div>
+  
+        <div class="section">
+          <h2>Thanh toán</h2>
+          <div class="payment-option">
+            <label>
+              <input type="radio" name="payment-method" checked />
+              Thanh toán khi nhận hàng (COD)
+            </label>
+          </div>
+          <div class="payment-option">
+            <label>
+              <input type="radio" name="payment-method" />
+              Chuyển khoản
+            </label>
+          </div>
+          <div class="payment-option">
+            <label>
+              <input type="radio" name="payment-method" />
+              Momo
+            </label>
+          </div>
+        </div>
+  
+        <button type="button" class="btn-primary">Thanh toán ngay</button>
+      </form>
+  
+      <!-- Right Side - Order Summary -->
+      <div class="order-summary">
+        <h2>Tóm tắt đơn hàng</h2>
+  
+        <div class="order-item">
+          <img src="/uploads/sample.jpg" class="order-item__image" alt="Sample" />
+          <div class="order-item__info">
+            <h3 class="order-item__name">Sản phẩm mẫu</h3>
+            <p class="order-item__price">
+              <span class="old-price">₫300.000</span>
+              <span class="new-price">₫270.000</span>
+            </p>
+            <p class="order-item__quantity">Số lượng: 1</p>
+          </div>
+        </div>
+  
+        <div class="subtotal-section">
+          <p class="order-summary-text">Tổng phụ</p>
+          <p class="subtotal-price">₫270.000</p>
+        </div>
+  
+        <div class="shipping-section">
+          <p class="order-summary-text">Vận chuyển</p>
+          <p class="shipping-fee">Đang tính...</p>
+        </div>
+  
+        <div class="total-section">
+          <p class="order-summary-text-sum">Tổng thanh toán:</p>
+          <p class="total-price">₫270.000</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

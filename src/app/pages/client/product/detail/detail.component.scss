@@ -1,0 +1,27 @@
+button.active {
+    background-color: #ee4d2d;
+    color: white;
+    border-color: #ee4d2d;
+  }
+  .btn-outline-secondary,
+.btn-outline-danger {
+  border-radius: 8px !important;  /* nhẹ nhàng bo góc, không quá tròn */
+  border: 1px solid #d8d8d8 !important;
+  background-color: #fff !important;
+  color: #333 !important;
+  font-weight: 500;
+  padding: 6px 16px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.btn-outline-danger.active {
+  border: 1px solid #ee4d2d !important;
+  background-color: #ee4d2d !important;
+  color: #fff !important;
+}
+
+.btn-outline-secondary:hover {
+  border-color: #ee4d2d !important;
+  color: #ee4d2d !important;
+}

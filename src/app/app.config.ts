@@ -8,7 +8,8 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { routes } from './app.routes';
+import { AppRoutes as routes } from './routes/main.routes';
+
 import {
   provideRouter,
   withComponentInputBinding,

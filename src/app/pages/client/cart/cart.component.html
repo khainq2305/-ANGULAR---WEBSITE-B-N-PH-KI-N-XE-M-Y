@@ -1,0 +1,63 @@
+<div class="main-container">
+    <div style="max-width: 1200px; margin: 0 auto">
+      <div class="cart-container">
+        <div class="cart-header">
+          <div class="cart-header__checkbox">
+            <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" class="custom-checkbox" />
+          </div>
+          <div class="cart-header__title">Sản Phẩm</div>
+          <div class="cart-header__price">Đơn Giá</div>
+          <div class="cart-header__quantity">Số Lượng</div>
+          <div class="cart-header__total">Số Tiền</div>
+          <div class="cart-header__action">Thao Tác</div>
+        </div>
+  
+        <div *ngFor="let item of cartItems" class="cart-item">
+          <div class="cart-item__checkbox">
+            <input type="checkbox" [(ngModel)]="item.selected" class="custom-checkbox" />
+          </div>
+          <div class="cart-item__details">
+            <img [src]="item.image" class="cart-item__image" alt="Product" />
+            <div class="cart-item__info">
+              <h3 class="cart-item__name">{{ item.name }}</h3>
+              <span class="discount-badge">{{ item.discount }}</span>
+              <p class="cart-item__variant">{{ item.variant }}</p>
+            </div>
+          </div>
+          <div class="cart-item__price">
+            <span class="old-price">{{ item.oldPrice | number }} ₫</span>
+            <span class="new-price">{{ item.newPrice | number }} ₫</span>
+          </div>
+          <div class="cart-item__quantity">
+            <button class="cart-item__quantity-btn">-</button>
+            <input type="text" [value]="item.quantity" class="cart-item__quantity-input" readonly />
+            <button class="cart-item__quantity-btn">+</button>
+          </div>
+          <div class="cart-item__total">
+            {{ item.newPrice * item.quantity | number }} ₫
+          </div>
+          <div class="cart-item__action">
+            <button type="button" class="cart-item__delete-btn">Xóa</button>
+          </div>
+        </div>
+      </div>
+  
+      <div class="shopping-cart__summary">
+        <div class="shopping-cart__summary-bottom">
+          <div class="shopping-cart__summary-lefts">
+            <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" class="custom-checkbox" />
+            <span class="click-all-lefts">Chọn tất cả</span>
+            <a (click)="deleteSelectedItems()" class="shopping-cart__summary-delete-selected">Xóa</a>
+          </div>
+          <div class="summary-right">
+            <div class="shopping-cart__summary-right">
+              <span class="summary-total-label">Tổng thanh toán:</span>
+              <span class="summary-total-amount">{{ totalAmount | number }} ₫</span>
+            </div>
+            <a [routerLink]="['/thanhtoan']" class="btn-purchase">Mua Hàng</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
