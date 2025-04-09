@@ -19,6 +19,18 @@
 button.mat-stroked-button {
   margin-top: 8px;
 }
+.mat-error {
+  color: #d32f2f !important;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.mat-error mat-icon {
+  margin-right: 4px;
+}
 
 
 .m-t-12 {

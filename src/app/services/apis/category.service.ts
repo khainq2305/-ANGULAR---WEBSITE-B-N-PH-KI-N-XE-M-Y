@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiService } from '../common/api.service';
 import { Observable } from 'rxjs';
-import { ICategory } from '../../interface/category.interface';
+import {  ICategoryResponse} from '../../interface/category.interface';
 import { API_ENDPOINT } from '../../config/api-endpoint.config';
 
 @Injectable({
@@ -17,8 +17,8 @@ export class CategoryService extends ApiService {
   {
     super(_http);
    }
-   getCategoryList() : Observable<ICategory[]>{
-return this.get<ICategory[]>(API_ENDPOINT.category.base + API_ENDPOINT.category.list)
-   }
+   getCategoryList(): Observable<ICategoryResponse> {
+    return this.get<ICategoryResponse>(API_ENDPOINT.category.base + API_ENDPOINT.category.list);
+  }
    
 }

@@ -1,4 +1,4 @@
-<mat-card class="cardWithShadow">
+<mat-card class="cardWithShadow" *ngIf="order">
     <mat-card-content>
         <h2 class="invoice-title">Thông tin hóa đơn</h2>
 
@@ -7,51 +7,53 @@
                 <div class="info-group">
                     <mat-form-field appearance="outline">
                         <mat-label>Mã hóa đơn</mat-label>
-                        <input matInput [(ngModel)]="order.orderId" name="orderId" readonly>
+                        <input matInput [value]="order.orderId" name="orderId" readonly>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Khách hàng</mat-label>
-                        <input matInput [(ngModel)]="order.customerName" name="customerName" readonly>
+                        <input matInput [value]="order.customerName" name="customerName" readonly>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Số điện thoại</mat-label>
-                        <input matInput [(ngModel)]="order.phoneNumber" name="phoneNumber" readonly>
+                        <input matInput [value]="order.phoneNumber" name="phoneNumber" readonly>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Email</mat-label>
-                        <input matInput [(ngModel)]="order.email" name="email" readonly>
+                        <input matInput [value]="order.email" name="email" readonly>
                     </mat-form-field>
                 </div>
 
                 <div class="info-group">
                     <mat-form-field appearance="outline">
                         <mat-label>Ngày đặt hàng</mat-label>
-                        <input matInput [(ngModel)]="order.orderDate" name="orderDate" readonly>
+                        <input matInput [value]="order.orderDate" name="orderDate" readonly>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Trạng thái</mat-label>
-                        <mat-select [(ngModel)]="order.status" name="status" disabled>
-                            <mat-option value="Chờ xác nhận">Chờ xác nhận</mat-option>
-                            <mat-option value="Đã xác nhận">Đã xác nhận</mat-option>
-                            <mat-option value="Đang giao">Đang giao</mat-option>
-                            <mat-option value="Đã giao">Đã giao</mat-option>
-                            <mat-option value="Đã hủy">Đã hủy</mat-option>
+                        <mat-select [value]="order.status" name="status" disabled>
+                          <mat-option [value]="0">Chờ xác nhận</mat-option>
+                          <mat-option [value]="1">Đã xác nhận</mat-option>
+                          <mat-option [value]="2">Đang giao</mat-option>
+                          <mat-option [value]="3">Đã giao</mat-option>
+                          <mat-option [value]="4">Đã hủy</mat-option>
                         </mat-select>
-                    </mat-form-field>
+                      </mat-form-field>
+                      
 
                     <mat-form-field appearance="outline">
                         <mat-label>Tổng tiền</mat-label>
-                        <input matInput [(ngModel)]="order.totalAmount" name="totalAmount" readonly>
+                        <input matInput [value]="order.totalAmount" name="totalAmount" readonly>
                     </mat-form-field>
 
-                    <mat-form-field *ngIf="order.status === 'Đã hủy'" appearance="outline">
+                    <mat-form-field *ngIf="order.status === 4" appearance="outline">
                         <mat-label>Lý do hủy đơn</mat-label>
-                        <textarea matInput [(ngModel)]="order.cancelReason" name="cancelReason" readonly></textarea>
-                    </mat-form-field>
+                        <textarea matInput [value]="order.cancelReason" name="cancelReason" readonly></textarea>
+                      </mat-form-field>
+                      
                 </div>
             </div>
         </form>

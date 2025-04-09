@@ -4,10 +4,11 @@
 
         <mat-label>Trạng thái mới</mat-label>
         <mat-select [(ngModel)]="selectedStatus">
-          <mat-option *ngFor="let status of statusList" [value]="status">
-            {{ status }}
+          <mat-option *ngFor="let status of statusList" [value]="status.value">
+            {{ status.label }}
           </mat-option>
         </mat-select>
+        
       </mat-form-field>
       
 </mat-dialog-content>

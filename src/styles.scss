@@ -8,9 +8,49 @@ body {
 .nav-chilren {
     height: 35px;
 }
+<<<<<<< HEAD
 
 body.cdk-global-scrollblock {
     padding-right: 0 ;
     overflow-y: scroll ;
+=======
+/* Custom Toast Styles */
+.toast-success {
+    background-color: #4caf50 !important;
+    color: white !important;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .toast-error {
+    background-color: #f44336 !important;
+    color: #fff !important;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .toast-info {
+    background-color: #2196f3 !important;
+    color: #fff !important;
+  }
+  
+  .toast-warning {
+    background-color: #ff9800 !important;
+    color: #fff !important;
+  }
+  
+  /* Icon custom */
+  .toast-title {
+    font-weight: bold;
+  }
+  
+  .toast-message {
+    font-size: 14px;
+  }
+  
+  .toast-close-button {
+    color: white !important;
+>>>>>>> f9c8d22 ([Admin System] Add product management feature)
   }
   

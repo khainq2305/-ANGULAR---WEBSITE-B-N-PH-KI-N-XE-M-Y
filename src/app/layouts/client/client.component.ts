@@ -9,4 +9,6 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './client.component.html',
   imports: [HeaderComponent, FooterComponent, RouterOutlet]
 })
-export class ClientLayoutComponent {}
+export class ClientLayoutComponent {ngOnInit() {
+  document.documentElement.classList.add('client-layout');
+}}

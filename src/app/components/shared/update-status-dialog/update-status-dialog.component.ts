@@ -22,14 +22,22 @@ import { MatDialogModule } from '@angular/material/dialog'; // ✅ Thêm MatDial
   styleUrls: ['./update-status-dialog.component.scss']
 })
 export class UpdateStatusDialogComponent {
-  statusList = ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao', 'Đã giao', 'Đã hủy'];
-  selectedStatus = '';
+  statusList = [
+    { label: 'Chờ xác nhận', value: 0 },
+    { label: 'Đã xác nhận', value: 1 },
+    { label: 'Đang giao', value: 2 },
+    { label: 'Đã giao', value: 3 },
+  ];
+
+  selectedStatus: number | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<UpdateStatusDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.selectedStatus = data.order.status; // Lấy trạng thái hiện tại
+    this.selectedStatus = this.statusList.find(
+      s => s.label === data.order.status
+    )?.value ?? null;
   }
 
   cancel() {
@@ -40,3 +48,4 @@ export class UpdateStatusDialogComponent {
     this.dialogRef.close(this.selectedStatus);
   }
 }
+

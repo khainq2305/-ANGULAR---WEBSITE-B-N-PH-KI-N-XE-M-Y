@@ -1,69 +1,147 @@
 <mat-card class="cardWithShadow">
   <mat-card-content>
-   
-      <h2 style="margin-bottom: 12px;">Danh sách sản phẩm</h2>
+    <h2 style="margin-bottom: 12px">Danh sách sản phẩm</h2>
 
-   
+   <!-- ✅ Hàng trên -->
+<div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
+  <!-- Nút trạng thái: Tất cả, Hiển thị, Ẩn, Thùng rác -->
+  <div class="d-flex flex-wrap gap-2">
+    <button mat-stroked-button 
+            class="tab-button" 
+            [class.active-tab]="currentTab === 'all'" 
+            (click)="setTab('all')">
+      <mat-icon>list</mat-icon> Tất cả
+    </button>
+  
+    <button mat-stroked-button 
+            class="tab-button tab-pending" 
+            [class.active-tab]="currentTab === 'active'" 
+            (click)="setTab('active')">
+      <mat-icon>check_circle</mat-icon> Còn hàng
+    </button>
+  
+    <button mat-stroked-button 
+            class="tab-button tab-inactive" 
+            [class.active-tab]="currentTab === 'inactive'" 
+            (click)="setTab('inactive')">
+      <mat-icon>highlight_off</mat-icon> Hết hàng
+    </button>
+  
+    <button mat-stroked-button 
+            class="tab-button tab-deleted" 
+            [class.active-tab]="currentTab === 'deleted'" 
+            (click)="setTab('deleted')">
+      <mat-icon>delete</mat-icon> Thùng rác
+    </button>
+  </div>
+  
+  <!-- Ô tìm kiếm bên phải -->
+  <mat-form-field appearance="outline" class="search-box" style="min-width: 320px;">
+    <mat-label>Tìm kiếm sản phẩm</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input  matInput [(ngModel)]="searchText" (input)="loadData()" />
+  </mat-form-field>
+</div>
+
+<!-- ✅ Hàng dưới: các bộ lọc còn lại -->
+<div class="d-flex align-items-start flex-wrap gap-3 mb-3">
+  <!-- ✅ Dropdown thao tác hàng loạt -->
+<div>
+  <button
+    mat-stroked-button
+    color="primary"
+    [matMenuTriggerFor]="bulkActions"
+    [disabled]="!isIndeterminate() && !isAllSelected()"
+  >
+    <mat-icon>build</mat-icon>
+    Hoạt động hàng loạt
+  </button>
+
+  <mat-menu #bulkActions="matMenu">
+    <button mat-menu-item (click)="deleteSelectedProducts()" *ngIf="currentTab !== 'deleted'">
+      <mat-icon>delete</mat-icon>
+      <span>Bỏ vào thùng rác</span>
+    </button>
+    
+
+    <button
+      mat-menu-item
+      *ngIf="currentTab === 'deleted'"
+      (click)="restoreSelectedProducts()"
+    >
+      <mat-icon>restore</mat-icon>
+      <span>Khôi phục</span>
+    </button>
+
+    <button
+      mat-menu-item
+      *ngIf="currentTab === 'deleted'"
+      (click)="permanentlyDeleteSelected()"
+    >
+      <mat-icon color="warn">delete_forever</mat-icon>
+      <span>Xóa vĩnh viễn</span>
+    </button>
+  </mat-menu>
+</div>
+
+  <mat-form-field appearance="outline" style="min-width: 160px">
+    <mat-label>Lọc theo danh mục</mat-label>
+    <mat-select [(ngModel)]="selectedCategory" (selectionChange)="loadData()">
+      <mat-option value="">Tất cả</mat-option>
+      <mat-option *ngFor="let cat of categoryOptions" [value]="cat.id">
+        {{ cat.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
  
-      <div class="d-flex align-items-center flex-wrap gap-3 mt-3 mb-3 p-3 rounded">
-        <!-- Ô tìm kiếm chiếm phần lớn -->
-        <mat-form-field appearance="outline" class="flex-grow-1">
-          <mat-label>Tìm kiếm sản phẩm</mat-label>
-          <mat-icon matPrefix>search</mat-icon>
-          <input matInput placeholder="Nhập tên sản phẩm..." />
-        </mat-form-field>
-      
-        <!-- 3 ô lọc nằm bên phải và không rớt dòng -->
-        <mat-form-field appearance="outline" style="min-width: 160px;">
-          <mat-label>Lọc theo danh mục</mat-label>
-          <mat-select>
-            <mat-option value="Tất cả">Tất cả</mat-option>
-            <mat-option value="Pô xe">Pô xe</mat-option>
-            <mat-option value="Phụ kiện ngoại thất">Phụ kiện ngoại thất</mat-option>
-            <mat-option value="Đèn xe">Đèn xe</mat-option>
-          </mat-select>
-        </mat-form-field>
-      
-        <mat-form-field appearance="outline" style="min-width: 140px;">
-          <mat-label>Ngày tạo</mat-label>
-          <input matInput [matDatepicker]="createdAtPicker" placeholder="Chọn ngày tạo">
-          <mat-datepicker-toggle matSuffix [for]="createdAtPicker"></mat-datepicker-toggle>
-          <mat-datepicker #createdAtPicker></mat-datepicker>
-        </mat-form-field>
-      
-        <mat-form-field appearance="outline" style="min-width: 140px;">
-          <mat-label>Sắp xếp giá</mat-label>
-          <mat-select>
-            <mat-option value="asc">
-              <mat-icon>arrow_upward</mat-icon> Giá tăng dần
-            </mat-option>
-            <mat-option value="desc">
-              <mat-icon>arrow_downward</mat-icon> Giá giảm dần
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      
-    <div class="mt-2 d-flex">
-      <button mat-raised-button color="warn" class="rounded px-3 py-2 d-flex align-items-center gap-2"
-        [routerLink]="['/ui-components/product/deleted-products']">
+
+  <mat-form-field appearance="outline" style="min-width: 140px">
+    <mat-label>{{ currentTab === 'deleted' ? 'Ngày xóa' : 'Ngày tạo' }}</mat-label>
+    <input matInput [(ngModel)]="selectedDate" (dateChange)="loadData()" />
+    <mat-datepicker-toggle matSuffix [for]="createdAtPicker"></mat-datepicker-toggle>
+    <mat-datepicker #createdAtPicker></mat-datepicker>
+  </mat-form-field>
+  
+
+  <mat-form-field appearance="outline" style="min-width: 140px">
+    <mat-label>Sắp xếp giá</mat-label>
+    <mat-select [(ngModel)]="sortOrder" (selectionChange)="loadData()">
+      <mat-option value="">Mặc định</mat-option>
+      <mat-option value="asc">Giá tăng dần</mat-option>
+      <mat-option value="desc">Giá giảm dần</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+
+    <!-- <div class="mt-2 d-flex">
+      <button
+        mat-raised-button
+        color="warn"
+        class="rounded px-3 py-2 d-flex align-items-center gap-2"
+        [routerLink]="['/ui-components/product/deleted-products']"
+      >
         <mat-icon>delete</mat-icon>
         <span>Thùng rác</span>
       </button>
-    </div>
-    
-  
+    </div> -->
+
     <div class="table-responsive">
-      <table mat-table [dataSource]="filteredProducts" class="w-100 mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" class="w-100 mat-elevation-z8">
         <ng-container matColumnDef="select">
           <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="toggleSelectAll($event)" [checked]="isAllSelected()" [indeterminate]="isIndeterminate()"></mat-checkbox>
+            <mat-checkbox
+              (change)="toggleSelectAll($event)"
+              [checked]="isAllSelected()"
+              [indeterminate]="isIndeterminate()"
+            ></mat-checkbox>
           </th>
           <td mat-cell *matCellDef="let element">
             <mat-checkbox [(ngModel)]="element.selected"></mat-checkbox>
           </td>
         </ng-container>
-        
+
         <ng-container matColumnDef="stt">
           <th mat-header-cell *matHeaderCellDef>#</th>
           <td mat-cell *matCellDef="let element; let i = index">
@@ -74,16 +152,39 @@
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Hình ảnh & Tên sản phẩm</th>
           <td mat-cell *matCellDef="let element">
-            <div style="display: flex; flex-direction: column; align-items: start; text-align: left;">
-              <img [src]="element.imagePath" alt="Hình sản phẩm" width="120" height="120" style="object-fit: cover;" class="rounded mb-1" />
-              <strong style="margin-top: 4px; font-size: 14px; color: #333; white-space: normal; width: 230px;">
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                text-align: left;
+              "
+            >
+            <img
+            [src]="'http://localhost:3000/uploads/' + element.image"
+
+  alt="Hình sản phẩm"
+  width="120"
+  height="120"
+  style="object-fit: cover"
+  class="rounded mb-1"
+/>
+<p>{{ element.image }}</p>
+
+              <strong
+                style="
+                  margin-top: 4px;
+                  font-size: 14px;
+                  color: #333;
+                  white-space: normal;
+                  width: 230px;
+                "
+              >
                 {{ element.name }}
               </strong>
             </div>
           </td>
-          
         </ng-container>
-        
 
         <ng-container matColumnDef="price">
           <th mat-header-cell *matHeaderCellDef>Giá</th>
@@ -102,26 +203,29 @@
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef>Danh mục</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.category }}
+            {{ element.category.name }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="quantity">
           <th mat-header-cell *matHeaderCellDef>Số lượng</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.stock }} cái
-          </td>
+          <td mat-cell *matCellDef="let element">{{ element.quantity }} cái</td>
         </ng-container>
 
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef>Trạng thái</th>
           <td mat-cell *matCellDef="let element">
-            <span *ngIf="element.priority === 'cancelled'" class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12">
-              Hết hàng
-            </span>
-          
-            <span *ngIf="element.priority === 'confirmed'" class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12">
+            <span
+              *ngIf="element.status === true"
+              class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12"
+            >
               Còn hàng
+            </span>
+            <span
+              *ngIf="element.status === false"
+              class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12"
+            >
+              Hết hàng
             </span>
           </td>
         </ng-container>
@@ -133,25 +237,43 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item [routerLink]="['/ui-components/product/product-edit']">
-                <mat-icon>edit</mat-icon>
-                <span>Chỉnh sửa</span>
-              </button>
-              
-              <button mat-menu-item (click)="openConfirmDialog()">
-                <mat-icon>delete</mat-icon>
-                <span>Xóa</span>
-              </button>
+              <ng-container *ngIf="currentTab !== 'deleted'">
+                <button mat-menu-item [routerLink]="['/ui-components/product/product-edit']">
+                  <mat-icon>edit</mat-icon>
+                  <span>Chỉnh sửa</span>
+                </button>
+            
+                <button mat-menu-item (click)="openConfirmDialog(element)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Xóa</span>
+                </button>
+              </ng-container>
+            
+              <ng-container *ngIf="currentTab === 'deleted'">
+                <button mat-menu-item (click)="restoreProduct(element)">
+                  <mat-icon>restore</mat-icon>
+                  <span>Khôi phục</span>
+                </button>
+            
+                <button mat-menu-item (click)="permanentlyDeleteProduct(element)">
+                  <mat-icon color="warn">delete_forever</mat-icon>
+                  <span>Xóa vĩnh viễn</span>
+                </button>
+              </ng-container>
             </mat-menu>
+            
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      <div class="text-center mt-4" *ngIf="dataSource.data.length === 0">
+        <mat-icon color="warn">info</mat-icon>
+        <p class="text-muted">Không tìm thấy sản phẩm nào phù hợp với điều kiện lọc.</p>
+      </div>
       
-   
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
+   
   </mat-card-content>
 </mat-card>
