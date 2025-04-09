@@ -65,7 +65,8 @@
               "src/assets/client/css/grid.css",
               "src/assets/client/css/responsive.css",
               "src/assets/client/css/style.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
 
             "scripts": ["node_modules/tinymce/tinymce.min.js"]

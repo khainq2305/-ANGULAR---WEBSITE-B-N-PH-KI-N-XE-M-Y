@@ -9,13 +9,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { UserService } from 'src/app/services/apis/user.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-create',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,  
+    ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -30,41 +33,85 @@ import { MatNativeDateModule } from '@angular/material/core';
 })
 export class UserCreateComponent {
   userForm: FormGroup;
+  selectedFile: File | null = null;
+  previewUrl: string | ArrayBuffer | null = null;
 
-  countries = [
-    { value: 'vn', viewValue: 'Vietnam' },
-    { value: 'us', viewValue: 'United States' },
-    { value: 'uk', viewValue: 'United Kingdom' }
-  ];
-
-  states = [
-    { value: 'hanoi', viewValue: 'Hanoi' },
-    { value: 'hcm', viewValue: 'Ho Chi Minh' }
-  ];
-
-  cities = [
-    { value: 'district1', viewValue: 'District 1' },
-    { value: 'district2', viewValue: 'District 2' }
-  ];
-
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router,  private toastr: ToastrService) {
     this.userForm = this.fb.group({
-      id: ['U' + Math.floor(Math.random() * 1000)], 
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,12}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      gender: ['Male', Validators.required],
-      dob: ['', Validators.required],
-      country: ['', Validators.required],
-      state: ['', Validators.required],
-      city: ['', Validators.required]
+      gender: ['', Validators.required],
+      dob: ['', Validators.required]
     });
   }
 
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  onFileDrop(event: DragEvent) {
+    event.preventDefault();
+    const file = event.dataTransfer?.files?.[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit() {
-    if (this.userForm.valid) {
-      console.log('User Data:', this.userForm.value);
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+      return;
+    }
+
+    const formData = new FormData();
+    Object.entries(this.userForm.value).forEach(([key, value]) => {
+      formData.append(key, value as string);
+    });
+
+    formData.set('gender', this.mapGender(this.userForm.value.gender));
+
+    if (this.selectedFile) {
+      formData.append('avatar', this.selectedFile);
+    }
+
+    this.userService.createUser(formData).subscribe({
+      next: () => {
+        this.toastr.success('Thêm người dùng thành công', 'Thành công');
+        this.router.navigate(['/admin/users']);
+      },
+      error: (err) => {
+        console.error('❌ Lỗi tạo người dùng:', err);
+        alert('Tạo người dùng thất bại!');
+      }
+    });
+  }
+
+  mapGender(genderVi: string): string {
+    switch (genderVi) {
+      case 'Nam': return 'male';
+      case 'Nữ': return 'female';
+      case 'Khác': return 'other';
+      default: return '';
     }
   }
 }

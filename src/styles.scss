@@ -8,3 +8,9 @@ body {
 .nav-chilren {
     height: 35px;
 }
+
+body.cdk-global-scrollblock {
+    padding-right: 0 ;
+    overflow-y: scroll ;
+  }
+  

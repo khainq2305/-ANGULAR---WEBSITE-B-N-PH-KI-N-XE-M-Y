@@ -1,91 +1,102 @@
 .cardWithShadow {
   border-radius: 12px;
-  padding: 20px;
-  background-color: #f9f9f9;
+  padding: 24px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
-
 
 .title {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 600;
   color: #2c3e50;
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
-
 
 .comment-icon {
   color: #ff9800;
-  margin-right: 8px;
+  margin-right: 10px;
 }
 
 .product-title {
   color: #009688;
 }
 
-
 .filter-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
-  margin-top: 20px;
   margin-bottom: 20px;
-  align-items: center;
 }
-
-
-.filter-field {
-  flex: 1;
-  min-width: 250px;
-}
-
-.star-option {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.star-icon {
-  color: #ffb400;
-}
-
-.star-icon-empty {
-  color: #bdbdbd;
-}
-
 
 .table-container {
-  background: white;
+  background: #fafafa;
   border-radius: 8px;
-  padding: 16px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mat-row:hover {
+  background-color: #f5f5f5;
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 2px solid #eeeeee;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+}
+
+.star-icon {
+  color: #ffc107;
+}
+
+.star-icon-empty {
+  color: #e0e0e0;
 }
 
 .comment-content {
   display: flex;
-  flex-direction: column; 
-  gap: 4px; 
+  flex-direction: column;
+  gap: 4px;
+  word-wrap: break-word;
 }
 
-
-.comment-date {
+.comment-date,
+.admin-reply-date {
   font-size: 12px;
-  color: #888; 
-  margin-top: 2px;
+  color: #999;
 }
+
 .admin-reply-content {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  word-wrap: break-word;
 }
 
-.admin-reply-date {
+.badge-success {
+  background-color: #c8e6c9;
+  color: #256029;
+  padding: 4px 8px;
+  border-radius: 4px;
   font-size: 12px;
-  color: #888;
-  margin-top: 2px;
+}
+
+.badge-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.actions-cell {
+  text-align: center;
 }

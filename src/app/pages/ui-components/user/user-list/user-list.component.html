@@ -3,105 +3,111 @@
     <mat-card-title class="m-b-12">Danh sách người dùng</mat-card-title>
 
     <mat-toolbar class="filter-toolbar d-flex gap-3 flex-wrap">
-      <!-- Tìm kiếm: chiếm 2/3 -->
-      <mat-form-field appearance="outline" class="flex-grow-1" style="min-width: 300px;">
+      <mat-form-field
+        appearance="outline"
+        class="flex-grow-1"
+        style="min-width: 300px"
+      >
         <mat-label>Tìm kiếm người dùng</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Nhập ID, tên, email..." />
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Nhập ID, tên, email..."
+        />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
-    
-      <!-- Lọc trạng thái: chiếm 1 phần nhỏ -->
-      <mat-form-field appearance="outline" style="width: 180px;">
+
+      <mat-form-field appearance="outline" style="width: 180px">
         <mat-label>Trạng thái</mat-label>
         <mat-select (selectionChange)="filterStatus($event.value)">
           <mat-option value="">Tất cả</mat-option>
-          <mat-option value="Hoạt động">Hoạt động</mat-option>
-          <mat-option value="Tạm ngưng">Tạm ngưng</mat-option>
+          <mat-option [value]="1">Hoạt động</mat-option>
+          <mat-option [value]="0">Tạm ngưng</mat-option>
         </mat-select>
       </mat-form-field>
-    
-      <!-- Lọc giới tính -->
-      <mat-form-field appearance="outline" style="width: 180px;">
+
+      <mat-form-field appearance="outline" style="width: 180px">
         <mat-label>Giới tính</mat-label>
-        <mat-select>
+        <mat-select (selectionChange)="filterGender($event.value)">
           <mat-option value="">Tất cả</mat-option>
-          <mat-option value="Nam">Nam</mat-option>
-          <mat-option value="Nữ">Nữ</mat-option>
-          <mat-option value="Khác">Khác</mat-option>
+          <mat-option value="male">Nam</mat-option>
+          <mat-option value="female">Nữ</mat-option>
+          <mat-option value="other">Khác</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-toolbar>
-    
 
     <mat-divider class="m-b-12"></mat-divider>
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource1" matSort class="w-100">
-
-        <!-- Cột ID -->
         <ng-container matColumnDef="index">
           <th mat-header-cell *matHeaderCellDef>#</th>
           <td mat-cell *matCellDef="let user; let i = index">
-            {{ i + 1 + (dataSource1.paginator?.pageIndex || 0) * (dataSource1.paginator?.pageSize || 5) }}
+            {{ i + 1 }}
           </td>
-          
         </ng-container>
 
-        <!-- Cột Ảnh Đại Diện -->
         <ng-container matColumnDef="avatar">
           <th mat-header-cell *matHeaderCellDef>Ảnh đại diện</th>
           <td mat-cell *matCellDef="let user">
             <img [src]="user.avatarUrl" alt="avatar" class="avatar-img" />
           </td>
         </ng-container>
+        
 
-        <!-- Cột Họ và Tên -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Họ và tên</th>
           <td mat-cell *matCellDef="let user">{{ user.name }}</td>
         </ng-container>
 
-        <!-- Cột Email -->
         <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
           <td mat-cell *matCellDef="let user">{{ user.email }}</td>
         </ng-container>
 
-        <!-- Cột Số Điện Thoại -->
         <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef>Số điện thoại</th>
           <td mat-cell *matCellDef="let user">{{ user.phone }}</td>
         </ng-container>
 
-        <!-- Cột Giới Tính -->
         <ng-container matColumnDef="gender">
           <th mat-header-cell *matHeaderCellDef>Giới tính</th>
-          <td mat-cell *matCellDef="let user">{{ user.gender }}</td>
+          <td mat-cell *matCellDef="let user">
+            {{
+              user.gender === "male"
+                ? "Nam"
+                : user.gender === "female"
+                ? "Nữ"
+                : user.gender === "other"
+                ? "Khác"
+                : "Không rõ"
+            }}
+          </td>
         </ng-container>
 
-        <!-- Cột Ngày Sinh -->
         <ng-container matColumnDef="dob">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày sinh</th>
-          <td mat-cell *matCellDef="let user">{{ user.dob | date:'dd/MM/yyyy' }}</td>
+          <td mat-cell *matCellDef="let user">
+            {{ user.dob | date : "dd/MM/yyyy" }}
+          </td>
         </ng-container>
 
-        <!-- Cột Trạng Thái -->
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef>Trạng thái</th>
           <td mat-cell *matCellDef="let user">
             <span
               [ngClass]="{
-                'text-success bg-light-success': user.status === 'Hoạt động',
-                'text-error bg-light-error': user.status === 'Tạm ngưng'
+                'text-success bg-light-success': user.status === 1,
+                'text-error bg-light-error': user.status === 0
               }"
               class="rounded status-pill"
             >
-              {{ user.status }}
+              {{ user.status === 1 ? "Hoạt động" : "Tạm ngưng" }}
             </span>
           </td>
         </ng-container>
 
-        <!-- Cột Hành Động -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let user">
@@ -116,11 +122,9 @@
               <button mat-menu-item (click)="openUpdateStatusDialog(user)">
                 <mat-icon>edit</mat-icon>
                 <span>Cập nhật trạng thái</span>
-              </button>              
-              <button mat-menu-item>
-                <mat-icon>delete</mat-icon>
-                <span>Xóa</span>
               </button>
+      
+              
             </mat-menu>
           </td>
         </ng-container>
@@ -129,8 +133,5 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
       </table>
     </div>
-
-    <!-- Phân trang -->
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </mat-card-content>
 </mat-card>

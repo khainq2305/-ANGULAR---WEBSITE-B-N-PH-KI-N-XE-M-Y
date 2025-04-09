@@ -34,6 +34,7 @@
     "ng-apexcharts": "1.7.6",
     "ng2-charts": "^5.0.4",
     "ngx-scrollbar": "^11.0.0",
+    "ngx-toastr": "^19.0.0",
     "rxjs": "~7.5.0",
     "sass": "1.81.0",
     "tinymce": "^7.7.2",

@@ -4,8 +4,8 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Chọn trạng thái</mat-label>
       <mat-select [formControl]="statusControl">
-        <mat-option value="Hoạt động">🟢 Hoạt động</mat-option>
-        <mat-option value="Tạm ngưng">🔴 Ngưng hoạt động</mat-option>
+        <mat-option [value]="1">🟢 Hoạt động</mat-option>
+        <mat-option [value]="0">🔴 Ngưng hoạt động</mat-option>
       </mat-select>
     </mat-form-field>
   

@@ -1,3 +1,7 @@
+
+import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';  
+
 import {
   ApplicationConfig,
   provideZoneChangeDetection,
@@ -44,13 +48,16 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(withInterceptorsFromDi()),
     provideClientHydration(),
+    provideAnimations(), // ✅ Bắt buộc cho Toastr
+    provideToastr(),      // ✅ Cấu hình toastr ở đây
     provideAnimationsAsync(),
     importProvidersFrom(
       FormsModule,
       ReactiveFormsModule,
       MaterialModule,
       TablerIconsModule.pick(TablerIcons),
-      NgScrollbarModule,
+      NgScrollbarModule,  
+      
     ),
   ],
 };
