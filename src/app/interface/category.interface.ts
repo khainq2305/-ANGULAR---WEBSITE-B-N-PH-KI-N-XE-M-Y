@@ -1,10 +1,8 @@
 export interface ICategory{
-    name: string,
-    id: number;  
-    status: number; 
+    name: string
+    description: string
+    status: number
+    imageUrl: string | null
+    id: number
+
 }
-export interface ICategoryResponse {
-    data: ICategory[];
-    message: string;
-    status: number;
-  }

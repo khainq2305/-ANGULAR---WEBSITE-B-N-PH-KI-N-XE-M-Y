@@ -1,15 +1,18 @@
-export interface User {
-    id?: number;
+
+export interface IUser {
+    id: number;
     name: string;
+    password: string;
     email: string;
-    password?: string;
-    phone?: string;
-    avatar?: string;
-    gender: 'male' | 'female' | 'other';
-    dob: string; 
-    role: number; 
-    status?: number; 
-    createdAt?: string;
-    updatedAt?: string;
+    role: number;
+    createdAt: string;
+    updatedAt: string;
+    avatar: string | null;
+    status: number;
+    phone: string | null;
+    googleId: string | null;
+    gender: 'male' | 'female' | 'other' | null;
+    dob: string | null;
+    deletedAt: string | null;
   }
   

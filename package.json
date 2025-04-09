@@ -7,7 +7,8 @@
     "startOpen": "ng serve --open",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+     "copy-tinymce": "npx copyfiles -u 1 node_modules/tinymce/{icons,plugins,skins,themes}/** src/assets/tinymce"
   },
   "private": true,
   "dependencies": {

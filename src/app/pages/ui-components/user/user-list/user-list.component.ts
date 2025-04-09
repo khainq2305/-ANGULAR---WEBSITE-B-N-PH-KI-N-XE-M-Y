@@ -20,6 +20,9 @@ import { ToastrService } from 'ngx-toastr';
 
 import { User } from 'src/app/interface/user.interface';
 
+
+import { UserService } from 'src/app/services/apis/user.service';
+import { IUser } from 'src/app/interface/user.interface';
 @Component({
   selector: 'app-user-list',
   standalone: true,
@@ -128,40 +131,27 @@ export class UserListComponent implements AfterViewInit {
       },
     });
   }
+//   constructor(public dialog: MatDialog, private userService: UserService) {}
+//   constructor(public dialog: MatDialog) {}
 
-  openUpdateStatusDialog(user: User) {
-    const dialogRef = this.dialog.open(UpdateStatusComponent, {
-      width: '300px',
-      data: { status: user.status },
-    });
+// openUpdateStatusDialog(user: any) {
+//   const dialogRef = this.dialog.open(UpdateStatusComponent, {
+//     width: '300px',
+//     data: { status: user.status }
+//   });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== null && result !== undefined) {
-        this.userService.updateUserStatus(user.id!, result).subscribe({
-          next: (res) => {
-            user.status = res.data.status;
-            this.toastr.success('Cập nhật trạng thái thành công', 'Thành công');
-            this.loadData();
-          },
-          error: (err) => {
-            console.error('Cập nhật trạng thái lỗi:', err);
-            alert('Cập nhật trạng thái thất bại');
-          },
-        });
-      }
-    });
-  }
-
-  filterStatus(status: string | number) {
-    this.filterStatusValue = status.toString();
-    this.currentPage = 1;
-    this.loadData();
-  }
-
-  filterGender(gender: string) {
-    this.filterGenderValue = gender;
-    this.currentPage = 1;
-    this.loadData();
-  }
+//   dialogRef.afterClosed().subscribe(result => {
+//     if (result) {
+//       user.status = result;
+//       console.log(`Trạng thái của ${user.name} đã cập nhật thành ${result}`);
+//     }
+//   });
+// } 
+//   getAllUser() {
+//     //Call your user service to get all users here
+//     this.userService.getAllUsers().subscribe(users => {
+//       this.dataSource1.data = users;
+//     });
+//   }
   
 }

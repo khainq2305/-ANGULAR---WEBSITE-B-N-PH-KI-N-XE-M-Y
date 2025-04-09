@@ -17,8 +17,19 @@ export class CategoryService extends ApiService {
   {
     super(_http);
    }
-   getCategoryList(): Observable<ICategoryResponse> {
-    return this.get<ICategoryResponse>(API_ENDPOINT.category.base + API_ENDPOINT.category.list);
+   getCategoryList() : Observable<ICategory[]>{
+      return this.get<ICategory[]>(API_ENDPOINT.category.base + API_ENDPOINT.category.list)
+   }
+   addCategory(data: ICategory): Observable<ICategory> {
+      return this.post<ICategory>(API_ENDPOINT.category.base + API_ENDPOINT.category.add, data)
+   }
+   updateCategory(data: ICategory): Observable<ICategory> {
+    return this.put<ICategory>(API_ENDPOINT.category.base + API_ENDPOINT.category.update + data.id, data)
   }
-   
+    deleteCategory(id: number): Observable<ICategory[]> {
+      return this.delete(API_ENDPOINT.category.base + API_ENDPOINT.category.delete + id) as Observable<ICategory[]>;
+    }
+    getCategoryById(id: number): Observable<ICategory> {
+      return this.get<ICategory>(API_ENDPOINT.category.base + API_ENDPOINT.category.delete + id) as Observable<ICategory>;    
+    }
 }

@@ -18,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { HighlightDirective } from '../../hightlight/highlight.pipe';
+import { CategoryService } from 'src/app/services/apis/category.service';
 
 export interface CategoryData {
   id: number;
@@ -30,7 +31,7 @@ export interface CategoryData {
   productCount?: number;
 }
 
-const PRODUCT_DATA: CategoryData[] = [
+const CATEGORY_DATA: CategoryData[] = [
   { id: 1, uname: 'Vỏ xe', created_at: '2025-03-01', status: 1, updated_at: '2025-03-14', imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg', selected: false },
   { id: 2, uname: 'Đèn xe máy', created_at: '2025-02-28', status: 0, updated_at: '2025-03-10', imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg', selected: false },
   ...Array.from({ length: 50 }, (_, i) => ({
@@ -76,7 +77,13 @@ const PRODUCTS = [
   styleUrl: './list.component.scss'
 })
 export class ListComponent {
-  constructor(private dialog: MatDialog, private _liveAnnouncer: LiveAnnouncer) {}
+  imageUrl: string = 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg';
+[x: string]: any;
+  constructor(
+    private dialog: MatDialog,
+    private _liveAnnouncer: LiveAnnouncer,
+    private categoryService: CategoryService
+  ) {}
 
   filterStatus: number | string = 'all';
   filterCreatedAt: string = '';
@@ -85,28 +92,47 @@ export class ListComponent {
   showNotFound: boolean = false;
 
   displayedColumns1: string[] = ['select', 'index', 'image', 'name', 'productCount', 'status', 'actions'];
-
-  dataSource1 = new MatTableDataSource<CategoryData>(PRODUCT_DATA);
+  dataSource1 = new MatTableDataSource<CategoryData>([]);
+  list: CategoryData[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  ngOnInit() {
+    this.getAllCategory();
+  }
+
   ngAfterViewInit() {
-
-    this.dataSource1.data.forEach(category => {
-      const count = PRODUCTS.filter(p => p.categoryId === category.id).length;
-      category.productCount = count;
-    });
-
     this.dataSource1.paginator = this.paginator;
     this.dataSource1.sort = this.sort;
 
     this.dataSource1.sortingDataAccessor = (item: CategoryData, sortHeaderId: string): string | number => {
       switch (sortHeaderId) {
-        case 'uname': return item.uname.toLowerCase(); 
-        default: return (item as any)[sortHeaderId] ?? ''; 
+        case 'uname': return item.uname.toLowerCase();
+        default: return (item as any)[sortHeaderId] ?? '';
       }
     };
+  }
+
+  getAllCategory() {
+    this.categoryService.getCategoryList().subscribe({
+      next: (res: any) => {
+        this.list = res?.data ?? res;
+
+        // Nếu bạn vẫn muốn tính productCount, bạn cần API trả thêm dữ liệu
+        // Ví dụ: nếu có API trả danh sách sản phẩm, bạn có thể xử lý ở đây
+        // Còn nếu API trả sẵn productCount thì bỏ qua bước này
+
+        // Cập nhật vào table
+        console.log('Dữ liệu danh mục:', this.list);
+        this.dataSource1.data = this.list;
+        this.showNotFound = this.dataSource1.filteredData.length === 0;
+        
+      },
+      error: (err) => {
+        console.error('Error fetching categories:', err);
+      }
+    });
   }
 
   applyAdvancedFilter() {
@@ -160,7 +186,9 @@ export class ListComponent {
   }
 
   deleteCategory(category: any) {
-    alert(`Danh mục "${category.uname}" đã bị xóa!`);
+    alert(`Danh mục "${category.name}" đã bị xóa!`);
     this.dataSource1.data = this.dataSource1.data.filter(item => item.id !== category.id);
   }
 }
+
+

@@ -27,6 +27,7 @@ import { ContactListComponent } from '../pages/ui-components/contact/contact-lis
 // ===== COMMENT =====
 import { CommentComponent } from '../pages/ui-components/comment/comment-list/comment.component';
 import { CommentDetailComponent } from '../pages/ui-components/comment/comment-detail/comment-detail.component';
+import { NotFoundComponent } from '../pages/ui-components/not-found/not-found.component';
 
 export const AdminRoutes: Routes = [
     {
@@ -98,7 +99,9 @@ export const AdminRoutes: Routes = [
           { path: 'comment-list', component: CommentComponent },
           { path: 'comment-detail/:id', component: CommentDetailComponent },
         ]
-      }
+      },
+      { path: '**', component: NotFoundComponent }
+
     ]
   }
 ];

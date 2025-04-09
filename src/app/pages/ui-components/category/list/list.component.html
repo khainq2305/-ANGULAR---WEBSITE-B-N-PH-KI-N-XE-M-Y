@@ -111,10 +111,11 @@
           <td mat-cell *matCellDef="let element" class="p-l-0 text-center">
             <img
               [src]="element.imageUrl"
-              alt="{{ element.uname }}"
+              alt="{{ element.name }}"
               class="img-thumbnail ms-3"
               width="50"
               height="50"
+              
             />
           </td>
         </ng-container>
@@ -135,10 +136,10 @@
           >
             <h6
               class="f-s-14 f-w-600 mb-0"
-              [appHighlight]="element.uname"
+              [appHighlight]="element.name"
               [searchText]="searchText"
             >
-              {{ element.uname }}
+              {{ element.name }}
             </h6>
           </td>
         </ng-container>
@@ -183,10 +184,11 @@
             <mat-menu #menu="matMenu">
               <button
                 mat-menu-item
-                [routerLink]="['/ui-components/category/edit', element.id]"
+                [routerLink]="['/admin/ui-components/category/edit', element.id]"
+
               >
                 <mat-icon>edit</mat-icon>
-                <span>Chỉnh sửa</span>
+                <span >Chỉnh sửa</span>
               </button>
               <button mat-menu-item (click)="confirmDelete(element)">
                 <mat-icon>delete</mat-icon>

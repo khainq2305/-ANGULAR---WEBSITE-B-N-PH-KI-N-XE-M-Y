@@ -7,44 +7,15 @@ export const API_ENDPOINT = {
     base: API_BASE_URL + '/' + 'admin/categories',
     list: '/list',
     add: '/add',
-  }
-  ,
-  product: {
-    base: API_BASE_URL + '/admin/products',
-    list: '/list',
-    add: '/add',
-    deleteMultiple: '/delete-multiple',
-    restore: '/restore',                      // PATCH /restore/:id
-    restoreMultiple: '/restore-multiple',     // PATCH /restore-multiple
-    permanentDelete: '/permanent',            // DELETE /permanent/:id
-    permanentDeleteMultiple: '/permanent-delete-multiple' // DELETE body { ids }
-  },
-  
-  order: {
-    base: API_BASE_URL + '/admin/orders',
-    list: '/list'
+    update: '/update/',
+    delete: '/delete/',
   },
   
   user: {
-    base: API_BASE_URL + '/admin/user',
-    list: '/',
-    add: '/',
-    edit: (id: number | string) => `/${id}`,
-    delete: (id: number | string) => `/${id}`,
-    toggleStatus: (id: number | string) => `/${id}/status`,
-    resetPassword: (id: number | string) => `/${id}/reset-password`
-  },
-
-
-  comment: {
-    base: `${API_BASE_URL}/admin/comment`,
-    summary: '/summary',
-    byProduct: (productId: number) => `${API_BASE_URL}/admin/comment/product/${productId}`,
-    reply: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}/reply`,
-    update: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}`,
-    delete: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}`,
-    create: `${API_BASE_URL}/admin/comment`
-  }
-  
-
+    base: API_BASE_URL + '/' + 'users', 
+    list: '/list',
+    add: '/add',
+    update: '/update',
+    delete: '/delete',
+    getById: '/getById',},
 };
