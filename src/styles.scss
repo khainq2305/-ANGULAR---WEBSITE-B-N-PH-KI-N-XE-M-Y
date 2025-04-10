@@ -8,12 +8,12 @@ body {
 .nav-chilren {
     height: 35px;
 }
-<<<<<<< HEAD
+
 
 body.cdk-global-scrollblock {
     padding-right: 0 ;
     overflow-y: scroll ;
-=======
+}
 /* Custom Toast Styles */
 .toast-success {
     background-color: #4caf50 !important;
@@ -40,7 +40,7 @@ body.cdk-global-scrollblock {
     color: #fff !important;
   }
   
-  /* Icon custom */
+
   .toast-title {
     font-weight: bold;
   }
@@ -51,6 +51,15 @@ body.cdk-global-scrollblock {
   
   .toast-close-button {
     color: white !important;
->>>>>>> f9c8d22 ([Admin System] Add product management feature)
+
   }
-  
+  mat-error,
+.custom-error {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #f44336;
+  gap: 4px;
+  margin-top: 4px;
+}
+

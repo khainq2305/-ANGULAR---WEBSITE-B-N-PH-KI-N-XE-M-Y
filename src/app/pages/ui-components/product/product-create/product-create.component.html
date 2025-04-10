@@ -9,56 +9,58 @@
         <!-- Cột bên trái: Thông tin cơ bản -->
         <div class="col-lg-8">
           <!-- Tên sản phẩm -->
-          <label class="form-label">Tên sản phẩm *</label>
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field appearance="outline" class="w-100" style="margin-bottom: 16px;">
+            <mat-label>Tên sản phẩm</mat-label>
             <input matInput formControlName="name" placeholder="Nhập tên sản phẩm" />
-            <!-- Thông báo lỗi -->
-            <mat-error *ngIf="f['name'].hasError('required') && (f['name'].dirty || f['name'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
+          
+            <mat-error 
+              *ngIf="f['name'].hasError('required') && (f['name'].dirty || f['name'].touched)" 
+              style="margin-top: 4px; display: block;">
               Tên sản phẩm không được để trống.
             </mat-error>
-            <mat-error *ngIf="f['name'].hasError('minlength') && (f['name'].dirty || f['name'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
+          
+            <mat-error 
+              *ngIf="f['name'].hasError('minlength') && !f['name'].hasError('required') && (f['name'].dirty || f['name'].touched)" 
+              style="margin-top: 4px; display: block;">
               Tên sản phẩm ít nhất 3 ký tự.
             </mat-error>
-            <mat-error *ngIf="f['name'].hasError('pattern') && (f['name'].dirty || f['name'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
+          
+            <mat-error 
+              *ngIf="f['name'].hasError('pattern') && !f['name'].hasError('required') && !f['name'].hasError('minlength') && (f['name'].dirty || f['name'].touched)" 
+              style="margin-top: 4px; display: block;">
               Tên sản phẩm chỉ cho phép chữ, số và khoảng trắng.
             </mat-error>
           </mat-form-field>
-
+          
           <!-- Mô tả sản phẩm -->
-          <label class="form-label">Mô tả sản phẩm</label>
-          <app-editor
-            [data]="productForm.get('description')?.value"
-            (dataChange)="onDescriptionChange($event)">
-          </app-editor>
-          <mat-error *ngIf="f['description'].hasError('required') && (f['description'].dirty || f['description'].touched)">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-            Mô tả không được để trống.
-          </mat-error>
-          <mat-error *ngIf="f['description'].hasError('minlength') && (f['description'].dirty || f['description'].touched)">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-            Mô tả ít nhất 10 ký tự.
-          </mat-error>
+          <label class="form-label">Mô tả sản phẩm *</label>
+          <app-editor [data]="productForm.get('description')?.value" (dataChange)="onDescriptionChange($event)"></app-editor>
+          
 
-          <!-- Giá gốc -->
-          <label class="form-label">Giá gốc *</label>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput type="number" formControlName="price" placeholder="Giá sản phẩm" />
-            <mat-error *ngIf="f['price'].hasError('required') && (f['price'].dirty || f['price'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-              Bạn chưa nhập giá.
-            </mat-error>
-            <mat-error *ngIf="f['price'].hasError('min') && (f['price'].dirty || f['price'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-              Giá phải lớn hơn 0.
-            </mat-error>
-            <mat-error *ngIf="f['price'].hasError('pattern') && (f['price'].dirty || f['price'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-              Giá chỉ được phép là số dương.
-            </mat-error>
-          </mat-form-field>
+        <!-- Giá gốc -->
+<mat-form-field appearance="outline" class="w-100" style="margin-top: 16px; margin-bottom: 16px;">
+  <mat-label>Giá gốc</mat-label>
+  <input matInput type="number" formControlName="price" placeholder="Giá sản phẩm" />
+  
+  <mat-error 
+    *ngIf="f['price'].hasError('required') && (f['price'].dirty || f['price'].touched)" 
+    style="margin-top: 4px; display: block;">
+    Bạn chưa nhập giá.
+  </mat-error>
+  
+  <mat-error 
+    *ngIf="f['price'].hasError('min') && !f['price'].hasError('required') && (f['price'].dirty || f['price'].touched)" 
+    style="margin-top: 4px; display: block;">
+    Giá phải lớn hơn 0.
+  </mat-error>
+  
+  <mat-error 
+    *ngIf="f['price'].hasError('pattern') && !f['price'].hasError('required') && !f['price'].hasError('min') && (f['price'].dirty || f['price'].touched)" 
+    style="margin-top: 4px; display: block;">
+    Giá chỉ được phép là số dương.
+  </mat-error>
+</mat-form-field>
+
 
           <!-- Hình thức giảm giá -->
           <label class="form-label">Hình thức giảm giá *</label>
@@ -68,68 +70,58 @@
             <mat-radio-button value="fixed">Giảm còn giá cố định</mat-radio-button>
           </mat-radio-group>
 
-          <!-- Giảm theo % -->
+          <!-- Giảm theo phần trăm -->
           <div *ngIf="f['discountType'].value === 'percentage'">
             <label class="form-label">Phần trăm giảm giá *</label>
             <div class="slider-value-label">{{ f['discountPercentage'].value }}%</div>
-            <mat-slider min="0" max="100" step="1" tickInterval="10">
+            
+            <mat-slider class="full-width-slider" min="0" max="100" step="1" tickInterval="10">
               <input matSliderThumb formControlName="discountPercentage" />
             </mat-slider>
-            <mat-error *ngIf="f['discountPercentage'].hasError('min') || f['discountPercentage'].hasError('max')">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-              Vui lòng nhập % giảm giá trong khoảng 0-100.
-            </mat-error>
-            <p *ngIf="f['price'].value">Giá sau khi giảm: {{ getDiscountedPrice() | number:'1.0-0' }}₫</p>
+            
+            <!-- Đặt lỗi sát slider -->
+            <div style="color: #f44336; font-size: 13px; margin-top: 4px;" *ngIf="productForm.errors?.['invalidDiscountPercentage']">
+              Phần trăm giảm phải từ 1 đến 100%.
+            </div>
           </div>
+          
 
-          <!-- Giảm theo giá cố định -->
-          <div *ngIf="f['discountType'].value === 'fixed'">
-            <label class="form-label">Giá sau khi giảm *</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput type="number" formControlName="discountFixedPrice" placeholder="Nhập giá đã giảm" />
-            </mat-form-field>
-            <mat-error *ngIf="f['discountFixedPrice'].hasError('min') && (f['discountFixedPrice'].dirty || f['discountFixedPrice'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-              Giá sau giảm phải >= 0.
-            </mat-error>
-          </div>
+<!-- Giảm theo giá cố định -->
+<div *ngIf="f['discountType'].value === 'fixed'">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Giá sau khi giảm *</mat-label>
+    <input matInput type="number" formControlName="discountFixedPrice" placeholder="Nhập giá đã giảm" />
+  </mat-form-field>
+  <div class="custom-error" *ngIf="productForm.errors?.['invalidFixedPrice']">
+    {{ productForm.errors?.['invalidFixedPrice'] }}
+  </div>
+  <div class="custom-error" *ngIf="productForm.errors?.['fixedPriceGreaterThanPrice']">
+    Giá sau giảm không được lớn hơn giá gốc.
+  </div>
+</div>
 
-          <!-- Hiển thị lỗi cross-field cho discount -->
-          <mat-error *ngIf="productForm.errors?.['fixedPriceGreaterThanPrice']">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-            Giá sau giảm không được lớn hơn giá gốc.
-          </mat-error>
-          <mat-error *ngIf="productForm.errors?.['invalidFixedPrice']">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-            {{ productForm.errors?.['invalidFixedPrice'] }}
-          </mat-error>
-          <mat-error *ngIf="productForm.errors?.['invalidDiscountPercentage']">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-            Phần trăm giảm phải nằm trong khoảng 0-100.
-          </mat-error>
+          
 
           <!-- Số lượng -->
-          <label class="form-label">Số lượng *</label>
           <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Số lượng</mat-label>
             <input matInput type="number" formControlName="quantity" placeholder="Nhập số lượng" />
             <mat-error *ngIf="f['quantity'].hasError('required') && (f['quantity'].dirty || f['quantity'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
               Bạn chưa nhập số lượng.
             </mat-error>
-            <mat-error *ngIf="f['quantity'].hasError('min') && (f['quantity'].dirty || f['quantity'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
+            <mat-error *ngIf="f['quantity'].hasError('min') && !f['quantity'].hasError('required') && (f['quantity'].dirty || f['quantity'].touched)">
               Số lượng phải >= 1.
             </mat-error>
-            <mat-error *ngIf="f['quantity'].hasError('pattern') && (f['quantity'].dirty || f['quantity'].touched)">
-              <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
+            <mat-error *ngIf="f['quantity'].hasError('pattern') && !f['quantity'].hasError('required') && !f['quantity'].hasError('min') && (f['quantity'].dirty || f['quantity'].touched)">
               Số lượng chỉ được nhập số.
             </mat-error>
+            
           </mat-form-field>
         </div>
 
-        <!-- Cột bên phải: Ảnh, Danh mục, Trạng thái, Sản phẩm nổi bật -->
+        <!-- Cột bên phải: Ảnh, danh mục, trạng thái, sp nổi bật -->
         <div class="col-lg-4">
-          <!-- Ảnh đại diện -->
+          <!-- Hình ảnh -->
           <label class="form-label">Hình ảnh *</label>
           <div class="thumbnail-upload">
             <input #imageInput type="file" (change)="onImageUpload($event)" accept="image/*" hidden />
@@ -137,47 +129,45 @@
               Kéo thả hình vào đây hoặc bấm để chọn
             </div>
           </div>
-          <mat-error *ngIf="f['image'].hasError('required') && (f['image'].dirty || f['image'].touched)">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
+          <div class="custom-error" *ngIf="f['image'].hasError('required') && (f['image'].dirty || f['image'].touched)">
             Bạn chưa chọn ảnh.
-          </mat-error>
-          <mat-error *ngIf="f['image'].hasError('invalidFileType')">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
+          </div>
+          <div class="custom-error" *ngIf="f['image'].hasError('invalidFileType')">
             Ảnh phải có định dạng: .jpg, .jpeg, .png, hoặc .webp.
-          </mat-error>
-          <mat-error *ngIf="f['image'].hasError('fileTooLarge')">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
+          </div>
+          <div class="custom-error" *ngIf="f['image'].hasError('fileTooLarge')">
             Kích thước ảnh không được vượt quá 5MB.
-          </mat-error>
+          </div>
           <div class="file-list" *ngIf="productImage">
             <img [src]="productImage.url" class="file-preview" />
           </div>
 
-          <!-- Danh mục -->
-          <label class="form-label">Danh mục *</label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Danh mục</mat-label>
-            <mat-select formControlName="categories" multiple>
-              <mat-option *ngFor="let cat of categories()" [value]="cat.id">
-                {{ cat.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-error *ngIf="f['categories'].hasError('required') && (f['categories'].dirty || f['categories'].touched)">
-            <mat-icon color="warn" style="vertical-align:middle; margin-right:4px;">error_outline</mat-icon>
-            Vui lòng chọn ít nhất 1 danh mục.
-          </mat-error>
+ <!-- Danh mục -->
+<mat-form-field appearance="outline" class="w-100" style="margin-top: 16px; margin-bottom: 0;">
+  <mat-label>Danh mục</mat-label>
+  <mat-select formControlName="categories" multiple>
+    <mat-option *ngFor="let cat of categories()" [value]="cat.id">{{ cat.name }}</mat-option>
+  </mat-select>
+</mat-form-field>
 
-          <mat-chip-listbox>
-            <mat-chip *ngFor="let catId of f['categories'].value" removable="true" (removed)="onRemoveCategory(catId)">
-              {{ getCategoryName(catId) }}
-              <mat-icon matChipRemove></mat-icon>
-            </mat-chip>
-          </mat-chip-listbox>
+<!-- Lỗi danh mục nằm ngoài -->
+<div *ngIf="f['categories'].hasError('required') && (f['categories'].dirty || f['categories'].touched)" 
+     style="color: #f44336; font-size: 13px; margin-top: 0px; margin-bottom: 8px;">
+  Vui lòng chọn ít nhất 1 danh mục.
+</div>
+
+<!-- Chip hiển thị danh mục đã chọn -->
+<mat-chip-listbox style="margin-bottom: 16px; display: block;">
+  <mat-chip *ngFor="let catId of f['categories'].value" removable="true" (removed)="onRemoveCategory(catId)">
+    {{ getCategoryName(catId) }}
+    <mat-icon matChipRemove></mat-icon>
+  </mat-chip>
+</mat-chip-listbox>
+
 
           <!-- Trạng thái -->
-          <label class="form-label" style="margin-top: 10px;">Trạng thái</label>
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field appearance="outline" class="w-100 mt-2">
+            <mat-label>Trạng thái</mat-label>
             <mat-select formControlName="status">
               <mat-option value="1">Xuất bản</mat-option>
               <mat-option value="0">Nháp</mat-option>
@@ -186,9 +176,7 @@
 
           <!-- Sản phẩm nổi bật -->
           <label class="form-label">Sản phẩm nổi bật</label>
-          <mat-slide-toggle color="accent"
-            [checked]="f['is_feature'].value === '1'"
-            (change)="productForm.patchValue({ is_feature: $event.checked ? '1' : '0' })">
+          <mat-slide-toggle color="accent" [checked]="f['is_feature'].value === '1'" (change)="productForm.patchValue({ is_feature: $event.checked ? '1' : '0' })">
             Bật / Tắt
           </mat-slide-toggle>
         </div>

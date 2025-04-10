@@ -15,6 +15,14 @@ export class ProductService {
       params: filters
     });
   }
+  getProductById(id: number): Observable<any> {
+    return this.http.get(`${API_ENDPOINT.product.base}/${id}`);
+  }
+  
+  updateProduct(id: number, data: FormData): Observable<any> {
+    return this.http.put(`${API_ENDPOINT.product.base}/${id}`, data);
+  }
+  
   deleteMultipleProducts(ids: number[]): Observable<any> {
     return this.http.delete(
       `${API_ENDPOINT.product.base}${API_ENDPOINT.product.deleteMultiple}`,

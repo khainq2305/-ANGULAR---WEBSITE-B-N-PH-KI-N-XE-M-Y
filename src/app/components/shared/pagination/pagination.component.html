@@ -1,0 +1,24 @@
+<div class="pagination-wrapper">
+    <button
+      class="pagination-btn"
+      [disabled]="currentPage === 1"
+      (click)="changePage(currentPage - 1)">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+  
+    <button
+      class="pagination-btn"
+      *ngFor="let p of pages"
+      [class.active]="p === currentPage"
+      (click)="changePage(p)">
+      {{ p }}
+    </button>
+  
+    <button
+      class="pagination-btn"
+      [disabled]="currentPage === totalPages"
+      (click)="changePage(currentPage + 1)">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+  

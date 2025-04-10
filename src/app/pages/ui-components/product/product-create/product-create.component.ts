@@ -76,26 +76,32 @@ export class ProductCreateComponent implements OnInit {
 
   // Validator cho phần giảm giá (discount)
   discountValidator(group: AbstractControl): ValidationErrors | null {
-    const discountType = group.get('discountType')?.value;
-    const discountFixedPrice = group.get('discountFixedPrice')?.value;
-    const discountPercentage = group.get('discountPercentage')?.value;
+    const type = group.get('discountType')?.value;
+    const fixed = group.get('discountFixedPrice')?.value;
+    const percent = group.get('discountPercentage')?.value;
     const price = group.get('price')?.value;
-
-    if (discountType === 'fixed') {
-      if (discountFixedPrice == null || discountFixedPrice < 0) {
-        return { invalidFixedPrice: 'Giá sau giảm phải >= 0' };
-      }
-      if (price && discountFixedPrice > price) {
-        return { fixedPriceGreaterThanPrice: 'Giá sau giảm không được lớn hơn giá gốc' };
-      }
-    } 
-    if (discountType === 'percentage') {
-      if (discountPercentage < 0 || discountPercentage > 100) {
+  
+    if (type === 'percentage') {
+      if (percent === null || percent < 1 || percent > 100) {
         return { invalidDiscountPercentage: true };
       }
     }
+  
+    if (type === 'fixed') {
+      if (fixed === null || fixed === '') {
+        return { invalidFixedPrice: 'Giá sau giảm là bắt buộc' };
+      }
+      if (fixed < 0) {
+        return { invalidFixedPrice: 'Giá sau giảm không được âm' };
+      }
+      if (price && fixed > price) {
+        return { fixedPriceGreaterThanPrice: true };
+      }
+    }
+  
     return null;
   }
+  
 
   // Khởi tạo form với các validators
   initForm() {
@@ -120,8 +126,14 @@ export class ProductCreateComponent implements OnInit {
         ]
       ],
       discountType: ['none'],
-      discountPercentage: [0],
-      discountFixedPrice: [null],
+      discountPercentage: [
+        null,
+        [
+          Validators.min(1),
+          Validators.max(100),
+        ]
+      ],
+            discountFixedPrice: [null],
       quantity: [
         null, 
         [

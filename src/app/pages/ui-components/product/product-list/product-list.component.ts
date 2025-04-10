@@ -21,6 +21,7 @@ import { IProduct } from 'src/app/interface/product.interface';
 import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { PaginationComponent } from 'src/app/components/shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-product-list',
@@ -31,6 +32,7 @@ import { ToastrService } from 'ngx-toastr';
     MatCardModule,
     MatIconModule,
     MatMenuModule,
+    PaginationComponent,
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
@@ -74,23 +76,36 @@ export class ProductListComponent implements OnInit {
       this.categoryOptions = res.data;
     });
   }
-
+  currentPage = 1;
+  totalPages = 1;
   loadData(): void {
-    const filters: any = {};
+    const filters: any = { page: this.currentPage };
+  
     if (this.searchText) filters.search = this.searchText;
     if (this.selectedCategory) filters.category = this.selectedCategory;
     if (this.selectedDate) {
       const key = this.currentTab === 'deleted' ? 'deletedAt' : 'createdAt';
       filters[key] = this.selectedDate.toISOString().split('T')[0];
     }
+  
     if (this.sortOrder) filters.sort = this.sortOrder;
     if (this.statusFilter !== '') filters.status = this.statusFilter;
     if (this.deleted !== '') filters.deleted = this.deleted;
-
-    this.productService.getProductList(filters).subscribe((res: { data: IProduct[] }) => {
+  
+    this.productService.getProductList(filters).subscribe((res: { data: IProduct[], totalPages: number }) => {
       this.dataSource.data = res.data.map(p => ({ ...p, selected: false }));
+      this.totalPages = res.totalPages || 1;
+  
+      // 👉 Thêm dòng này để xem giá trị trả về
+      console.log('📦 Tổng số trang:', this.totalPages);
     });
   }
+  
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadData();
+  }
+    
 
   setTab(tab: string): void {
     this.currentTab = tab;

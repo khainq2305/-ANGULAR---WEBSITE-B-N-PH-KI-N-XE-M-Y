@@ -60,7 +60,7 @@ export const AdminRoutes: Routes = [
         children: [
           { path: 'product-list', component: ProductListComponent },
           { path: 'product-create', component: ProductCreateComponent },
-          { path: 'product-edit', component: ProductEditComponent },
+          { path: 'product-edit/:id', component: ProductEditComponent }, // ✅ thêm :id
           { path: 'deleted-products', component: DeletedProductsComponent },
         ]
       },

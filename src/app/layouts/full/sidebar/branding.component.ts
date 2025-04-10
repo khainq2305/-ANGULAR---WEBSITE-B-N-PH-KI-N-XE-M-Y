@@ -8,7 +8,7 @@ import { CoreService } from 'src/app/services/core.service';
     <a href="/" class="logodark">
       <img
         src="./assets/images/logos/dark-logo.svg"
-        class="align-middle m-2"
+        class="align-middle"
         alt="logo" fill="#ffffff"
       />
     </a>
