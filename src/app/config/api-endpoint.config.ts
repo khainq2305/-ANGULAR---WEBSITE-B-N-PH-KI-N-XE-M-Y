@@ -23,6 +23,28 @@ export const API_ENDPOINT = {
   order: {
     base: API_BASE_URL + '/admin/orders',
     list: '/list'
+  },
+  
+  user: {
+    base: API_BASE_URL + '/admin/user',
+    list: '/',
+    add: '/',
+    edit: (id: number | string) => `/${id}`,
+    delete: (id: number | string) => `/${id}`,
+    toggleStatus: (id: number | string) => `/${id}/status`,
+    resetPassword: (id: number | string) => `/${id}/reset-password`
+  },
+
+
+  comment: {
+    base: `${API_BASE_URL}/admin/comment`,
+    summary: '/summary',
+    byProduct: (productId: number) => `${API_BASE_URL}/admin/comment/product/${productId}`,
+    reply: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}/reply`,
+    update: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}`,
+    delete: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}`,
+    create: `${API_BASE_URL}/admin/comment`
   }
   
+
 };

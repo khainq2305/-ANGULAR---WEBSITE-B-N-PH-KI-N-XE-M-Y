@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { User } from 'src/app/interface/user.interface';
 
 @Component({
   selector: 'app-update-status',
@@ -28,7 +29,7 @@ export class UpdateStatusComponent {
 
   constructor(
     public dialogRef: MatDialogRef<UpdateStatusComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: Pick<User, 'status'> // ✅ dùng interface
   ) {}
 
   updateStatus() {

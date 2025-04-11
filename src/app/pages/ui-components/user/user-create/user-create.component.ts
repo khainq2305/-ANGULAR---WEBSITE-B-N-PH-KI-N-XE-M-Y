@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { UserService } from 'src/app/services/apis/user.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/app/interface/user.interface';
 
 @Component({
   selector: 'app-user-create',
@@ -36,14 +37,20 @@ export class UserCreateComponent {
   selectedFile: File | null = null;
   previewUrl: string | ArrayBuffer | null = null;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router,  private toastr: ToastrService) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,12}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       gender: ['', Validators.required],
-      dob: ['', Validators.required]
+      dob: ['', Validators.required],
+      role: [1, Validators.required]
     });
   }
 
@@ -83,21 +90,39 @@ export class UserCreateComponent {
       return;
     }
 
-    const formData = new FormData();
-    Object.entries(this.userForm.value).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
+    const formValue = this.userForm.value;
 
-    formData.set('gender', this.mapGender(this.userForm.value.gender));
+    const newUser: User = {
+      name: formValue.name,
+      email: formValue.email,
+      password: formValue.password,
+      phone: formValue.phone,
+      gender: this.mapGender(formValue.gender) as 'male' | 'female' | 'other',
+      dob: formValue.dob instanceof Date
+        ? formValue.dob.toISOString().split('T')[0]
+        : formValue.dob,
+      role: formValue.role,
+      status: 1 // mặc định đang hoạt động
+    };
+
+    const formData = new FormData();
+    Object.entries(newUser).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value.toString());
+      }
+    });
 
     if (this.selectedFile) {
       formData.append('avatar', this.selectedFile);
     }
 
+    console.log('📤 Sending formData:');
+    formData.forEach((v, k) => console.log(`${k}: ${v}`));
+
     this.userService.createUser(formData).subscribe({
       next: () => {
         this.toastr.success('Thêm người dùng thành công', 'Thành công');
-        this.router.navigate(['/admin/users']);
+        this.router.navigate(['/admin/ui-components/user/user-list']);
       },
       error: (err) => {
         console.error('❌ Lỗi tạo người dùng:', err);

@@ -1,40 +1,35 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_ENDPOINT } from 'src/app/config/api-endpoint.config';
+import { Comment, ProductCommentSummary } from 'src/app/interface/comment.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CommentService {
-  private apiUrl = 'http://localhost:3000/admin/comment'; 
-
   constructor(private http: HttpClient) {}
 
-  // Lấy danh sách bình luận theo sản phẩm
-  getCommentsByProduct(productId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/product/${productId}`);
+  getCommentsByProduct(productId: number): Observable<{ comments: Comment[]; productName: string }> {
+    return this.http.get<{ comments: Comment[]; productName: string }>(API_ENDPOINT.comment.byProduct(productId));
+  }
+  
+
+  getSummary(): Observable<{ data: ProductCommentSummary[] }> {
+    return this.http.get<{ data: ProductCommentSummary[] }>(API_ENDPOINT.comment.base + API_ENDPOINT.comment.summary);
   }
 
-  // Lấy tất cả bình luận (tổng hợp để hiển thị danh sách sản phẩm có comment)
-  getSummary(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/summary`);
-  }
-
-  // Xoá bình luận
   deleteComment(commentId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${commentId}`);
+    return this.http.delete(API_ENDPOINT.comment.delete(commentId));
   }
 
-  // Thêm bình luận mới (nếu cần dùng cho khách hàng bình luận)
-  addComment(data: any): Observable<any> {
-    return this.http.post(this.apiUrl, data);
+  addComment(data: Partial<Comment>): Observable<any> {
+    return this.http.post(API_ENDPOINT.comment.create, data);
   }
 
-  // Trả lời bình luận
   replyToComment(commentId: number, reply: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${commentId}/reply`, { reply });
+    return this.http.post(API_ENDPOINT.comment.reply(commentId), { reply });
   }
 
-  // Cập nhật nội dung bình luận
-  updateComment(commentId: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${commentId}`, data);
+  updateComment(commentId: number, data: Partial<Comment>): Observable<any> {
+    return this.http.put(API_ENDPOINT.comment.update(commentId), data);
   }
 }

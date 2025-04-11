@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +16,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommentReplyDialogComponent } from '../comment-reply-dialog/comment-reply-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CommentService } from 'src/app/services/apis/comment.service';
+import { Comment } from 'src/app/interface/comment.interface';
+import { PaginationComponent } from 'src/app/components/shared/pagination/pagination.component';
+
 
 @Component({
   selector: 'app-comment-detail',
@@ -28,7 +29,6 @@ import { CommentService } from 'src/app/services/apis/comment.service';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatPaginatorModule,
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
@@ -36,6 +36,7 @@ import { CommentService } from 'src/app/services/apis/comment.service';
     MatDialogModule,
     FormsModule,
     MatMenuModule,
+    PaginationComponent
   ],
   templateUrl: './comment-detail.component.html',
   styleUrls: ['./comment-detail.component.scss']
@@ -43,10 +44,14 @@ import { CommentService } from 'src/app/services/apis/comment.service';
 export class CommentDetailComponent implements OnInit {
   productId!: number;
   productName: string = '';
-  dataSource = new MatTableDataSource<any>();
+  originalComments: Comment[] = [];
+  filteredComments: Comment[] = [];
+  pageSize: number = 5;
+  currentPage: number = 1;
+  totalPages: number = 1;
+
   displayedColumns: string[] = ['stt', 'avatar', 'user', 'rating', 'content', 'status', 'adminReply', 'actions'];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   showReplyForm: { [key: number]: boolean } = {};
@@ -64,8 +69,6 @@ export class CommentDetailComponent implements OnInit {
   selectedRating: string | number = 'all';
   searchText: string = '';
 
-  originalComments: any[] = [];
-
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -82,20 +85,27 @@ export class CommentDetailComponent implements OnInit {
   loadComments() {
     this.commentService.getCommentsByProduct(this.productId).subscribe({
       next: (res) => {
-        if (res.success) {
-          this.productName = res.productName || 'Sản phẩm';
-          this.originalComments = res.comments || [];
-          this.dataSource.data = this.originalComments;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        }
+        const comments: Comment[] = res.comments || [];
+        this.originalComments = comments;
+        this.productName = res.productName || 'Sản phẩm';
+        this.applyFilter();
       },
       error: (err) => {
-        console.error('Lỗi khi tải bình luận:', err);
+        console.error('❌ Lỗi khi tải bình luận:', err);
         this.productName = 'Lỗi khi tải sản phẩm';
-        this.dataSource.data = [];
+        this.originalComments = [];
+        this.filteredComments = [];
       }
     });
+  }
+
+  get paginatedComments(): Comment[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredComments.slice(start, start + this.pageSize);
+  }
+
+  changePage(page: number) {
+    this.currentPage = page;
   }
 
   applyFilter() {
@@ -117,11 +127,12 @@ export class CommentDetailComponent implements OnInit {
       );
     }
 
-    this.dataSource.data = filteredData;
-    this.dataSource.paginator?.firstPage();
+    this.filteredComments = filteredData;
+    this.totalPages = Math.ceil(filteredData.length / this.pageSize);
+    this.currentPage = 1;
   }
 
-  openReplyDialog(comment: any, isEdit: boolean = false) {
+  openReplyDialog(comment: Comment, isEdit: boolean = false) {
     const dialogRef = this.dialog.open(CommentReplyDialogComponent, {
       width: '500px',
       data: { user: comment.user, reply: isEdit ? comment.reply : '' }
@@ -130,7 +141,8 @@ export class CommentDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         comment.reply = result;
-        comment.replyDate = new Date().toISOString().split('T')[0]; // tạm thời set ngày hôm nay
+        comment.replyDate = new Date().toISOString().split('T')[0];
+        this.applyFilter();
       }
     });
   }
@@ -145,9 +157,6 @@ export class CommentDetailComponent implements OnInit {
   }
 
   toggleReplyForm(commentId: number) {
-    if (!this.showReplyForm) {
-      this.showReplyForm = {};
-    }
     this.showReplyForm[commentId] = !this.showReplyForm[commentId];
   }
 }

@@ -29,6 +29,8 @@
       <mat-form-field appearance="outline" style="width: 180px">
         <mat-label>Giới tính</mat-label>
         <mat-select (selectionChange)="filterGender($event.value)">
+
+
           <mat-option value="">Tất cả</mat-option>
           <mat-option value="male">Nam</mat-option>
           <mat-option value="female">Nữ</mat-option>
@@ -54,7 +56,6 @@
             <img [src]="user.avatarUrl" alt="avatar" class="avatar-img" />
           </td>
         </ng-container>
-        
 
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Họ và tên</th>
@@ -123,15 +124,19 @@
                 <mat-icon>edit</mat-icon>
                 <span>Cập nhật trạng thái</span>
               </button>
-      
-              
             </mat-menu>
           </td>
         </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
       </table>
+      <div class="d-flex justify-content-center mt-3">
+        <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

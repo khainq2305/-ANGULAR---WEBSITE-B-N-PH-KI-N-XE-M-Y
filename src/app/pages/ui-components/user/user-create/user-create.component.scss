@@ -43,5 +43,27 @@
 
   
   .mat-mdc-form-field-error {
-    font-size: 12px;
+    ::ng-deep .mat-error,
+    .mat-mdc-form-field-error {
+      color: #e53935 ;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+    
+    ::ng-deep .mat-form-field-invalid .mat-input-element {
+      border: 1px solid #e53935 ;
+      background-color: #fff0f0;
+      border-radius: 6px;
+    }
+    
+    ::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-outline {
+      color: #e53935 ;
+      border-color: #e53935 ;
+    }
+  }    
+
+  ::ng-deep .mat-form-field {
+    transition: all 0.2s ease;
   }
+  
