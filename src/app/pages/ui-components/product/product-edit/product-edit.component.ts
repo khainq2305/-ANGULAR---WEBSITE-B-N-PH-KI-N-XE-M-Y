@@ -61,16 +61,39 @@ export class ProductEditComponent implements OnInit {
     this.initForm();
     this.fetchCategories();
     this.fetchProduct();
+  
+    // Lắng nghe sự thay đổi của giá gốc và giảm giá để tính lại giá sau giảm
+    this.productForm.get('price')?.valueChanges.subscribe(() => {
+      this.updateFinalPrice();
+    });
+  
+    this.productForm.get('discount')?.valueChanges.subscribe(() => {
+      this.updateFinalPrice();
+    });
   }
-
+  
+  updateFinalPrice() {
+    const price = this.productForm.get('price')?.value || 0;
+    const discount = this.productForm.get('discount')?.value || 0;
+  
+    let finalPrice = price - discount;
+  
+    // Nếu giá sau giảm < 0, trả lại giá gốc
+    if (finalPrice < 0) {
+      finalPrice = price;
+    }
+  
+    this.productForm.patchValue({ finalPrice });
+  }
+  
+  
   initForm() {
     this.productForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9 ]+$/)]],
+      finalPrice: [0], // 👈 thêm dòng này
+      name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[\p{L}0-9 ]+$/u)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [null, [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]+(\.[0-9]+)?$/)]],
-      discountType: ['none'],
-      discountPercentage: [null, [Validators.min(1), Validators.max(100)]],
-      discountFixedPrice: [null],
+      discount: [0, [Validators.min(0)]], // Chỉ còn discount duy nhất
       quantity: [null, [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]+$/)]],
       categories: [[], Validators.required],
       status: ['1', Validators.required],
@@ -80,19 +103,20 @@ export class ProductEditComponent implements OnInit {
   }
 
   discountValidator(group: AbstractControl): ValidationErrors | null {
-    const type = group.get('discountType')?.value;
-    const fixed = group.get('discountFixedPrice')?.value;
-    const percent = group.get('discountPercentage')?.value;
+    const discount = group.get('discount')?.value;
     const price = group.get('price')?.value;
+    const discountCtrl = group.get('discount');
 
-    if (type === 'percentage' && (percent === null || percent < 1 || percent > 100)) {
-      return { invalidDiscountPercentage: true };
-    }
+    discountCtrl?.setErrors(null);
 
-    if (type === 'fixed') {
-      if (fixed === null || fixed === '') return { invalidFixedPrice: 'Giá sau giảm là bắt buộc' };
-      if (fixed < 0) return { invalidFixedPrice: 'Giá sau giảm không được âm' };
-      if (price && fixed > price) return { fixedPriceGreaterThanPrice: true };
+    if (discount !== null) {
+      if (isNaN(discount) || typeof discount !== 'number') {
+        discountCtrl?.setErrors({ invalid: true });
+      } else if (discount < 0) {
+        discountCtrl?.setErrors({ negative: true });
+      } else if (price && discount > price) {
+        discountCtrl?.setErrors({ greaterThanPrice: true });
+      }
     }
 
     return null;
@@ -107,14 +131,17 @@ export class ProductEditComponent implements OnInit {
   fetchProduct() {
     this.productService.getProductById(this.productId).subscribe(res => {
       const product = res.data;
+      
+      // Gán dữ liệu vào form
       this.productForm.patchValue({
         ...product,
-        discountType: product.discount_type,
-        discountFixedPrice: product.discount_type === 'fixed' ? product.discount_value : null,
-        discountPercentage: product.discount_type === 'percentage' ? product.discount_value : null,
+        discount: product.discount || 0,  // Cập nhật giá trị giảm giá
         categories: [product.idCategory],
       });
-      
+  
+      // Tính giá sau giảm khi tải sản phẩm
+      this.updateFinalPrice();
+  
       if (product.image) {
         this.productImage = {
           url: `${API_BASE_URL}/uploads/${product.image}`,
@@ -124,6 +151,7 @@ export class ProductEditComponent implements OnInit {
       }
     });
   }
+  
 
   onUpdateForm() {
     if (this.productForm.invalid) {
@@ -131,28 +159,32 @@ export class ProductEditComponent implements OnInit {
       this.toastr.error('Form không hợp lệ!');
       return;
     }
-
+  
     const value = this.productForm.value;
     const formData = new FormData();
     formData.append('name', value.name);
     formData.append('description', value.description);
     formData.append('price', value.price);
-    formData.append('discountType', value.discountType);
-    const discountValue = value.discountType === 'percentage' ? value.discountPercentage : value.discountFixedPrice;
-    formData.append('discountValue', discountValue);
-    formData.append('finalPrice', this.getDiscountedPrice().toString());
+    formData.append('discount', value.discount);
+  
+    // Tính lại giá sau giảm và gửi lên server
+    const finalPrice = this.getDiscountedPrice();
+    formData.append('finalPrice', finalPrice.toString());
+  
     formData.append('quantity', value.quantity);
     formData.append('status', value.status);
     formData.append('is_feature', value.is_feature);
-
+  
+    // Upload ảnh nếu có
     if (this.productImage?.file) {
       formData.append('image', this.productImage.file);
     }
-
+  
+    // Gửi các danh mục đã chọn
     value.categories.forEach((id: number) => {
       formData.append('categories', id.toString());
     });
-
+  
     this.productService.updateProduct(this.productId, formData).subscribe({
       next: () => {
         this.toastr.success('Cập nhật thành công!');
@@ -163,6 +195,8 @@ export class ProductEditComponent implements OnInit {
       }
     });
   }
+  
+  
 
   onImageUpload(event: any) {
     if (!event.target.files?.length) return;
@@ -182,19 +216,21 @@ export class ProductEditComponent implements OnInit {
     };
   }
 
-  getDiscountedPrice(): number {
-    const price = this.productForm.get('price')?.value || 0;
-    const type = this.productForm.get('discountType')?.value;
-    const percent = this.productForm.get('discountPercentage')?.value;
-    const fixed = this.productForm.get('discountFixedPrice')?.value;
-    if (type === 'percentage') return price * (1 - percent / 100);
-    if (type === 'fixed') return fixed;
-    return price;
-  }
-
   getCategoryName(id: number): string {
     return this.categories().find(c => c.id === id)?.name || '';
   }
+  getDiscountedPrice(): number {
+    const price = this.productForm.get('price')?.value || 0;
+    const discount = this.productForm.get('discount')?.value || 0;
+  
+    if (discount > price) {
+      // Nếu giảm giá lớn hơn giá gốc, trả lại giá gốc
+      return price;
+    }
+  
+    return price - discount;
+  }
+  
 
   onDescriptionChange(value: string) {
     this.productForm.get('description')?.setValue(value);

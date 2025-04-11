@@ -1,51 +1,60 @@
-import { Component } from '@angular/core';
+// src/app/pages/client/cart/cart.component.ts
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms'; // 👈 Quan trọng để dùng [(ngModel)]
+import { CartService } from '../../../services/apis/cart.service';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule], // 👈 Thêm cả FormsModule
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
   selectAll = false;
+  cartItems: any[] = [];
 
-  cartItems = [
-    {
-      id: 1,
-      name: 'Sample Product Name',
-      image: '/uploads/sample.jpg',
-      variant: 'Size M',
-      oldPrice: 300000,
-      newPrice: 270000,
-      discount: '-10%',
-      quantity: 1,
-      selected: false,
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      image: '/uploads/sample.jpg',
-      variant: 'Size L',
-      oldPrice: 500000,
-      newPrice: 450000,
-      discount: '-10%',
-      quantity: 2,
-      selected: false,
-    },
-  ];
+  constructor(private cartService: CartService) {}
+
+  ngOnInit(): void {
+    const idUser = 120; // ✅ Lấy từ token hoặc localStorage
+    this.cartService.getCartByUser(idUser).subscribe({
+      next: (res) => {
+        console.log('🟡 Dữ liệu giỏ hàng trả về:', res.data); // 👈 THÊM DÒNG NÀY
+        this.cartItems = res.data.map((item: any) => ({
+          ...item, // giữ nguyên cart (id, quantity, idUser, ...)
+          selected: false,
+          variant: 'Mặc định' // nếu có biến thể thì thay đổi
+        }));
+        
+        
+      },
+      error: (err) => {
+        console.error('❌ Lỗi khi load giỏ hàng:', err);
+      }
+    });
+  }
 
   get totalAmount(): number {
     return this.cartItems
       .filter(item => item.selected)
-      .reduce((sum, item) => sum + item.newPrice * item.quantity, 0);
+      .reduce((sum, item) => sum + item.product.finalPrice * item.quantity, 0);
   }
-
+  
   toggleSelectAll() {
     this.cartItems.forEach(item => (item.selected = this.selectAll));
+  }
+  increaseQuantity(item: any) {
+    item.quantity++;
+  }
+  
+  decreaseQuantity(item: any) {
+    if (item.quantity > 1) item.quantity--;
+  }
+  removeItem(item: any) {
+    this.cartItems = this.cartItems.filter(i => i.id !== item.id);
   }
 
   deleteSelectedItems() {

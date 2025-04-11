@@ -4,10 +4,10 @@
       <div class="row bg-white p-4">
         <div class="col-md-5">
           <img
-            src="https://down-vn.img.susercontent.com/file/vn-11134201-7ra0g-m7rdzzgrw2pyca@resize_w900_nl.webp"
-            class="img-fluid border mb-3"
-            alt="Product"
-          />
+          [src]="product?.image"
+          class="img-fluid border mb-3"
+          alt="Ảnh sản phẩm"
+        />
           <div class="d-flex justify-content-between">
             <img *ngFor="let thumb of thumbs" [src]="thumb" width="90" height="90" class="img-thumbnail" />
           </div>
@@ -16,7 +16,7 @@
         <div class="col-md-7 text-start">
           <h4 class="fw-bold mb-3">
             <span class="badge bg-danger me-2">Yêu Thích+</span>
-            Máy siết bulong pin WORKFIX WF-IW650N, Động cơ Không chổi than, Lực siết 650Nm, 4 tốc độ
+            {{ product?.name }}
           </h4>
   
           <div class="d-flex align-items-center mb-4">
@@ -26,9 +26,16 @@
           </div>
   
           <div class="bg-light py-3 px-4 mb-4 rounded d-flex align-items-center gap-4">
-            <h3 class="text-danger fw-bold mb-0">₫685.000 - ₫1.449.000</h3>
-            <div class="text-muted text-decoration-line-through">₫980.000 - ₫2.072.000</div>
-            <span class="badge bg-light text-danger border border-danger px-2 py-1">-30%</span>
+            <h3 class="text-danger fw-bold mb-0">
+              {{ product?.finalPrice | currency:'VND':'symbol' }}
+            </h3>
+          <div class="text-muted text-decoration-line-through">
+            {{ product?.price | currency:'VND':'symbol' }}
+          </div>
+          
+          <span class="badge bg-light text-danger border border-danger px-2 py-1">
+            -{{ product?.discountValue || 0 }}%
+          </span>
           </div>
   
           <div class="mb-3">
@@ -79,7 +86,10 @@
   
           <!-- ACTIONS -->
           <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <button class="btn border border-danger text-danger bg-white fw-semibold">🛒 Thêm Vào Giỏ Hàng</button>
+            <button (click)="addToCart()" class="btn border border-danger text-danger bg-white fw-semibold">
+              🛒 Thêm Vào Giỏ Hàng
+            </button>
+            
             <button class="btn bg-danger text-white fw-semibold">Mua Ngay</button>
           </div>
         </div>

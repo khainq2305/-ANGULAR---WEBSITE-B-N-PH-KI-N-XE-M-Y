@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from '../../interface/product.interface';
 import { API_ENDPOINT } from '../../config/api-endpoint.config';
+import { ApiService } from '../../services/common/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  constructor(private http: HttpClient) {} // KHÔNG kế thừa ApiService nữa
+  constructor(private http: HttpClient, private api: ApiService) {} // KHÔNG kế thừa ApiService nữa
 
   getProductList(filters: any = {}): Observable<any> {
     return this.http.get(`${API_ENDPOINT.product.base}${API_ENDPOINT.product.list}`, {
@@ -64,6 +65,10 @@ restoreMultipleProducts(ids: number[]): Observable<any> {
     `${API_ENDPOINT.product.base}/restore-multiple`,
     { ids }
   );
+}
+addToCart(data: { product_id: number; quantity: number }): Observable<any> {
+  return this.api.post(`${API_ENDPOINT.cart.base}${API_ENDPOINT.cart.add}`, data);
+
 }
 
 }

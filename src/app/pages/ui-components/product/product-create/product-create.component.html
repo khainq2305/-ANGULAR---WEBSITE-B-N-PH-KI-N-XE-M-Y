@@ -61,49 +61,29 @@
   </mat-error>
 </mat-form-field>
 
+<mat-form-field appearance="outline" class="w-100">
+  <mat-label>Giảm giá</mat-label>
+  <input matInput type="number" formControlName="discount" placeholder="Nhập số tiền giảm" />
 
-          <!-- Hình thức giảm giá -->
-          <label class="form-label">Hình thức giảm giá *</label>
-          <mat-radio-group formControlName="discountType" class="custom-radio-group">
-            <mat-radio-button value="none">Không giảm giá</mat-radio-button>
-            <mat-radio-button value="percentage">Giảm theo %</mat-radio-button>
-            <mat-radio-button value="fixed">Giảm còn giá cố định</mat-radio-button>
-          </mat-radio-group>
+  <mat-error style="margin-bottom: 9px;" *ngIf="f['discount'].hasError('invalidDiscount') && (f['discount'].dirty || f['discount'].touched)">
+    {{ f['discount'].getError('invalidDiscount') }}
+  </mat-error>
+</mat-form-field>
 
-          <!-- Giảm theo phần trăm -->
-          <div *ngIf="f['discountType'].value === 'percentage'">
-            <label class="form-label">Phần trăm giảm giá *</label>
-            <div class="slider-value-label">{{ f['discountPercentage'].value }}%</div>
-            
-            <mat-slider class="full-width-slider" min="0" max="100" step="1" tickInterval="10">
-              <input matSliderThumb formControlName="discountPercentage" />
-            </mat-slider>
-            
-            <!-- Đặt lỗi sát slider -->
-            <div style="color: #f44336; font-size: 13px; margin-top: 4px;" *ngIf="productForm.errors?.['invalidDiscountPercentage']">
-              Phần trăm giảm phải từ 1 đến 100%.
-            </div>
-          </div>
-          
-
-<!-- Giảm theo giá cố định -->
-<div *ngIf="f['discountType'].value === 'fixed'">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Giá sau khi giảm *</mat-label>
-    <input matInput type="number" formControlName="discountFixedPrice" placeholder="Nhập giá đã giảm" />
-  </mat-form-field>
-  <div class="custom-error" *ngIf="productForm.errors?.['invalidFixedPrice']">
-    {{ productForm.errors?.['invalidFixedPrice'] }}
-  </div>
-  <div class="custom-error" *ngIf="productForm.errors?.['fixedPriceGreaterThanPrice']">
-    Giá sau giảm không được lớn hơn giá gốc.
-  </div>
+<!-- Hiển thị giá sau giảm -->
+<div *ngIf="productForm.get('price')?.value">
+  <p>Giá sau giảm: {{ calculateDiscountedPrice() | number: '1.0-0' }} VNĐ</p>
 </div>
+
+
+
+
+
 
           
 
           <!-- Số lượng -->
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field style="margin-top: 14px;" appearance="outline" class="w-100">
             <mat-label>Số lượng</mat-label>
             <input matInput type="number" formControlName="quantity" placeholder="Nhập số lượng" />
             <mat-error *ngIf="f['quantity'].hasError('required') && (f['quantity'].dirty || f['quantity'].touched)">
@@ -160,7 +140,8 @@
 <mat-chip-listbox style="margin-bottom: 16px; display: block;">
   <mat-chip *ngFor="let catId of f['categories'].value" removable="true" (removed)="onRemoveCategory(catId)">
     {{ getCategoryName(catId) }}
-    <mat-icon matChipRemove></mat-icon>
+    <mat-icon matChipRemove>cancel</mat-icon>
+
   </mat-chip>
 </mat-chip-listbox>
 

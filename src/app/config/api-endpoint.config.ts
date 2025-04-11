@@ -17,5 +17,18 @@ export const API_ENDPOINT = {
     add: '/add',
     update: '/update',
     delete: '/delete',
-    getById: '/getById',},
+    getById: '/getById',
+    register: '/register',
+    login: '/login'
+  },
+  order: {
+    base: API_BASE_URL + '/admin/orders',
+    list: '/list'
+  },
+  cart: {
+    base: API_BASE_URL + '/cart',
+    add: '/add' ,
+    getByUser: '/user', // ✅ thêm dòng này 
+  }
+  
 };

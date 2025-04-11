@@ -1,24 +1,18 @@
 .form-label {
   font-weight: 600;
   display: block;
-  margin-bottom: 8px; 
+  margin-bottom: 8px;
 }
-
 
 .mat-form-field {
   width: 100%;
-  margin-bottom: 16px; 
+  margin-bottom: 16px;
 }
-
-
-.product-card .col-lg-4 mat-form-field {
-  margin-bottom: 20px;
-}
-
 
 button.mat-stroked-button {
   margin-top: 8px;
 }
+
 .mat-error {
   color: #d32f2f !important;
   display: flex;
@@ -28,15 +22,18 @@ button.mat-stroked-button {
   margin-top: 4px;
 }
 
-.mat-error mat-icon {
-  margin-right: 4px;
+.fixed-wrapper,
+.discount-wrapper {
+  margin-bottom: 16px;
 }
 
+.discount-wrapper mat-slider {
+  margin-top: 8px;
+}
 
 .m-t-12 {
   margin-top: 20px;
 }
-
 
 .upload-box {
   display: flex;
@@ -58,43 +55,9 @@ button.mat-stroked-button {
   border-color: #007bff;
 }
 
-
 .file-list {
   margin-top: 12px;
 }
-
-.file-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-top: 6px;
-  background-color: #f9f9f9;
-}
-
-
-.file-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 180px;
-}
-
-
-.file-size {
-  font-size: 12px;
-  font-weight: 500;
-  color: white;
-  background-color: #007bff;
-  padding: 4px 8px;
-  border-radius: 10px;
-}
-
 
 .file-preview {
   width: 35px;
@@ -104,151 +67,6 @@ button.mat-stroked-button {
   margin-right: 10px;
 }
 
-
-.category-section,
-.tag-section,
-.status-section {
-  margin-top: 20px;
-}
-
-
-.category-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
-  margin-bottom: 8px;
-}
-
-
-mat-chip-listbox {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: -16px !important;
-}
-.category-helper-text{
-  margin-top: -9px;
-}
-
-
-mat-chip {
-  display: flex;
-  align-items: center;
-  padding: 6px 12px;
-  font-size: 14px;
-  background-color: #e0e0e0;
-  color: #333;
-  border-radius: 20px;
-  margin: 4px;
-  max-width: 100%;
-  white-space: nowrap;
-  transition: all 0.2s ease-in-out;
-}
-
-
-
-
-mat-chip mat-icon {
-  font-size: 16px;
-  margin-left: 4px;
-  cursor: pointer;
-}
-
-
-.category-container mat-form-field {
-  margin-bottom: 4px;
-}
-
-.create-category-btn {
-  margin-top: 5px;
-  width: 100%;
-}
-
-
-.add-category-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-
-.category-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-}
-
-
-button.mat-flat-button {
-  font-weight: bold;
-  background: #ff5722;
-  color: white;
-}
-
-button.mat-stroked-button {
-  border-color: #ff5722;
-  color: #ff5722;
-}
-
-
-.add-category-form {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-
-
-.category-input {
-  flex-grow: 1;
-  min-width: 200px;
-}
-
-
-.category-actions {
-  display: flex;
-  gap: 8px;
-}
-
-
-.category-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-
-.chip-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  padding: 5px 0;
-}
-
-
-.add-category-btn {
-  width: fit-content;
-  align-self: flex-start;
-  padding: 8px 12px;
-  font-size: 14px;
-}
-
-
-.add-category-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-.category-actions {
-  display: flex;
-  gap: 10px;
-}
 .custom-radio-group {
   display: flex;
   gap: 20px;
@@ -268,7 +86,7 @@ button.mat-stroked-button {
 }
 
 .custom-radio.mat-radio-checked {
-  border: 2px solid #1d4ed8; // màu xanh
+  border: 2px solid #1d4ed8;
   background-color: #eef2ff;
 }
 
@@ -280,19 +98,7 @@ button.mat-stroked-button {
   background-color: #f9fafb;
   cursor: pointer;
 }
-.discount-section {
-  margin-top: 12px;
 
-  .mat-slider {
-    width: 100%;
-  }
-
-  p {
-    margin-top: 6px;
-    font-weight: 500;
-    color: #1f2937;
-  }
-}
 .full-width-slider {
   width: 100%;
 }
@@ -310,7 +116,7 @@ button.mat-stroked-button {
   color: white !important;
   font-weight: bold;
   border-radius: 4px;
-  transform: translateY(-8px); // đẩy số lên đẹp hơn
+  transform: translateY(-8px);
 }
 
 ::ng-deep .mat-slider-track-background {

@@ -17,27 +17,34 @@
             <input type="checkbox" [(ngModel)]="item.selected" class="custom-checkbox" />
           </div>
           <div class="cart-item__details">
-            <img [src]="item.image" class="cart-item__image" alt="Product" />
+            <img [src]="item.product?.image" class="cart-item__image" />
             <div class="cart-item__info">
-              <h3 class="cart-item__name">{{ item.name }}</h3>
-              <span class="discount-badge">{{ item.discount }}</span>
-              <p class="cart-item__variant">{{ item.variant }}</p>
+              <h3 class="cart-item__name">{{ item.product?.name }}</h3>
+              <span class="discount-badge">{{ item.product?.discount }}%</span>
+              <p class="cart-item__variant">{{ item.variant}}</p>
             </div>
           </div>
           <div class="cart-item__price">
-            <span class="old-price">{{ item.oldPrice | number }} ₫</span>
-            <span class="new-price">{{ item.newPrice | number }} ₫</span>
+            <span class="old-price">{{ item.product.price | number }} ₫</span>
+            <span class="new-price">{{ item.product.finalPrice | number }} ₫</span>
           </div>
           <div class="cart-item__quantity">
-            <button class="cart-item__quantity-btn">-</button>
-            <input type="text" [value]="item.quantity" class="cart-item__quantity-input" readonly />
-            <button class="cart-item__quantity-btn">+</button>
+       <!-- Giảm -->
+<button class="cart-item__quantity-btn" (click)="decreaseQuantity(item)">-</button>
+
+<!-- Hiển thị -->
+<input type="text" [value]="item.quantity" class="cart-item__quantity-input" readonly />
+
+<!-- Tăng -->
+<button class="cart-item__quantity-btn" (click)="increaseQuantity(item)">+</button>
           </div>
           <div class="cart-item__total">
-            {{ item.newPrice * item.quantity | number }} ₫
+            {{ item.product.finalPrice * item.quantity | number }} ₫
+
           </div>
           <div class="cart-item__action">
-            <button type="button" class="cart-item__delete-btn">Xóa</button>
+            <button type="button" class="cart-item__delete-btn" (click)="removeItem(item)">Xóa</button>
+
           </div>
         </div>
       </div>

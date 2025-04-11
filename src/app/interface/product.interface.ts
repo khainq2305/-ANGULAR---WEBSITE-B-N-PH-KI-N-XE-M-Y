@@ -2,10 +2,8 @@ export interface IProduct {
   id: number;
   name: string;
   price: number;
-  final_price: number; // ✅ dùng snake_case giống backend
+  discount: number;         // ✅ GIỮ
   quantity: number;
-  discount_type: 'none' | 'percentage' | 'fixed';
-  discount_value: number;
   
   status: number;
   image: string;

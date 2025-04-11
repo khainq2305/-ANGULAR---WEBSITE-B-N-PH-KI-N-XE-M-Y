@@ -77,13 +77,40 @@
                 Hỗ trợ
               </a>
             </li>
-            <li class="header__nav-item header__nav-item--bold header__nav-item--separate">
-              <a href="#" class="header__nav-item-link">Đăng ký</a>
-            </li>
-            <li class="header__nav-item header__nav-item--bold">
-              <a [routerLink]="'/dang-nhap'" class="header__nav-item-link">Đăng nhập</a>
+         <!-- Nếu chưa đăng nhập -->
+<ng-container *ngIf="!isLoggedIn">
+  <li class="header__nav-item header__nav-item--bold header__nav-item--separate">
+    <a [routerLink]="'/dang-ky'" class="header__nav-item-link">Đăng ký</a>
+  </li>
+  <li class="header__nav-item header__nav-item--bold">
+    <a [routerLink]="'/dang-nhap'" class="header__nav-item-link">Đăng nhập</a>
+  </li>
+</ng-container>
 
-            </li>
+<ng-container *ngIf="isLoggedIn">
+  <div class="header__nav-user">
+    <img
+      [src]="userAvatar || 'https://i.imgur.com/FnBFeW7.png'"
+      alt="avatar"
+      class="header__nav-user-img"
+    />
+    <span class="header__nav-user-name">{{ userEmail.split('@')[0] }}</span>
+
+    <ul class="header__nav-user-menu">
+      <li class="header__nav-user-item">
+        <a [routerLink]="'/tai-khoan'">Tài Khoản Của Tôi</a>
+      </li>
+      <li class="header__nav-user-item">
+        <a [routerLink]="'/don-mua'">Đơn Mua</a>
+      </li>
+      <li class="header__nav-user-item" (click)="logout()">
+        <a href="#">Đăng Xuất</a>
+      </li>
+    </ul>
+  </div>
+</ng-container>
+
+
           </ul>
         </nav>
         

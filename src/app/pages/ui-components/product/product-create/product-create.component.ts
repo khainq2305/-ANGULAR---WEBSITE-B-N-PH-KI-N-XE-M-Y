@@ -1,18 +1,22 @@
-// ✅ product-create.component.ts (Đã bỏ media, đổi thumbnail -> image)
-// Cập nhật với các validator theo yêu cầu
 import { Component, OnInit, Signal, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatSliderModule } from '@angular/material/slider';
 import { EditorComponent } from 'src/app/components/editor/editor.component';
 import { CategoryService } from 'src/app/services/apis/category.service';
 import { ProductService } from 'src/app/services/apis/product.service';
@@ -28,13 +32,11 @@ import { ToastrService } from 'ngx-toastr';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatRadioModule,
     MatSlideToggleModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatChipsModule,
-    MatSliderModule,
     EditorComponent
   ],
   templateUrl: './product-create.component.html',
@@ -49,24 +51,37 @@ export class ProductCreateComponent implements OnInit {
     private fb: FormBuilder,
     private categoryService: CategoryService,
     private productService: ProductService,
-    private toastr: ToastrService // dùng toast hiển thị kết quả
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.fetchCategories();
     this.initForm();
+  
+    // Theo dõi sự thay đổi của giá và giảm giá để tính toán lại giá sau giảm
+    this.productForm.get('price')?.valueChanges.subscribe(() => {
+      this.calculateDiscountedPrice();
+    });
+  
+    this.productForm.get('discount')?.valueChanges.subscribe(() => {
+      this.calculateDiscountedPrice();
+    });
   }
+  
+// Phương thức tính giá sau giảm
+calculateDiscountedPrice(): number {
+  const price = this.productForm.get('price')?.value || 0;
+  const discount = this.productForm.get('discount')?.value || 0;
+  return price - discount;
+}
 
-  // File validator để kiểm tra định dạng và kích thước ảnh
   fileValidator(control: AbstractControl): ValidationErrors | null {
     const file = control.value;
     if (file && file instanceof File) {
-      // Cho phép các định dạng: jpg, jpeg, png, webp (không phân biệt chữ hoa/thường)
       const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;
       if (!allowedExtensions.exec(file.name)) {
         return { invalidFileType: true };
       }
-      // Kiểm tra kích thước: tối đa 5MB
       if (file.size > 5 * 1024 * 1024) {
         return { fileTooLarge: true };
       }
@@ -74,72 +89,52 @@ export class ProductCreateComponent implements OnInit {
     return null;
   }
 
-  // Validator cho phần giảm giá (discount)
-  discountValidator(group: AbstractControl): ValidationErrors | null {
-    const type = group.get('discountType')?.value;
-    const fixed = group.get('discountFixedPrice')?.value;
-    const percent = group.get('discountPercentage')?.value;
-    const price = group.get('price')?.value;
-  
-    if (type === 'percentage') {
-      if (percent === null || percent < 1 || percent > 100) {
-        return { invalidDiscountPercentage: true };
-      }
-    }
-  
-    if (type === 'fixed') {
-      if (fixed === null || fixed === '') {
-        return { invalidFixedPrice: 'Giá sau giảm là bắt buộc' };
-      }
-      if (fixed < 0) {
-        return { invalidFixedPrice: 'Giá sau giảm không được âm' };
-      }
-      if (price && fixed > price) {
-        return { fixedPriceGreaterThanPrice: true };
-      }
-    }
-  
-    return null;
-  }
-  
+  discountValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const discount = control.value;
+      const price = this.productForm?.get('price')?.value;
 
-  // Khởi tạo form với các validators
+      if (discount === null || discount === '') return null;
+
+      // Không phải số hoặc < 0
+      if (isNaN(discount) || discount < 0) {
+        return { invalidDiscount: 'Giảm giá phải là số không âm' };
+      }
+
+      // Lớn hơn giá gốc
+      if (price && discount > price) {
+        return { invalidDiscount: 'Giảm giá không được lớn hơn giá gốc' };
+      }
+
+      return null;
+    };
+  }
+
   initForm() {
     this.productForm = this.fb.group({
       name: [
-        '', 
+        '',
         [
-          Validators.required, 
+          Validators.required,
           Validators.minLength(3),
-          // Pattern chỉ cho phép chữ, số và khoảng trắng (bỏ qua các ký tự đặc biệt)
-          Validators.pattern(/^[a-zA-Z0-9 ]+$/)
+          Validators.pattern(/^[\p{L}0-9 ]+$/u)
         ]
       ],
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [
-        null, 
+        null,
         [
-          Validators.required, 
+          Validators.required,
           Validators.min(1),
-          // Giá chỉ nhập số, với có thể có dấu chấm thập phân
           Validators.pattern(/^\d+(\.\d+)?$/)
         ]
       ],
-      discountType: ['none'],
-      discountPercentage: [
+      discount: [0, [this.discountValidator()]],
+      quantity: [
         null,
         [
+          Validators.required,
           Validators.min(1),
-          Validators.max(100),
-        ]
-      ],
-            discountFixedPrice: [null],
-      quantity: [
-        null, 
-        [
-          Validators.required, 
-          Validators.min(1),
-          // Chỉ cho phép số nguyên
           Validators.pattern(/^[0-9]+$/)
         ]
       ],
@@ -147,106 +142,85 @@ export class ProductCreateComponent implements OnInit {
       status: ['1', Validators.required],
       is_feature: ['0'],
       image: [null, [Validators.required, this.fileValidator.bind(this)]]
-    }, { validators: this.discountValidator.bind(this) }); // gắn validator toàn cục cho group
+    });
+
+    // Tự động validate lại discount khi giá gốc thay đổi
+    this.productForm.get('price')?.valueChanges.subscribe(() => {
+      this.productForm.get('discount')?.updateValueAndValidity();
+    });
   }
 
   fetchCategories() {
     this.categoryService.getCategoryList().subscribe({
       next: (res) => {
-        console.log("✅ Danh mục nhận được:", res);
         this.categories.set(res.data);
       },
       error: (err) => {
-        console.error("🔥 Lỗi lấy danh mục:", err);
         this.toastr.error('Lỗi tải danh mục! Vui lòng thử lại.');
       }
     });
   }
-  
 
   onImageUpload(event: any) {
     if (!event.target.files?.length) return;
     const file = event.target.files[0];
     const reader = new FileReader();
-  
+
     reader.readAsDataURL(file);
     reader.onload = () => {
       this.productImage = {
         name: file.name,
         size: file.size,
         url: reader.result as string,
-        file,
+        file
       };
-  
-      // Patch và cập nhật trạng thái cho trường image
+
       this.productForm.patchValue({ image: file });
       this.productForm.get('image')?.markAsTouched();
       this.productForm.get('image')?.updateValueAndValidity();
-  
-      console.log("📸 Ảnh đã chọn:", file);
-      console.log("✅ Is form valid now?", this.productForm.valid);
     };
   }
-  
 
-  getDiscountedPrice(): number {
-    const price = this.productForm.get('price')?.value || 0;
-    const type = this.productForm.get('discountType')?.value;
-    const percent = this.productForm.get('discountPercentage')?.value;
-    const fixed = this.productForm.get('discountFixedPrice')?.value;
-  
-    if (type === 'percentage') return price * (1 - percent / 100);
-    if (type === 'fixed' && fixed !== null) return fixed;
-    return price;
-  }
-  
   getCategoryName(id: number): string {
-    return this.categories().find(c => c.id === id)?.name || '';
+    return this.categories().find((c) => c.id === id)?.name || '';
   }
-  
+
   onDescriptionChange(value: string) {
     this.productForm.get('description')?.setValue(value);
     this.productForm.get('description')?.markAsTouched();
     this.productForm.get('description')?.updateValueAndValidity();
   }
-  
+
   onRemoveCategory(id: number): void {
     const current = this.productForm.get('categories')!.value || [];
-    this.productForm.get('categories')!.setValue(current.filter((catId: number) => catId !== id));
+    this.productForm.get('categories')!.setValue(
+      current.filter((catId: number) => catId !== id)
+    );
   }
-  
+
   onSubmitForm() {
-    console.log("🟢 SUBMIT được gọi");
     if (this.productForm.invalid) {
-      // Đánh dấu tất cả control là touched để hiển thị lỗi
-      Object.keys(this.productForm.controls).forEach(key => {
+      Object.keys(this.productForm.controls).forEach((key) => {
         this.productForm.get(key)?.markAsTouched();
       });
-      console.warn("❌ Form INVALID:", this.productForm.value);
-      console.log("📛 Error controls:", this.f);
-      this.toastr.error("Form không hợp lệ! Vui lòng kiểm tra lại các trường.");
+      this.toastr.error('Form không hợp lệ! Vui lòng kiểm tra lại các trường.');
       return;
     }
   
-    console.log("✅ Form hợp lệ, đang gọi API...");
     const formValues = this.productForm.value;
     const formData = new FormData();
   
     formData.append('name', formValues.name);
     formData.append('description', formValues.description);
     formData.append('price', formValues.price);
-    formData.append('discountType', formValues.discountType);
-  
-    const discountValue =
-      formValues.discountType === 'percentage'
-        ? formValues.discountPercentage
-        : formValues.discountFixedPrice;
-  
-    formData.append('discountValue', discountValue);
-    formData.append('finalPrice', this.getDiscountedPrice().toString());
+    formData.append('discount', formValues.discount);
     formData.append('quantity', formValues.quantity);
     formData.append('status', formValues.status);
     formData.append('is_feature', formValues.is_feature);
+  
+    // Tính giá sau giảm
+    const finalPrice = this.calculateDiscountedPrice();
+    formData.append('finalPrice', finalPrice.toString());
   
     if (this.productImage?.file) {
       formData.append('image', this.productImage.file);
@@ -269,6 +243,7 @@ export class ProductCreateComponent implements OnInit {
   }
   
   
+
   get f() {
     return this.productForm.controls;
   }

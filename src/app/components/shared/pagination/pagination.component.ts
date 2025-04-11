@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { CommonModule } from '@angular/common'; // 👈 THÊM DÒNG NÀY
+import { CommonModule } from '@angular/common'; 
 
-import { MatIconModule } from '@angular/material/icon'; // ✅ Import MatIconModule
+import { MatIconModule } from '@angular/material/icon'; 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [CommonModule,MatIconModule], // 👈 THÊM DÒNG NÀY
+  imports: [CommonModule,MatIconModule], 
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss'],
 })

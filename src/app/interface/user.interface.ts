@@ -14,5 +14,11 @@ export interface IUser {
     gender: 'male' | 'female' | 'other' | null;
     dob: string | null;
     deletedAt: string | null;
+}
+export interface User {
+    id: number;
+    email: string;
+    password: string;
+    role: string;
   }
   

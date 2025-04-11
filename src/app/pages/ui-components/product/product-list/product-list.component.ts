@@ -48,7 +48,8 @@ import { PaginationComponent } from 'src/app/components/shared/pagination/pagina
   styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit {
-  displayedColumns = ['select', 'stt', 'image', 'price', 'discount', 'category', 'quantity', 'status', 'action'];
+  displayedColumns = ['select', 'stt', 'thumbnail', 'name', 'price', 'discount', 'category', 'quantity', 'status', 'action'];
+
   dataSource = new MatTableDataSource<IProduct>([]);
   searchText = '';
   selectedCategory = '';
