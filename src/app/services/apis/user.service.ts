@@ -1,21 +1,34 @@
+// src/app/services/apis/user.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiService } from '../common/api.service';
-import { IUser } from 'src/app/interface/user.interface';
 import { Observable } from 'rxjs';
-import { API_ENDPOINT } from 'src/app/config/api-endpoint.config';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class UserService extends ApiService {
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private apiUrl = 'http://localhost:3000/admin/user';
+
+  constructor(private http: HttpClient) {}
+
+  getUsers(): Observable<any> {
+    return this.http.get(this.apiUrl);
+  }
+
+  createUser(data: FormData) {
+    return this.http.post<any>('http://localhost:3000/admin/user', data);
+  }
   
-  constructor(
-    protected _http: HttpClient,
-  ) { 
-    super(_http);
+
+
+
+  toggleStatus(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/status`, {});
   }
-  getAllUsers(): Observable<IUser[]> {
-    return this.get<IUser[]>(API_ENDPOINT.user.base + API_ENDPOINT.user.list);
+
+  updateUserStatus(id: number, status: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/status`, { status });
   }
+  resetPassword(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/reset-password`, {});
+  }
+  
 }

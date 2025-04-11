@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiService } from '../common/api.service';
 import { Observable } from 'rxjs';
-import {  ICategoryResponse} from '../../interface/category.interface';
+import {  ICategory} from '../../interface/category.interface';
 import { API_ENDPOINT } from '../../config/api-endpoint.config';
 
 @Injectable({
