@@ -11,13 +11,14 @@ export const AppRoutes: Routes = [
     component:  FullComponent,
     children: AdminRoutes
   },
-  {
-    path: '**',
-    component: NotFoundComponent
-  },
+ 
   {
     path: '',
     component: ClientLayoutComponent,
     children: ClientRoutes
-  }
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
+  },
 ];
