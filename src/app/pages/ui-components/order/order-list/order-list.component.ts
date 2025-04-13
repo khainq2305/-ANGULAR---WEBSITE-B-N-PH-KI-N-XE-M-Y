@@ -82,7 +82,7 @@ export class OrderListComponent implements OnInit {
     this.orderService.getOrders(params).subscribe({
       next: (res) => {
         this.dataSource = res.data.map((order: any) => ({
-          orderId: order.idOrder,
+          orderId: order.id,
           email: order.customer?.email || 'Không có email',
           createdAt: new Date(order.createdAt).toLocaleDateString(),
           totalAmount: order.total_price,

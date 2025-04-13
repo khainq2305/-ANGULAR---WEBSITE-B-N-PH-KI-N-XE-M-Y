@@ -1,3 +1,10 @@
+<app-toast
+  [image]="product?.image"
+  [name]="product?.name"
+  [price]="product?.finalPrice"
+  [visible]="toastVisible">
+</app-toast>
+
 <div class="product-detail bg-light py-4">
     <div class="container-main" style="max-width: 1200px; margin: 0 auto;">
       <!-- TOP SECTION -->
@@ -15,7 +22,7 @@
   
         <div class="col-md-7 text-start">
           <h4 class="fw-bold mb-3">
-            <span class="badge bg-danger me-2">Yêu Thích+</span>
+            <span style="background: linear-gradient(to right, #000428, #004e92);" class="badge  me-2">Yêu Thích+</span>
             {{ product?.name }}
           </h4>
   
@@ -55,7 +62,7 @@
               <button
                 *ngFor="let label of labels; let i = index"
                 [ngStyle]="{
-                  'border': i === 0 ? '1px solid red' : '1px solid #ccc',
+                  'border': i === 0 ? '1px solid linear-gradient(to right, #000428, #004e92)' : '1px solid #ccc',
                   'color': i === 0 ? 'red' : '#333'
                 }"
                 class="d-flex align-items-center rounded px-3 py-2"
@@ -70,27 +77,30 @@
           <div class="d-flex align-items-center gap-2 mb-4">
             <label class="fw-semibold mb-0" style="min-width: 70px">Số Lượng</label>
             <div class="d-flex align-items-center border rounded overflow-hidden" style="height: 36px;">
-              <button class="border-0 bg-light px-3" style="height: 100%">-</button>
+              <button class="border-0 bg-light px-3" style="height: 100%" (click)="decreaseQuantity()">-</button>
+              
               <input
                 type="number"
                 min="1"
-                value="1"
+                [(ngModel)]="quantity"
                 class="text-center border-0"
                 style="width: 50px; height: 100%; outline: none;"
               />
-              <button class="border-0 bg-light px-3" style="height: 100%">+</button>
+              
+              <button class="border-0 bg-light px-3" style="height: 100%" (click)="increaseQuantity()">+</button>
             </div>
-            <span class="text-muted ms-2" style="font-size: 14px;">1095 sản phẩm có sẵn</span>
+            <span class="text-muted ms-2" style="font-size: 14px;">{{ product?.quantity }} sản phẩm có sẵn</span>
           </div>
+          
           
   
           <!-- ACTIONS -->
           <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <button (click)="addToCart()" class="btn border border-danger text-danger bg-white fw-semibold">
+            <button style="border-color: linear-gradient(to right, #000428, #004e92); color: linear-gradient(to right, #000428, #004e92);" (click)="addToCart()" class="btn border  bg-white fw-semibold">
               🛒 Thêm Vào Giỏ Hàng
             </button>
             
-            <button class="btn bg-danger text-white fw-semibold">Mua Ngay</button>
+            <button style="background: linear-gradient(to right, #000428, #004e92);" class="btn  text-white fw-semibold">Mua Ngay</button>
           </div>
         </div>
       </div>

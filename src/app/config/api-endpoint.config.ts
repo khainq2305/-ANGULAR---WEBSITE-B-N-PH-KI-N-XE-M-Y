@@ -16,6 +16,11 @@ export const API_ENDPOINT = {
     base: API_BASE_URL + '/admin/orders',
     list: '/list'
   },
+  orderClient: {
+    base: API_BASE_URL + '/orders', // ✅ client gọi cái này
+    place: '/place',
+    getByUser: '/user'
+  },
   cart: {
     base: API_BASE_URL + '/cart',
     add: '/add' ,
@@ -36,14 +41,18 @@ export const API_ENDPOINT = {
     base: API_BASE_URL + '/admin/user',
     list: '/',
     add: '/',
-    register: '/register',
-    login: '/login',
+   
     edit: (id: number | string) => `/${id}`,
     delete: (id: number | string) => `/${id}`,
     toggleStatus: (id: number | string) => `/${id}/status`,
     resetPassword: (id: number | string) => `/${id}/reset-password`
   },
-
+  auth: {
+    base: API_BASE_URL,
+    register: '/register',
+    login: '/login'
+  }
+,  
 
   comment: {
     base: `${API_BASE_URL}/admin/comment`,
@@ -63,7 +72,17 @@ export const API_ENDPOINT = {
   },
   categoryClient: {
     base: API_BASE_URL + '/categories' 
+    ,
+  ghn: {
+    base: 'http://localhost:3000/ghn',
+    provinces: '/provinces',
+    districts: (provinceId: number) => `/districts/${provinceId}`,
+    wards: (districtId: number) => `/wards/${districtId}`,
+    availableServices: '/available-services',
+    fee: '/fee'
   }
-};
+  
+}
 
 
+}

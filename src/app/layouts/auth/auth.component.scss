@@ -1,0 +1,15 @@
+/* Sửa layout auth để không có khoảng trắng */
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  router-outlet ~ * {
+    margin-top: -120px !important;
+  }
+  
+  app-footer {
+    margin-top: auto;
+  }
+  

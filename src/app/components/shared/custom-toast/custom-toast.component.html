@@ -1,0 +1,22 @@
+<div *ngIf="visible" class="custom-toast">
+    <button class="custom-toast__close" (click)="hideToast()">×</button>
+    <div class="custom-toast__header">Đã thêm vào giỏ hàng thành công!</div>
+    <div class="custom-toast__body">
+      <img [src]="image" alt="product" />
+      <div class="text-info">
+        <div class="custom-toast__name">{{ name }}</div>
+  
+        <div class="d-flex align-items-center gap-2">
+          <div
+            *ngIf="originalPrice > price"
+            style="text-decoration: line-through; font-size: 13px; color: #888;"
+          >
+            {{ originalPrice | number:'1.0-0' }}₫
+          </div>
+  
+          <div class="custom-toast__price">{{ price | number:'1.0-0' }}₫</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

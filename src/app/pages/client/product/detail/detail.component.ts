@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common'; // ✅ THÊM FormsModule
 import { ProductService } from 'src/app/services/apis/product.service';
+import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { ToastComponent } from 'src/app/components/shared/custom-toast/custom-toast.component';
 
 @Component({
   selector: 'app-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, ToastComponent], // ✅ THÊM FormsModule
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
@@ -14,44 +17,51 @@ export class DetailComponent implements OnInit {
   thumbs: string[] = [];
   reviewImages: string[] = [];
   product: any;
-// ❌ Xóa dòng này nếu có
-labels: string[] = [];
+  labels: string[] = [];
+
+  quantity = 1; // ✅ dùng để tăng/giảm số lượng
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private toastr: ToastrService // ✅ thêm
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('🟡 ID lấy từ route:', id);
-  
     this.productService.getProductById(id).subscribe({
       next: (res) => {
-        console.log('🟢 Product detail:', res);
-        this.product = res.data; // ✅ sửa ở đây
-        // 👇 nếu backend chỉ trả tên ảnh
-this.product.image = `http://localhost:3000/uploads/${this.product.image}`;
-this.thumbs = [this.product.image];
+        this.product = res.data;
+        this.product.image = `http://localhost:3000/uploads/${this.product.image}`;
+        this.thumbs = [this.product.image];
       },
-      error: (err) => {
-        console.error('❌ Lỗi khi lấy chi tiết sản phẩm:', err);
-      }
+      error: (err) => console.error('❌ Lỗi khi lấy chi tiết sản phẩm:', err)
     });
   }
-  addToCart() {
 
-    const product_id = this.product.id;
-    const quantity = 1;
-    this.productService.addToCart({
-      product_id,
-      quantity
-    }).subscribe({
-      next: () => alert("🛒 Đã thêm vào giỏ hàng!"),
-      error: err => console.error("❌ Lỗi:", err)
-    });
-    
+  increaseQuantity() {
+    this.quantity++;
   }
-  
+
+  decreaseQuantity() {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
+  toastVisible = false;
+
+addToCart() {
+  const product_id = this.product.id;
+  this.productService.addToCart({ product_id, quantity: this.quantity }).subscribe({
+    next: () => {
+      this.toastVisible = true;
+      setTimeout(() => this.toastVisible = false, 3000);
+    },
+    error: err => console.error("❌ Lỗi:", err)
+  });
 }
 
+  
+  
+}

@@ -1,0 +1,15 @@
+<header class="auth-header">
+    <div class="logo">
+      <!-- Click Shopee để về trang chủ -->
+      <a routerLink="/" class="logo-link">
+        <img src="/img/logo/logo-full-white.png" alt="Logo" />
+        <span class="shopee-text">Shopee</span>
+      </a>
+  
+      <span *ngIf="isLoginPage">Đăng nhập</span>
+      <span *ngIf="isRegisterPage">Đăng ký</span>
+    </div>
+    
+    <div class="help">Bạn cần giúp đỡ?</div>
+  </header>
+  

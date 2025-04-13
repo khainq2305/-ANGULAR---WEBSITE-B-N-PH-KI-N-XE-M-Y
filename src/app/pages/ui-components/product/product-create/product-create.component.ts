@@ -149,18 +149,19 @@ calculateDiscountedPrice(): number {
       this.productForm.get('discount')?.updateValueAndValidity();
     });
   }
+  categoryList: ICategory[] = [];
 
   fetchCategories() {
     this.categoryService.getCategoryList().subscribe({
       next: (res) => {
-        this.categories.set(res);
-      },
-      error: (err) => {
-        this.toastr.error('Lỗi tải danh mục! Vui lòng thử lại.');
+        const data = Array.isArray(res) ? res : [];
+        this.categories.set(data);
+        this.categoryList = data; // dùng biến thường cho HTML
       }
     });
   }
-
+  
+  
   onImageUpload(event: any) {
     if (!event.target.files?.length) return;
     const file = event.target.files[0];

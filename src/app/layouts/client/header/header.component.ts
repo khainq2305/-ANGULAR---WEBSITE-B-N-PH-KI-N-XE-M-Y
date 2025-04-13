@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIf, CommonModule } from '@angular/common'; // 💡 THÊM DÒNG NÀY
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, NgIf, CommonModule], // 💡 THÊM CommonModule
+  imports: [RouterLink, NgIf, CommonModule, RouterModule], // 💡 THÊM CommonModule
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })

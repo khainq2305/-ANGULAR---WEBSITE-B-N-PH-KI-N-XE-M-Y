@@ -16,44 +16,53 @@
   
           <div class="location-fields">
             <div class="select-wrapper">
-              <select class="input-field">
-                <option>Chọn tỉnh/thành</option>
-              </select>
+              <select class="input-field"
+              [(ngModel)]="selectedProvinceId"
+              name="province"
+              (change)="onProvinceChange()"
+              [ngModelOptions]="{ standalone: true }">
+        <option value="">Chọn tỉnh/thành</option>
+        <option *ngFor="let p of provinces" [value]="p.ProvinceID">
+          {{ p.ProvinceName }}
+        </option>
+      </select>
+      
+              
             </div>
             <div class="select-wrapper">
-              <select class="input-field">
-                <option>Chọn quận/huyện</option>
+              <!-- Quận/Huyện -->
+              <select class="input-field" [(ngModel)]="selectedDistrictId" name="district" (change)="onDistrictChange()">
+                <option value="">Chọn quận/huyện</option>
+                <option *ngFor="let d of districts" [value]="d.DistrictID">{{ d.DistrictName }}</option>
               </select>
+
+
             </div>
             <div class="select-wrapper">
-              <select class="input-field">
-                <option>Chọn phường/xã</option>
-              </select>
+         
+<!-- Phường/Xã -->
+<select
+  class="input-field"
+  [(ngModel)]="selectedWardCode"
+  name="ward"
+  (change)="onWardChange()"
+  [ngModelOptions]="{ standalone: true }">
+  <option value="">Chọn phường/xã</option>
+  <option *ngFor="let w of wards" [value]="w.WardCode">{{ w.WardName }}</option>
+</select>
+
             </div>
           </div>
-  
-          <input class="input-field detailed-address" placeholder="Địa chỉ chi tiết" />
+          <input class="input-field detailed-address" placeholder="Địa chỉ chi tiết"
+          [(ngModel)]="detailedAddress" name="detailedAddress" [ngModelOptions]="{ standalone: true }" />
+        
           <div class="name-fields">
-            <input class="input-field" placeholder="Tên người nhận" />
-            <input class="input-field" placeholder="Điện thoại" />
+            <input class="input-field" placeholder="Tên người nhận" [(ngModel)]="name" name="name" />
+            <input class="input-field" placeholder="Điện thoại" [(ngModel)]="phone" name="phone" />
           </div>
         </div>
   
-        <div class="section">
-          <h2>Phương thức vận chuyển</h2>
-          <div class="radio-group">
-            <label>
-              <input type="radio" name="delivery-method" checked />
-              Miễn phí Cần Thơ (trong ngày)
-              <span class="price-label">MIỄN PHÍ</span>
-            </label>
-            <label>
-              <input type="radio" name="delivery-method" />
-              Ship nhanh toàn quốc (2-3 ngày)
-              <span class="price-label">33.000 đ</span>
-            </label>
-          </div>
-        </div>
+       
   
         <div class="section">
           <h2>Thanh toán</h2>
@@ -77,7 +86,8 @@
           </div>
         </div>
   
-        <button type="button" class="btn-primary">Thanh toán ngay</button>
+        <button type="button" class="btn-primary" (click)="onPlaceOrder()">Thanh toán ngay</button>
+
       </form>
   
       <!-- Right Side - Order Summary -->

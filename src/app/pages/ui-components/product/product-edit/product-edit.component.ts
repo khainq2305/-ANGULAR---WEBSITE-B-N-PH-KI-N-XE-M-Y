@@ -44,6 +44,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class ProductEditComponent implements OnInit {
   productForm!: FormGroup;
   categories = signal<ICategory[]>([]);
+  categoryList: ICategory[] = []; // ✅ thêm dòng này
   productImage: any = null;
   productId!: number;
 
@@ -124,10 +125,12 @@ export class ProductEditComponent implements OnInit {
 
   fetchCategories() {
     this.categoryService.getCategoryList().subscribe(res => {
-      this.categories.set(res);
+      const data = Array.isArray(res) ? res : []; // ✅ fix chỗ này
+      this.categories.set(data);                  // nếu còn cần dùng signal
+      this.categoryList = data;                   // dùng cho template
     });
   }
-
+  
   fetchProduct() {
     this.productService.getProductById(this.productId).subscribe(res => {
       const product = res.data;

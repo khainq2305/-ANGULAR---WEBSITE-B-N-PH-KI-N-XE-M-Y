@@ -1,7 +1,7 @@
 button.active {
-    background-color: #ee4d2d;
+    background:linear-gradient(to right, #000428, #004e92);
     color: white;
-    border-color: #ee4d2d;
+    border-color: linear-gradient(to right, #000428, #004e92);
   }
   .btn-outline-secondary,
 .btn-outline-danger {
@@ -16,12 +16,52 @@ button.active {
 }
 
 .btn-outline-danger.active {
-  border: 1px solid #ee4d2d !important;
-  background-color: #ee4d2d !important;
+  border: 1px solid linear-gradient(to right, #000428, #004e92);
+  background: linear-gradient(to right, #000428, #004e92);
   color: #fff !important;
 }
 
 .btn-outline-secondary:hover {
-  border-color: #ee4d2d !important;
-  color: #ee4d2d !important;
+  border-color: linear-gradient(to right, #000428, #004e92);
+  color: linear-gradient(to right, #000428, #004e92);
+}
+.toast-custom-body {
+  background-color: #fff3f1 !important;
+  border: 1px solid #ff6d6d !important;
+  color: #333 !important;
+  font-size: 14px;
+  border-radius: 6px;
+  padding: 10px 14px !important;
+  min-width: 320px;
+}
+
+.toast-custom .toast-title {
+  font-weight: 600;
+  color: #ff3300;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.toast-custom .toast-custom-body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.toast-custom img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.toast-custom .toast-price {
+  color: #d0011b;
+  font-weight: 600;
+}
+
+.toast-custom .toast-content {
+  display: flex;
+  flex-direction: column;
 }

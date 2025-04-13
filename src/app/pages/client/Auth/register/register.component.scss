@@ -1,127 +1,198 @@
 .register-page {
-    background-color: #f53d2d;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  background: linear-gradient(to right, #000428, #004e92);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.container-css {
+  position: relative;
+  max-width: 1200px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  transform: translateY(-60px); // đẩy lên
+}
+
+.register-bg {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-brand {
+  color: white;
+  text-align: center;
+
+  img {
+    width: 360px;
+    margin-bottom: 20px;
   }
-  
-  .container-css {
-    position: relative;
-    max-width: 1200px !important;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    margin: 0 auto !important;   
-    align-items: center;
-    transform: translateY(-60px);
-  }
-  
-  .register-bg {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .register-form {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .register-brand {
-    color: white;
-    text-align: center;
-  }
-  
-  .register-brand img {
-    width: 100px;
-    margin-bottom: 10px;
-  }
-  
-  .register-brand p {
+
+  p {
     font-size: 20px;
     line-height: 1.6;
   }
-  
-  .register-form-box {
-    width: 400px;
-    background-color: white;
-    padding: 40px;
-    border-radius: 6px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-  }
-  
-  .register-form-box h2 {
+}
+
+.register-form-box {
+  width: 400px;
+  background-color: white;
+  padding: 40px;
+  margin-top: 35px;
+  border-radius: 6px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+
+  h2 {
     text-align: center;
     margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
   }
-  
-  .register-form-box input {
+
+  input {
     width: 100%;
     padding: 12px;
     margin-bottom: 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    font-size: 14px;
   }
-  
-  .register-form-box button {
+
+  .error {
+    font-size: 13px;
+    color: #f53d2d;
+    margin-top: -6px;
+    margin-bottom: 10px;
+  }
+
+  .btn-register {
     width: 100%;
     padding: 12px;
-    background-color: #f53d2d;
+    background: linear-gradient(to right, #000428, #004e92);
     color: white;
     border: none;
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
+    font-size: 15px;
   }
-  
-  .register-links {
-    margin-top: 10px;
-    font-size: 13px;
-    text-align: center;
+}
+
+input.invalid {
+  border: 1px solid #f53d2d !important;
+}
+
+.input-password {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding: 12px;
+    padding-right: 40px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
   }
-  
-  .register-links a {
-    color: #05a;
-    text-decoration: none;
+
+  .eye-icon {
+    position: absolute;
+    top: 33%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 100%;
+      height: auto;
+    }
   }
-  
-  .register-or {
-    text-align: center;
-    margin: 20px 0;
-    color: #999;
+}
+
+.register-or {
+  position: relative;
+  text-align: center;
+  margin: 20px 0;
+  color: #999;
+  font-weight: bold;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #ddd;
   }
-  
-  .register-social {
-    display: flex;
-    gap: 10px;
+
+  &::before {
+    left: 0;
   }
-  
-  .fb {
+
+  &::after {
+    right: 0;
+  }
+}
+
+.register-social {
+  display: flex;
+  gap: 10px;
+
+  button {
     flex: 1;
-    background-color: #3b5998;
-    color: white;
-    border: none;
     padding: 10px;
     border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    img {
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+    }
   }
-  
-  .gg {
-    flex: 1;
+
+  .fb {
     background-color: white;
     border: 1px solid #ccc;
-    color: #4285f4;
-    padding: 10px;
-    border-radius: 4px;
+    color: black;
   }
-  
-  .register-login {
-    text-align: center;
-    font-size: 13px;
-    margin-top: 20px;
+
+  .gg {
+    background-color: white;
+    border: 1px solid #ccc;
+    color: black;
   }
-  
+}
+
+.register-login {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 20px;
+
+  a {
+    color: #05a;
+    font-weight: bold;
+    text-decoration: none;
+  }
+}

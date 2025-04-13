@@ -61,7 +61,8 @@
               <span class="summary-total-label">Tổng thanh toán:</span>
               <span class="summary-total-amount">{{ totalAmount | number }} ₫</span>
             </div>
-            <a [routerLink]="['/thanhtoan']" class="btn-purchase">Mua Hàng</a>
+            <a (click)="goToCheckout()" [routerLink]="['/thanh-toan']" class="btn-purchase">Mua Hàng</a>
+
           </div>
         </div>
       </div>

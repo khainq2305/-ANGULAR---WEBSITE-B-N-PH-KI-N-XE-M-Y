@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-     "copy-tinymce": "npx copyfiles -u 1 node_modules/tinymce/{icons,plugins,skins,themes}/** src/assets/tinymce"
+    "copy-tinymce": "npx copyfiles -u 1 node_modules/tinymce/{icons,plugins,skins,themes}/** src/assets/tinymce"
   },
   "private": true,
   "dependencies": {
@@ -30,8 +30,10 @@
     "@tinymce/tinymce-angular": "^8.0.1",
     "angular-tabler-icons": "^2.7.0",
     "apexcharts": "^3.49.0",
+    "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
+    "jwt-decode": "^4.0.0",
     "ng-apexcharts": "1.7.6",
     "ng2-charts": "^5.0.4",
     "ngx-scrollbar": "^11.0.0",
@@ -49,6 +51,7 @@
     "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",
     "@types/date-fns": "^2.6.0",
     "@types/jasmine": "~4.3.0",
+    "@types/jwt-decode": "^2.2.1",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

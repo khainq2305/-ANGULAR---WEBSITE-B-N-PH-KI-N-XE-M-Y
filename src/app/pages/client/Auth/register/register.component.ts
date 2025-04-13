@@ -3,19 +3,27 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { ClientUserService } from 'src/app/services/apis/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
   registerForm!: FormGroup;
   submitted = false;
+  showPassword = false;
+  showConfirm = false;
 
-  constructor(private fb: FormBuilder, private userService: ClientUserService,  private toastr: ToastrService  ) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: ClientUserService,
+    private toastr: ToastrService,
+    private router: Router
+  ) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [
@@ -37,27 +45,24 @@ export class RegisterComponent {
     return pass === confirm ? null : { passwordMismatch: true };
   }
 
+  togglePassword(field: 'password' | 'confirm') {
+    if (field === 'password') this.showPassword = !this.showPassword;
+    if (field === 'confirm') this.showConfirm = !this.showConfirm;
+  }
+
   handleRegister() {
     this.submitted = true;
     if (this.registerForm.invalid) return;
 
-    // ✅ Chỉ gửi email & password (KHÔNG name, confirmPassword)
     const { email, password } = this.registerForm.value;
-
     this.userService.register({ email, password }).subscribe(
       res => {
-        console.log("✅ Đăng ký thành công", res);
-        this.toastr.success('Đăng ký thành công!', '', {
-          positionClass: 'toast-center-center' // 👈 custom vị trí
-        });
-        
-        // TODO: redirect nếu cần
+        this.toastr.success('Đăng ký thành công!', 'Thành công');
+        this.router.navigate(['/dang-nhap']);
       },
       err => {
-        console.error("❌ Lỗi đăng ký:", err);
-        this.toastr.error(err.error?.message || 'Đăng ký thất bại!', 'Lỗi'); // 👈 TOAST LỖI
+        this.toastr.error(err.error?.message || 'Đăng ký thất bại!', 'Lỗi');
       }
     );
-    
   }
 }

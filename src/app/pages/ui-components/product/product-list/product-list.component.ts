@@ -74,9 +74,11 @@ export class ProductListComponent implements OnInit {
 
   getCategories(): void {
     this.categoryService.getCategoryList().subscribe((res) => {
-      this.categoryOptions = res;
+      console.log('🔥 CATEGORY API RESULT:', res);
+      this.categoryOptions = Array.isArray(res) ? res : []; // ✅ ép chắc chắn là array
     });
   }
+  
   currentPage = 1;
   totalPages = 1;
   loadData(): void {

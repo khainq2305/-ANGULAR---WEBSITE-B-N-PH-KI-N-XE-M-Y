@@ -11,15 +11,21 @@ export class ClientUserService {
 
   register(data: any): Observable<any> {
     return this.http.post(
-      `${API_ENDPOINT.user.base}${API_ENDPOINT.user.register}`,
+      `${API_ENDPOINT.auth.base}${API_ENDPOINT.auth.register}`,
       data
     );
   }
 
   login(data: any): Observable<any> {
     return this.http.post(
-      `${API_ENDPOINT.user.base}${API_ENDPOINT.user.login}`,
+      `${API_ENDPOINT.auth.base}${API_ENDPOINT.auth.login}`,
       data
     );
   }
+  getUserId(): number | null {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user?.id || null;
+  }
+  
+  
 }

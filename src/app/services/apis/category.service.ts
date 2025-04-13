@@ -20,6 +20,7 @@ export class CategoryService extends ApiService {
    getCategoryList() : Observable<ICategory[]>{
       return this.get<ICategory[]>(API_ENDPOINT.category.base + API_ENDPOINT.category.list)
    }
+   
    addCategory(data: ICategory): Observable<ICategory> {
       return this.post<ICategory>(API_ENDPOINT.category.base + API_ENDPOINT.category.add, data)
    }
