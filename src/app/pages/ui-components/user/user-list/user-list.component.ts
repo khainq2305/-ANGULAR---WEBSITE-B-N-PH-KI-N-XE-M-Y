@@ -92,7 +92,9 @@ export class UserListComponent implements AfterViewInit {
   
       const usersWithAvatarUrl: User[] = res.data.map((user: User) => ({
         ...user,
-        avatar: user.avatar ? `http://localhost:3000${user.avatar}` : 'assets/default-avatar.png',
+        avatarUrl: user.avatar?.startsWith('/') 
+          ? `http://localhost:3000${user.avatar}` 
+          : `http://localhost:3000/${user.avatar}`,
       }));
   
       this.dataSource1 = new MatTableDataSource<User>(usersWithAvatarUrl);

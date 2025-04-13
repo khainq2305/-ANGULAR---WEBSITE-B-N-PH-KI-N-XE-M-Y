@@ -19,7 +19,7 @@ export const API_ENDPOINT = {
   cart: {
     base: API_BASE_URL + '/cart',
     add: '/add' ,
-    getByUser: '/user', // ✅ thêm dòng này 
+    getByUser: '/user', 
   },
   product: {
     base: API_BASE_URL + '/admin/products',
@@ -53,5 +53,17 @@ export const API_ENDPOINT = {
     update: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}`,
     delete: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}`,
     create: `${API_BASE_URL}/admin/comment`
+  },
+
+
+
+
+  productClient: {
+    base: `${API_BASE_URL}/products`
+  },
+  categoryClient: {
+    base: API_BASE_URL + '/categories' 
   }
 };
+
+

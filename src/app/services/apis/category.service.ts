@@ -32,4 +32,9 @@ export class CategoryService extends ApiService {
     getCategoryById(id: number): Observable<ICategory> {
       return this.get<ICategory>(API_ENDPOINT.category.base + API_ENDPOINT.category.delete + id) as Observable<ICategory>;    
     }
+
+    getClientCategoryList(): Observable<ICategory[]> {
+      return this._http.get<ICategory[]>(API_ENDPOINT.categoryClient.base);
+    }
+    
 }

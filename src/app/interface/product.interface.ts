@@ -2,7 +2,7 @@ export interface IProduct {
   id: number;
   name: string;
   price: number;
-  discount: number;         // ✅ GIỮ
+  discount: number;        
   quantity: number;
   
   status: number;
@@ -11,6 +11,7 @@ export interface IProduct {
   createdAt?: string;
   is_feature?: boolean;
   selected?: boolean;
+  finalPrice?: number; 
   category?: {
     id: number;
     name: string;

@@ -71,4 +71,16 @@ addToCart(data: { product_id: number; quantity: number }): Observable<any> {
 
 }
 
+
+
+getClientProducts(): Observable<IProduct[]> {
+  return this.http.get<IProduct[]>(`${API_ENDPOINT.productClient.base}`);
+}
+
+getClientProductsWithFilter(filters: any = {}): Observable<IProduct[]> {
+  return this.http.get<IProduct[]>(`${API_ENDPOINT.productClient.base}`, {
+    params: filters
+  });
+}
+
 }

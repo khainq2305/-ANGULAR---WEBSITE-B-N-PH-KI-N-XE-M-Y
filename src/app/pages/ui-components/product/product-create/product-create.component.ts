@@ -153,7 +153,7 @@ calculateDiscountedPrice(): number {
   fetchCategories() {
     this.categoryService.getCategoryList().subscribe({
       next: (res) => {
-        this.categories.set(res.data);
+        this.categories.set(res);
       },
       error: (err) => {
         this.toastr.error('Lỗi tải danh mục! Vui lòng thử lại.');

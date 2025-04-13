@@ -124,7 +124,7 @@ export class ProductEditComponent implements OnInit {
 
   fetchCategories() {
     this.categoryService.getCategoryList().subscribe(res => {
-      this.categories.set(res.data);
+      this.categories.set(res);
     });
   }
 

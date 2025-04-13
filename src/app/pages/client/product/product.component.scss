@@ -1,0 +1,94 @@
+.btn-see-more {
+  background: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.home-filter-sort-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+
+.home-filter-label {
+  font-weight: 600;
+  margin: 0;
+  color: #000;
+  display: flex;
+  align-items: center;
+}
+
+.sort-button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #000;
+  line-height: 1.4;
+}
+
+.sort-button i {
+  font-size: 14px;
+}
+
+.sort-button:hover {
+  background-color: #f1f1f1;
+}
+
+.sort-button.active {
+  background: linear-gradient(to right, #000428, #004e92);
+  color: white;
+  border: 1px solid #004e92;
+  box-shadow: 0 0 6px rgba(0, 78, 146, 0.4);
+}
+
+.home-filter-sort-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+
+  .home-filter-label {
+    font-weight: 600;
+    margin: 0;
+    color: #000; // CHỮ MÀU ĐEN
+  }
+
+  .sort-button {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #000; // CHỮ MÀU ĐEN
+
+    i {
+      font-size: 14px;
+    }
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
+
+    &.active {
+      background: linear-gradient(to right, #000428, #004e92);
+      color: white; // CHỮ TRẮNG KHI ACTIVE
+      border: 1px solid #004e92;
+    }
+  }
+}

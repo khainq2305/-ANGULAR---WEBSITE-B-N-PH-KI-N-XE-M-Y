@@ -74,7 +74,7 @@ export class ProductListComponent implements OnInit {
 
   getCategories(): void {
     this.categoryService.getCategoryList().subscribe((res) => {
-      this.categoryOptions = res.data;
+      this.categoryOptions = res;
     });
   }
   currentPage = 1;
