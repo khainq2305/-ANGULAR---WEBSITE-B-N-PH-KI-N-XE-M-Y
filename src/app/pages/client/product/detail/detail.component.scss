@@ -65,3 +65,40 @@ button.active {
   display: flex;
   flex-direction: column;
 }
+.btn-action {
+  font-weight: 600;
+  padding: 10px 32px;
+  font-size: 16px;
+  border-radius: 8px;
+  height: 48px; /* ✅ đảm bảo cả 2 nút bằng nhau */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* nếu có icon */
+  transition: all 0.3s ease;
+  min-width: 180px; /* ✅ đảm bảo nút đủ to */
+}
+
+/* "Thêm Vào Giỏ Hàng" có viền gradient ban đầu */
+.btn-cart {
+  background-color: white;
+  color: #000428;
+  border: 2px solid transparent;
+  background-image: linear-gradient(white, white), linear-gradient(to right, #000428, #004e92);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Hover: gradient nền, chữ trắng */
+.btn-cart:hover {
+  background: linear-gradient(to right, #000428, #004e92);
+  color: white;
+}
+
+/* "Mua Ngay" luôn nền gradient */
+.btn-buy {
+  background: linear-gradient(to right, #000428, #004e92);
+  color: white;
+  border: none;
+}
+

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,15 +9,13 @@ export class ApiService {
   constructor(private readonly http: HttpClient) {}
 
   /**
-   * @method GET
-   * @param apiUrl URL reference to API
-   * @param parameter Ex: [param1, param2, param3] => result: apiUrl/param1/param2/param3
-   * @param customHeaders OPTIONAL: another header value you want to customize
+   * GET: Lấy dữ liệu có thể kèm tham số URL và query params
    */
   get<T>(
     apiUrl: string,
     parameter: any[] = [],
-    customHeaders?: HttpHeaders
+    customHeaders?: HttpHeaders,
+    queryParams?: any
   ): Observable<T> {
     parameter.forEach((p) => {
       apiUrl += '/' + p;
@@ -26,70 +23,77 @@ export class ApiService {
 
     return this.http.get<T>(apiUrl, {
       headers: customHeaders ?? this.getHeaders(),
+      params: queryParams,
     });
   }
 
   /**
-   * @method POST
-   * @param apiUrl URL reference to API
-   * @param body request body
-   * @param customHeaders OPTIONAL: another header value you want to customize
+   * POST: Gửi dữ liệu body dạng JSON
    */
   post<T>(
     apiUrl: string,
     body?: T,
     customHeaders?: HttpHeaders
   ): Observable<T> {
-    return this.http.post<T>(apiUrl, body ? JSON.stringify(body) : {}, {
-      headers: customHeaders ?? this.getHeaders(),
-    });
+    return this.http.post<T>(
+      apiUrl,
+      body ? JSON.stringify(body) : {},
+      { headers: customHeaders ?? this.getHeaders() }
+    );
   }
 
   /**
-   * @method PATCH
-   * @param apiUrl URL reference to API
-   * @param body request body
-   * @param customHeaders OPTIONAL: another header value you want to customize
+   * PATCH: Cập nhật một phần dữ liệu
    */
   patch<T>(
     apiUrl: string,
     body?: T,
     customHeaders?: HttpHeaders
   ): Observable<T> {
-    return this.http.patch<T>(apiUrl, body ? JSON.stringify(body) : {}, {
+    return this.http.patch<T>(
+      apiUrl,
+      body ? JSON.stringify(body) : {},
+      { headers: customHeaders ?? this.getHeaders() }
+    );
+  }
+
+  /**
+   * PUT: Gửi dữ liệu đầy đủ (thay thế toàn bộ)
+   */
+  put<T>(
+    apiUrl: string,
+    body?: T,
+    customHeaders?: HttpHeaders
+  ): Observable<T> {
+    return this.http.put<T>(
+      apiUrl,
+      body ? JSON.stringify(body) : {},
+      { headers: customHeaders ?? this.getHeaders() }
+    );
+  }
+
+  /**
+   * DELETE: Cho phép truyền param hoặc body (ví dụ xóa nhiều)
+   */
+  delete(
+    apiUrl: string,
+    parameter: any[] = [],
+    customHeaders?: HttpHeaders,
+    body?: any
+  ): Observable<any> {
+    parameter.forEach((p: string) => {
+      apiUrl += '/' + p;
+    });
+
+    return this.http.request('delete', apiUrl, {
       headers: customHeaders ?? this.getHeaders(),
+      body: body,
     });
   }
 
   /**
-   * @method PUT
-   * @param apiUrl URL reference to API
-   * @param body request body
-   * @param customHeaders OPTIONAL: another header value you want to customize
+   * Tạo headers mặc định
    */
-  put<T>(apiUrl: string, body?: T, customHeaders?: HttpHeaders): Observable<T> {
-    return this.http.put<T>(apiUrl, body ? JSON.stringify(body) : {}, {
-      headers: customHeaders ?? this.getHeaders(),
-    });
-  }
-
-  /**
-   * @method DELETE
-   * @param apiUrl URL reference to API
-   * @param parameter Ex: [param1, param2, param3] => result: apiUrl/param1/param2/param3
-   * @param customHeaders OPTIONAL: another header value you want to customize
-   */
-  delete(apiUrl: string, parameter: any[] = [], customHeaders?: HttpHeaders) {
-    if (parameter && parameter.length > 0) {
-      parameter.forEach((p: string) => {
-        apiUrl += '/' + p;
-      });
-    }
-    return this.http.delete(apiUrl, {
-      headers: customHeaders ?? this.getHeaders(),
-    });
-  }
-
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
@@ -97,6 +101,9 @@ export class ApiService {
     });
   }
 
+  /**
+   * Lấy token từ localStorage
+   */
   getToken(): string | null {
     if (typeof window !== 'undefined' && localStorage) {
       return localStorage.getItem('token');

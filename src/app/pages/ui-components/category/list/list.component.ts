@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -7,7 +7,6 @@ import { MaterialModule } from 'src/app/material.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,39 +18,11 @@ import { MatInputModule } from '@angular/material/input';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { HighlightDirective } from '../../hightlight/highlight.pipe';
 import { CategoryService } from 'src/app/services/apis/category.service';
-
-export interface CategoryData {
-  id: number;
-  uname: string;
-  created_at: string;
-  status: number;
-  updated_at: string;
-  imageUrl: string;
-  selected?: boolean;
-  productCount?: number;
-}
-
-const CATEGORY_DATA: CategoryData[] = [
-  { id: 1, uname: 'Vỏ xe', created_at: '2025-03-01', status: 1, updated_at: '2025-03-14', imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg', selected: false },
-  { id: 2, uname: 'Đèn xe máy', created_at: '2025-02-28', status: 0, updated_at: '2025-03-10', imageUrl: 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg', selected: false },
-  ...Array.from({ length: 50 }, (_, i) => ({
-    id: i + 5,
-    uname: `Sản phẩm ${i + 5}`,
-    created_at: `2025-02-${String((i % 28) + 1).padStart(2, '0')}`,
-    status: i % 2,
-    updated_at: `2025-03-${String((i % 28) + 1).padStart(2, '0')}`,
-    imageUrl: 'https://shop2banh.vn/images/thumbs/2024/11/nhot-fuchs-silkolene-max-10w40-4t-08l-products-2374.png',
-    selected: false
-  })),
-];
-
-// Giả lập danh sách sản phẩm đang tồn tại
-const PRODUCTS = [
-  { id: 1, name: 'Nhớt A', categoryId: 1 },
-  { id: 2, name: 'Đèn B', categoryId: 2 },
-  { id: 3, name: 'Nhớt C', categoryId: 1 },
-  { id: 4, name: 'Gương D', categoryId: 1 }
-];
+import { API_ENDPOINT } from 'src/app/config/api-endpoint.config';
+import { ICategory } from 'src/app/interface/category.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
+import { PaginationComponent } from '../../../../components/shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-list',
@@ -71,19 +42,14 @@ const PRODUCTS = [
     HighlightDirective,
     MatSortModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    PaginationComponent,
   ],
   templateUrl: './list.component.html',
-  styleUrl: './list.component.scss'
+  styleUrls: ['./list.component.scss'],
 })
-export class ListComponent {
-  imageUrl: string = 'https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg';
-[x: string]: any;
-  constructor(
-    private dialog: MatDialog,
-    private _liveAnnouncer: LiveAnnouncer,
-    private categoryService: CategoryService
-  ) {}
+export class ListComponent implements OnInit, AfterViewInit {
+  apiUrlImage = API_ENDPOINT.category.uploads;
 
   filterStatus: number | string = 'all';
   filterCreatedAt: string = '';
@@ -92,58 +58,82 @@ export class ListComponent {
   showNotFound: boolean = false;
 
   displayedColumns1: string[] = ['select', 'index', 'image', 'name', 'productCount', 'status', 'actions'];
-  dataSource1 = new MatTableDataSource<CategoryData>([]);
-  list: CategoryData[] = [];
+  dataSource1 = new MatTableDataSource<ICategory>([]);
+  list: ICategory[] = [];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  currentPage = 1;
+  totalPages = 1;
+  pageSize = 10; // Số bản ghi mỗi trang
+
   @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(
+    private dialog: MatDialog,
+    private _liveAnnouncer: LiveAnnouncer,
+    private categoryService: CategoryService,
+    private snackBar: MatSnackBar,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.getAllCategory();
   }
-
+  getItemIndex(index: number): number {
+    // If you need to account for pagination, you can add this logic
+    return this.pageSize * (this.currentPage - 1) + (index + 1);
+  }
+  
   ngAfterViewInit() {
-    this.dataSource1.paginator = this.paginator;
     this.dataSource1.sort = this.sort;
-
-    this.dataSource1.sortingDataAccessor = (item: CategoryData, sortHeaderId: string): string | number => {
+    this.dataSource1.sortingDataAccessor = (item: ICategory, sortHeaderId: string): string | number => {
       switch (sortHeaderId) {
-        case 'uname': return item.uname.toLowerCase();
-        default: return (item as any)[sortHeaderId] ?? '';
+        case 'name':
+          return item.name.toLowerCase();
+        default:
+          return (item as any)[sortHeaderId] ?? '';
       }
     };
+  }
+
+  getImageUrl(relativePath: string) {
+    return `${this.apiUrlImage}/${relativePath}`;
   }
 
   getAllCategory() {
-    this.categoryService.getCategoryList().subscribe({
-      next: (res: any) => {
-        this.list = res?.data ?? res;
-
-        // Nếu bạn vẫn muốn tính productCount, bạn cần API trả thêm dữ liệu
-        // Ví dụ: nếu có API trả danh sách sản phẩm, bạn có thể xử lý ở đây
-        // Còn nếu API trả sẵn productCount thì bỏ qua bước này
-
-        // Cập nhật vào table
-        console.log('Dữ liệu danh mục:', this.list);
+    const filters: any = {
+      page: this.currentPage,
+      limit: this.pageSize,
+    };
+  
+    // Gửi các tham số lọc bổ sung
+    if (this.filterDescription) filters.search = this.filterDescription;
+    if (this.filterCreatedAt) filters.createdAt = this.filterCreatedAt;
+    if (this.filterStatus !== 'all') filters.status = this.filterStatus;
+  
+    this.categoryService.getCategoryList(filters).subscribe({
+      next: (res) => {
+        console.log('Dữ liệu trả về:', res);
+        this.list = res.data.map((item) => ({ ...item, selected: false }));
         this.dataSource1.data = this.list;
-        this.showNotFound = this.dataSource1.filteredData.length === 0;
-        
+        this.totalPages = res.totalPages;  // Kiểm tra lại totalPages ở đây
+        this.showNotFound = this.dataSource1.data.length === 0;
       },
       error: (err) => {
         console.error('Error fetching categories:', err);
-      }
+        this.toastr.error('Không thể tải danh sách danh mục', 'Lỗi');
+      },
     });
+  }
+  
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.getAllCategory();
   }
 
   applyAdvancedFilter() {
-    this.dataSource1.filterPredicate = (data: CategoryData) => {
-      const matchStatus = this.filterStatus === 'all' || data.status === this.filterStatus;
-      const matchDate = this.filterCreatedAt ? data.created_at.includes(this.filterCreatedAt) : true;
-      const matchDescription = this.filterDescription ? data.uname.toLowerCase().includes(this.filterDescription.toLowerCase()) : true;
-      return matchStatus && matchDate && matchDescription;
-    };
-    this.dataSource1.filter = Math.random().toString(); 
-    this.showNotFound = this.dataSource1.filteredData.length === 0;
+    this.currentPage = 1;
+    this.getAllCategory();
   }
 
   setFilterStatus(status: number | string) {
@@ -161,34 +151,58 @@ export class ListComponent {
 
   toggleSelectAll(event: any) {
     const isChecked = event.checked;
-    this.dataSource1.data.forEach(row => row.selected = isChecked);
+    this.dataSource1.data.forEach((row) => (row.selected = isChecked));
   }
 
   isAllSelected() {
-    return this.dataSource1.data.length > 0 && this.dataSource1.data.every(row => row.selected);
+    return this.dataSource1.data.length > 0 && this.dataSource1.data.every((row) => row.selected);
   }
 
   isIndeterminate() {
-    return this.dataSource1.data.some(row => row.selected) && !this.isAllSelected();
+    return this.dataSource1.data.some((row) => row.selected) && !this.isAllSelected();
   }
 
-  confirmDelete(category: any) {
+  toggleStatus(category: ICategory) {
+    category.status = category.status === 1 ? 0 : 1;
+    this.dataSource1.data = [...this.dataSource1.data];
+    this.applyAdvancedFilter();
+  }
+
+  softDeleteCategory(category: ICategory) {
+    const updatedCategory = { ...category, deletedAt: new Date() };
+
+    this.categoryService.softDeleteCategory(updatedCategory).subscribe({
+      next: (response) => {
+        this.toastr.success(`Danh mục "${category.name}" đã bị xóa!`, 'Thành công');
+        this.getAllCategory();
+      },
+      error: (err) => {
+        console.error('Có lỗi xảy ra khi xóa mềm danh mục', err);
+        this.toastr.error('Không thể xóa danh mục', 'Lỗi');
+      },
+    });
+  }
+
+  confirmSoftDelete(category: ICategory) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: { message: `Bạn có chắc chắn muốn xóa "${category.uname}" không?` }
+      data: {
+        title: 'Xác nhận xóa mềm',
+        message: `Bạn có chắc chắn muốn xóa mềm danh mục "${category.name}" không?`,
+        confirmText: 'Xóa mềm',
+        cancelText: 'Hủy',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteCategory(category);
+        this.softDeleteCategory(category);
       }
     });
   }
 
-  deleteCategory(category: any) {
-    alert(`Danh mục "${category.name}" đã bị xóa!`);
-    this.dataSource1.data = this.dataSource1.data.filter(item => item.id !== category.id);
+  deleteCategory(category: ICategory) {
+    this.toastr.success(`Danh mục "${category.name}" đã bị xóa!`, 'Thành công');
+    this.getAllCategory();
   }
 }
-
-

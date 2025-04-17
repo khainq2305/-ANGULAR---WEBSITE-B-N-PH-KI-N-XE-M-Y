@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { EditorComponent } from 'src/app/components/editor/editor.component';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from 'src/app/services/apis/category.service';
+import { ICategory } from 'src/app/interface/category.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add',
@@ -30,71 +32,131 @@ import { CategoryService } from 'src/app/services/apis/category.service';
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss']
 })
-export class AddComponent {
+export class AddComponent implements OnInit{
   categoryForm: FormGroup;
+  selectedFile: string | File | null = null;
   selectedFileName: string = '';
-  selectedImage: string | null = null;
+  selectedFilePreview: string | null = null;
   public description: string = '';
+  public isSubmitted: boolean = false;
 
   constructor(
     private categoryService: CategoryService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: ToastrService,
+    private router: Router
   ) {
+  }
+  ngOnInit() {
+    this.initForm();
+  }
+
+  initForm() {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
       imageUrl: ['', Validators.required],
-      status: ['', Validators.required],
+      status: [null, Validators.required],
     });
+    
+    // Ensure the form starts in a pristine and untouched state
+    this.categoryForm.markAsPristine();
+    this.categoryForm.markAsUntouched();
   }
-
   onImageUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.selectedImage = reader.result as string;
-        this.categoryForm.patchValue({ imageUrl: this.selectedImage });
+        this.selectedFile = file;
+        this.selectedFilePreview = reader.result as string;
+        this.selectedFileName = file.name;
+        this.categoryForm.patchValue({ imageUrl: reader.result });
       };
       reader.readAsDataURL(file);
-      this.selectedFileName = file.name;
     }
   }
 
   removeImage() {
-    this.selectedImage = null;
+    this.selectedFile = null;
     this.selectedFileName = '';
     this.categoryForm.patchValue({ imageUrl: null });
   }
 
-  addCategory(formData: {
-    name: string;
-    description: string;
-    status: number;
-    imageUrl: string | null;
-  }) {
-    this.categoryService.addCategory({ id: 0, ...formData }).subscribe({
-      next: (res) => {
-        console.log('Category added successfully', res);
-        this.selectedImage = null;
-        this.selectedFileName = '';
-        this.categoryForm.reset({ status: 1 });
+  onDescriptionChange(value: string) {
+    this.description = value;
+    this.categoryForm.patchValue({ description: value });
+  }
+
+  addCategory() {
+    const formData = new FormData();
+    const name = this.categoryForm.get('name')?.value;
+    const status = this.categoryForm.get('status')?.value;
+    const description = this.categoryForm.get('description')?.value;
+  
+    if (!name || !status) return;
+  
+    formData.append('name', name.trim());
+    formData.append('status', String(status));
+    formData.append('description', description || '');
+  
+    if (this.selectedFile instanceof File) {
+      formData.append('image', this.selectedFile, this.selectedFileName);
+    }
+  
+    this.categoryService.addCategory(formData).subscribe({
+      next: () => {
+        this.toastr.success('Tạo danh mục thành công!');
+        setTimeout(() => {
+          this.router.navigate(['/admin/ui-components/category/list']);
+        }, 2000);
+        // this.resetForm(); fix lỗi không reset form sau khi tạo danh mục
       },
-      error: (err) => {
-        console.error('Error adding category', err);
+      error: () => {
+        this.toastr.error('Có lỗi xảy ra khi tạo danh mục!');
       }
     });
   }
 
+  resetForm() {
+    this.categoryForm.reset({
+      name: '',
+      description: '',
+      imageUrl: '',
+      status: null,
+    });
+  
+    Object.keys(this.categoryForm.controls).forEach((key) => {
+      const control = this.categoryForm.get(key);
+      control?.markAsPristine();
+      control?.markAsUntouched();
+      control?.updateValueAndValidity();
+    });
+  
+    this.selectedFile = null;
+    this.selectedFileName = '';
+    this.selectedFilePreview = null;
+    this.description = '';
+  
+    // Reset biến này để không hiển thị lỗi trên form mới
+    this.isSubmitted = false;
+    
+    setTimeout(() => {
+      this.categoryForm.updateValueAndValidity();
+    }, 0);
+  }
+  
+  
+
+
   onSubmit() {
-    console.log('Submit pressed'); // <-- thêm dòng này
+    this.isSubmitted = true;
     if (this.categoryForm.invalid) {
-      this.categoryForm.markAllAsTouched();
-      console.log('Form is invalid'); // <-- thêm dòng này
+      this.toastr.error('Vui lòng điền đầy đủ thông tin!');
       return;
     }
-    const formData = this.categoryForm.value;
-    this.addCategory(formData);
+    this.addCategory();
   }
+  
   
 }

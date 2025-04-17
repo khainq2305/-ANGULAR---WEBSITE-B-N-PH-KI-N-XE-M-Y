@@ -1,47 +1,54 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { EditorModule } from '@tinymce/tinymce-angular';
-import { CommonModule } from '@angular/common';
+
 import { CategoryService } from 'src/app/services/apis/category.service';
+import { ICategory } from 'src/app/interface/category.interface';
 import { EditorComponent } from "../../../../components/editor/editor.component";
+import { API_ENDPOINT } from 'src/app/config/api-endpoint.config';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit',
   standalone: true,
   imports: [
-    MatFormFieldModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     MatCardModule,
+    MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    RouterModule,
     MatSelectModule,
     MatIconModule,
     EditorModule,
-    CommonModule,
     EditorComponent
-],
+  ],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss'
 })
-export class EditComponent {
+export class EditComponent implements OnInit {
   categoryForm: FormGroup;
-  selectedFileName: string = '';
+  selectedFileName = '';
   selectedImage: string | null = null;
-  public description: string = '';
-
+  selectedFilePreview: string | null = null;
+  description = '';
+  apiUrlImage:string = API_ENDPOINT.category.uploads;
   constructor(
     private categoryService: CategoryService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
@@ -51,60 +58,109 @@ export class EditComponent {
     });
   }
 
-  onImageUpload(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.selectedImage = reader.result as string;
-        this.categoryForm.patchValue({ imageUrl: this.selectedImage });
-      };
-      reader.readAsDataURL(file);
-      this.selectedFileName = file.name;
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.categoryService.getCategoryById(Number(id)).subscribe({
+        next: (res: any) => {
+          const category = res.data;
+
+          this.categoryForm.patchValue({
+            name: category.name,
+            description: category.description,
+            imageUrl: category.imageUrl,
+            status: category.status,
+          });
+
+          this.description = category.description;
+
+          if (category.imageUrl) {
+            this.selectedImage = category.imageUrl.startsWith('http')
+              ? category.imageUrl
+              : `${this.apiUrlImage}/${category.imageUrl}`; ;
+              console.log(this.apiUrlImage + category.imageUrl);
+            this.selectedFileName = category.imageUrl.split('/').pop() || category.imageUrl;
+            this.selectedFilePreview = this.selectedImage;
+          }
+        },
+        error: () => {
+          this.toastr.error('Lỗi khi tải danh mục');
+          // TODO: Thêm xử lý lỗi nếu cần
+        }
+      });
     }
+  }
+
+  onImageUpload(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.selectedFilePreview = reader.result as string;
+      this.selectedImage = reader.result as string;
+      this.categoryForm.patchValue({ imageUrl: this.selectedImage });
+    };
+    reader.readAsDataURL(file);
+    this.selectedFileName = file.name;
+
   }
 
   removeImage() {
     this.selectedImage = null;
     this.selectedFileName = '';
+    this.selectedFilePreview = null;
     this.categoryForm.patchValue({ imageUrl: null });
   }
 
-  updateCategory(formData: {
-    id: number;
-    name: string;
-    description: string;
-    status: number;
-    imageUrl: string | null;
-    
-  }) {
+  stripHtmlTags(input: string): string {
+    const doc = new DOMParser().parseFromString(input, 'text/html');
+    return doc.body.textContent || "";
+  }
+
+  onSubmit() {
+    if (this.categoryForm.invalid) {
+      this.categoryForm.markAllAsTouched();
+      this.toastr.error('Vui lòng điền đầy đủ thông tin!');
+      return;
+    }
+
+    const formData = { ...this.categoryForm.value };
+    formData.description = this.stripHtmlTags(this.description);
+
+    if (this.selectedImage?.includes('/uploads/')) {
+      formData.imageUrl = this.selectedImage.split('/uploads/').pop();
+    } else if (this.selectedFileName) {
+      formData.imageUrl = this.selectedFileName;
+    }
+
+    this.updateCategory(formData);
+  }
+
+  updateCategory(formData: ICategory) {
     const id = this.route.snapshot.paramMap.get('id');
-    const { id: _, ...restFormData } = formData;
-    const categoryData = { id: Number(id), ...restFormData };
-    console.log('Form Data ID from URL:', id);
-    console.log('Form Data:', categoryData);
+    if (!id) return;
+
+    const { id: _, ...rest } = formData;
+    const categoryData = { id: Number(id), ...rest };
+
     this.categoryService.updateCategory(categoryData).subscribe({
-      next: (res: any) => {
-        console.log('Category updated successfully', res);
+      next: () => {
         this.selectedImage = null;
         this.selectedFileName = '';
-        this.categoryForm.reset({ status: 1 });
+        this.toastr.success('Cập nhật danh mục thành công!');
+        setTimeout(() => {
+          this.router.navigate(['/admin/ui-components/category/list']);
+        }, 2000);
+        // TODO: Điều hướng hoặc hiển thị thông báo thành công
       },
-      error: (err: any) => {
-        console.error('Error updating category', err);
+      error: () => {
+        this.toastr.error('Có lỗi xảy ra khi cập nhật danh mục!');
+        // TODO: Thêm xử lý lỗi nếu cần
       }
     });
   }
-  
 
-  onSubmit() {
-    console.log('Submit pressed'); // <-- thêm dòng này
-    if (this.categoryForm.invalid) {
-      this.categoryForm.markAllAsTouched();
-      console.log('Form is invalid'); // <-- thêm dòng này
-      return;
-    }
-    const formData = this.categoryForm.value;
-    this.updateCategory(formData);
-  }
+  // TODO: Xem lại nếu bạn không cần biến này nữa
+  // [x: string]: any;
 }

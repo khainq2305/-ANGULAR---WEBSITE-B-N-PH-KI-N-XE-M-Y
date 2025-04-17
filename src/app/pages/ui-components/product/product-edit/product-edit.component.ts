@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 import { API_BASE_URL } from 'src/app/config/api-endpoint.config';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 @Component({
   selector: 'app-product-edit',
   standalone: true,
@@ -32,6 +33,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSlideToggleModule,
     MatCardModule,
     MatButtonModule,
+    
     MatIconModule,
     MatChipsModule,
     ReactiveFormsModule,
@@ -124,23 +126,41 @@ export class ProductEditComponent implements OnInit {
   }
 
   fetchCategories() {
-    this.categoryService.getCategoryList().subscribe(res => {
-      const data = Array.isArray(res) ? res : []; // ✅ fix chỗ này
-      this.categories.set(data);                  // nếu còn cần dùng signal
-      this.categoryList = data;                   // dùng cho template
+    this.categoryService.getCategoryList().subscribe({
+      next: (res: any) => {
+        const all = res?.data ?? [];
+        const active = all.filter((cat: any) => cat.status === 1);
+        this.categories.set(active); // 👈 THÊM DÒNG NÀY
+        this.categoryList = active;
+        console.log('📦 Danh mục đang hoạt động:', active);
+      },
+      error: () => {
+        this.toastr.error('Không lấy được danh mục');
+      }
     });
   }
+  
   
   fetchProduct() {
     this.productService.getProductById(this.productId).subscribe(res => {
       const product = res.data;
       
-      // Gán dữ liệu vào form
       this.productForm.patchValue({
-        ...product,
-        discount: product.discount || 0,  // Cập nhật giá trị giảm giá
-        categories: [product.idCategory],
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        discount: Number(product.discount) || 0,
+
+        quantity: product.quantity,
+        categories: [product.idCategory], // giữ nguyên
+        status: product.status === 1 ? '1' : '0',
+
+
+        is_feature: String(product.is_feature),
+        finalPrice: product.finalPrice || 0
       });
+      console.log('📦 PATCHED STATUS:', this.productForm.get('status')?.value);
+
   
       // Tính giá sau giảm khi tải sản phẩm
       this.updateFinalPrice();
@@ -151,7 +171,11 @@ export class ProductEditComponent implements OnInit {
           name: product.image,
           size: 0
         };
+      
+        // 👇 Patch vào form để không bị null khi submit
+        this.productForm.patchValue({ image: this.productImage });
       }
+      
     });
   }
   
@@ -159,16 +183,27 @@ export class ProductEditComponent implements OnInit {
   onUpdateForm() {
     if (this.productForm.invalid) {
       Object.values(this.productForm.controls).forEach(control => control.markAsTouched());
+      
+      // 🔥 Log lỗi từng field
+      console.log('🧨 Form không hợp lệ!');
+      Object.entries(this.productForm.controls).forEach(([key, control]) => {
+        if (control.invalid) {
+          console.log(`❌ ${key} invalid:`, control.errors);
+        }
+      });
+    
       this.toastr.error('Form không hợp lệ!');
       return;
     }
+    
   
     const value = this.productForm.value;
     const formData = new FormData();
     formData.append('name', value.name);
     formData.append('description', value.description);
     formData.append('price', value.price);
-    formData.append('discount', value.discount);
+    formData.append('discount', value.discount.toString());
+
   
     // Tính lại giá sau giảm và gửi lên server
     const finalPrice = this.getDiscountedPrice();
@@ -218,7 +253,12 @@ export class ProductEditComponent implements OnInit {
       this.productForm.get('image')?.updateValueAndValidity();
     };
   }
-
+  onDiscountInput(event: any) {
+    const value = event.target.value.replace(/,/g, '');
+    const number = parseInt(value, 10);
+    this.productForm.get('discount')?.setValue(isNaN(number) ? 0 : number);
+  }
+  
   getCategoryName(id: number): string {
     return this.categories().find(c => c.id === id)?.name || '';
   }

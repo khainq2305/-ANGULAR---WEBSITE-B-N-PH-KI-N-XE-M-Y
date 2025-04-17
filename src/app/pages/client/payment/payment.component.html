@@ -94,30 +94,65 @@
       <div class="order-summary">
         <h2>Tóm tắt đơn hàng</h2>
       
-        <div *ngFor="let item of cartItems" class="order-item">
-          <img 
-          [src]="'http://localhost:3000/uploads/' + item.product?.image" 
-          class="order-item__image"
-          width="60"
-          height="60"
-          style="object-fit: cover; border-radius: 6px"
-        />
+        <div *ngFor="let item of cartItems" class="order-item" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="position: relative;">
+              <img 
+                [src]="'http://localhost:3000/uploads/' + item.product?.image" 
+                width="50"
+                height="50"
+                style="object-fit: cover; border-radius: 6px;"
+              />
+              <span 
+                style="
+                  position: absolute;
+                  top: -8px;
+                  left: -8px;
+                  background: #666;
+                  color: white;
+                  font-size: 12px;
+                  width: 20px;
+                  height: 20px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 50%;
+                ">
+                {{ item.quantity }}
+              </span>
+            </div>
         
-          <div class="order-item__info">
-            <h3 class="order-item__name">{{ item.product?.name }}</h3>
-            <p class="order-item__price">
-              <ng-container *ngIf="item.product as product">
-                <span class="old-price" *ngIf="product.discount > 0">
+            <div>
+              <h3 style="font-size: 14px; font-weight: 500; margin: 0;">{{ item.product?.name }}</h3>
+              <p style="font-size: 12px; color: #666; margin: 4px 0 0;">
+               fff
+              </p>
+            </div>
+          </div>
+        
+          <div style="min-width: 100px; text-align: right;">
+            <ng-container *ngIf="item.product as product">
+              <ng-container *ngIf="product.finalPrice !== undefined && product.finalPrice !== product.price; else noDiscount">
+
+                <span style="text-decoration: line-through; color: #888; font-size: 13px;">
                   {{ product.price | number }} ₫
+                </span><br />
+                <span style="font-weight: 500; color: #d0021b; font-size: 14px;">
+                  {{ product.finalPrice | number }} ₫
                 </span>
               </ng-container>
               
-              <span class="new-price">{{ item.finalPrice | number }} ₫
-              </span>
-            </p>
-            <p class="order-item__quantity">Số lượng: {{ item.quantity }}</p>
+              <ng-template #noDiscount>
+                <span style="font-weight: 500; color: #d0021b; font-size: 14px;">
+                  {{ product.price | number }} ₫
+                </span>
+              </ng-template>
+              
+            </ng-container>
+            
           </div>
         </div>
+        
       
         <div class="subtotal-section">
           <p class="order-summary-text">Tạm tính</p>

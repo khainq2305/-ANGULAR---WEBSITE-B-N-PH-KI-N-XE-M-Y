@@ -1,0 +1,15 @@
+<div class="top-search-wrapper">
+    <div class="top-search-grid">
+      <div class="top-search-header">
+        <h2 class="title">TÌM KIẾM HÀNG ĐẦU</h2>
+        <a class="view-all" href="#">Xem Tất Cả &gt;</a>
+      </div>
+      <div class="top-search-item" *ngFor="let item of topSearchItems">
+        <div class="top-badge">TOP</div>
+        <img [src]="item.image" [alt]="item.name" />
+        <div class="sold">Bán {{ item.sold }} / tháng</div>
+        <div class="product-name">{{ item.name }}</div>
+      </div>
+    </div>
+  </div>
+  

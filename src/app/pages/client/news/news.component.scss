@@ -8,7 +8,9 @@
 
     h1 {
       font-size: 2.4rem;
-      color: #ff6600;
+      background: linear-gradient(to right, #000428, #004e92);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       font-weight: bold;
       margin-bottom: 9px;
     }
@@ -55,7 +57,9 @@
 
         .news-title {
           font-size: 1.8rem;
-          color: #ff6600;
+          background: linear-gradient(to right, #000428, #004e92);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
           margin-bottom: 2px;
           transition: color 0.3s ease;
           overflow: hidden;
@@ -96,7 +100,9 @@
           transition: color 0.3s ease;
 
           &:hover {
-            color: #ffa500;
+            background: linear-gradient(to right, #000428, #004e92);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
         }
       }
@@ -118,7 +124,9 @@
 
       h3 {
         font-size: 1.8rem;
-        color: #ff6600;
+        background: linear-gradient(to right, #000428, #004e92);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
         margin-bottom: 15px;
       }
 
@@ -145,7 +153,9 @@
     .featured-news {
       h3 {
         font-size: 1.8rem;
-        color: #ff6600;
+        background: linear-gradient(to right, #000428, #004e92);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         margin-bottom: 15px;
       }
 
@@ -178,7 +188,9 @@
             -webkit-box-orient: vertical;
 
             &:hover {
-              color: #ff6600;
+              background: linear-gradient(to right, #000428, #004e92);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
             }
           }
 
@@ -193,7 +205,7 @@
   }
 }
 .pagination {
-  margin-right: auto;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,7 +228,7 @@
     height: 40px;
 
     &.active {
-      background-color: #ff6600;
+      background: linear-gradient(to right, #000428, #004e92);
       color: #fff;
       border: none;
     }

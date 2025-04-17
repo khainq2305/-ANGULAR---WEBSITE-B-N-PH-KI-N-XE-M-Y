@@ -1,0 +1,57 @@
+<div style="margin-top: -23px;" class="container-donmua">
+    <!-- Tabs trạng thái đơn hàng -->
+    <div class="order-tabs sticky-top">
+      <ul class="order-tabs__list">
+        <li class="order-tabs__item active">Tất cả</li>
+        <li class="order-tabs__item">Chờ xác nhận</li>
+        <li class="order-tabs__item">Đã xác nhận</li>
+        <li class="order-tabs__item">Đang giao</li>
+        <li class="order-tabs__item">Đã giao</li>
+        <li class="order-tabs__item">Đã huỷ</li>
+      </ul>
+    </div>
+  
+    <!-- Thanh tìm kiếm -->
+    <div class="order-search">
+      <input
+        type="text"
+        placeholder="Bạn có thể tìm kiếm theo Tên Shop, ID đơn hàng hoặc Tên Sản phẩm"
+      />
+    </div>
+  
+    <!-- Danh sách đơn hàng -->
+    <div class="order-container">
+      <div *ngFor="let order of orders" class="order-item">
+        <div *ngFor="let detail of order.orderDetails" class="product">
+          <img [src]="'http://localhost:3000/uploads/' + detail.product.image" class="product-img" />
+          <div class="product-info">
+            <div class="name">{{ detail.product.name }}</div>
+            <div class="variant">Phân loại hàng: Mặc định</div>
+            <div class="qty">x{{ detail.quantity }}</div>
+            <div class="price">
+              <span *ngIf="detail.product.price !== detail.price" class="old">
+                ₫{{ detail.product.price | number }}
+              </span>
+              <span class="new">₫{{ detail.price | number }}</span>
+            </div>
+            <div class="total-amount">Thành tiền: <span>₫{{ detail.price * detail.quantity | number }}</span></div>
+          </div>
+      
+          <div class="footer">
+            <button *ngIf="isReviewAvailable(order.createdAt)" class="orange" (click)="openReviewPopup(order, detail)">
+              Đánh Giá
+            </button>
+            <button>Liên Hệ Người Bán</button>
+            <button>Mua Lại</button>
+          </div>
+        </div>
+      
+        <div class="status">
+          <span style="display: flex; margin-left: auto;" class="red">{{ mapStatus(order.status) }}</span>
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+  

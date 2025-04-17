@@ -1,0 +1,28 @@
+<!-- featured-posts.component.html -->
+<div class="featured-posts">
+    <div class="featured-posts__container">
+      <h2 class="featured-posts__heading">BÀI VIẾT NỔI BẬT</h2>
+  
+      <div class="featured-posts__row">
+        <ng-container *ngFor="let post of topPosts1">
+          <div class="featured-posts__item">
+            <img [src]="post.img" [alt]="post.title" class="featured-posts__img">
+            <p class="featured-posts__date">{{ post.date }}</p>
+            <h5 class="featured-posts__title">{{ post.title }}</h5>
+            <p class="featured-posts__desc">{{ post.desc }}</p>
+          </div>
+        </ng-container>
+      </div>
+  
+      <div class="featured-posts__row">
+        <ng-container *ngFor="let post of topPosts2">
+          <div class="featured-posts__item">
+            <img [src]="post.img" [alt]="post.title" class="featured-posts__img">
+            <p class="featured-posts__date">{{ post.date }}</p>
+            <h5 class="featured-posts__title">{{ post.title }}</h5>
+            <p class="featured-posts__desc">{{ post.desc }}</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>

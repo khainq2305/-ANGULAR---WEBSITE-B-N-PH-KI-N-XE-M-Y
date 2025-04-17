@@ -63,3 +63,8 @@ body.cdk-global-scrollblock {
   margin-top: 4px;
 }
 
+// styles.scss hoặc styles.css (global)
+#toast-container.toast-top-right {
+  top: 120px !important; // hoặc 100px nếu muốn thấp hơn nữa
+
+}

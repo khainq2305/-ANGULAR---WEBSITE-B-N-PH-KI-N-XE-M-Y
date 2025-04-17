@@ -1,356 +1,402 @@
-
-
-    <header class="header">
-      <div class="grid wide">
-        
-        <!-- NAVBAR trên cùng -->
-        <nav style="padding-top: 10px;" class="header__navbar hide-on-mobile-tablet">
-          <ul class="header__nav-list">
-            <li class="header__nav-item header__nav-item--hover header__nav-item--separate">
-              Kênh Người Bán
-            </li>
-            <li class="header__nav-item header__nav-item--hover header__nav-item--separate">
-              Trở thành Người bán Shopee
-            </li>
-            <li class="header__nav-item header__nav-item--hover header__nav-item--separate header__show-qr">
-              Tải ứng dụng
-              <div class="header__qrcode">
-                <img src="/img/qr/qr-code.png" class="header__qr" alt="qr" />
-                <div class="header__apps">
-                  <a href="#" class="header__app-link">
-                    <img src="/img/qr/app-store.png" class="header__app-img" alt="app-store" />
-                  </a>
-                  <a href="#" class="header__app-link">
-                    <img src="/img/qr/gg-play.png" class="header__app-img" alt="gg-play" />
-                  </a>
-                  <a href="#" class="header__app-link">
-                    <img src="/img/qr/app-gallery.png" class="header__app-img" alt="app-gallery" />
-                  </a>
-                  <a href="#" class="header__app-link">
-                    <img src="/img/qr/ltp-img.png" class="header__app-img" alt="ltp-img" />
-                  </a>
-                </div>
-              </div>
-            </li>
-            <li class="header__nav-item">
-              Kết nối
-              <a href="#" class="header__nav-icon-link">
-                <i class="header__nav-icon fab fa-facebook"></i>
-              </a>
-              <a href="#" class="header__nav-icon-link">
-                <i class="header__nav-icon fab fa-instagram"></i>
-              </a>
-            </li>
-          </ul>
-
-          <ul class="header__nav-list">
-            <li class="header__nav-item header__show-note">
-              <a href="#" class="header__nav-item-link">
-                <i class="header__nav-icon far fa-bell"></i>
-                Thông báo
-              </a>
-              <div class="header__notifi">
-                <header class="header__notifi-header">
-                  <h3>Thông Báo Mới Nhận</h3>
-                </header>
-                <ul class="header__notifi-list">
-                  <li class="header__notifi-item">
-                    <a href="#" class="header__notifi-link">
-                      <img src="/img/sp/casio.png" class="header__notifi-img" alt="casio" />
-                      <div class="header__notifi-info">
-                        <div class="header__notifi-name">Casio fx 580 VN Plus</div>
-                        <div class="header__notifi-desc">
-                          Mua Casio 580 của LTP bao xịn, bao mượt, bao đẹp
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-                <footer class="header__notifi-footer">
-                  <a href="#" class="header__notifi-footer-btn">Xem tất cả</a>
-                </footer>
-              </div>
-            </li>
-            <li class="header__nav-item">
-              <a href="#" class="header__nav-item-link">
-                <i class="header__nav-icon far fa-question-circle"></i>
-                Hỗ trợ
-              </a>
-            </li>
-         <!-- Nếu chưa đăng nhập -->
-<ng-container *ngIf="!isLoggedIn">
-  <li class="header__nav-item header__nav-item--bold header__nav-item--separate">
-    <a [routerLink]="'/dang-ky'" class="header__nav-item-link">Đăng ký</a>
-  </li>
-  <li class="header__nav-item header__nav-item--bold">
-    <a [routerLink]="'/dang-nhap'" class="header__nav-item-link">Đăng nhập</a>
-  </li>
-</ng-container>
-
-<ng-container *ngIf="isLoggedIn">
-  <div class="header__nav-user">
-    <img
-      [src]="userAvatar || 'https://i.imgur.com/FnBFeW7.png'"
-      alt="avatar"
-      class="header__nav-user-img"
-    />
-    <span class="header__nav-user-name">{{ userEmail.split('@')[0] }}</span>
-
-    <ul class="header__nav-user-menu">
-      <li class="header__nav-user-item">
-        <a [routerLink]="'/tai-khoan'">Tài Khoản Của Tôi</a>
-      </li>
-      <li class="header__nav-user-item">
-        <a [routerLink]="'/don-mua'">Đơn Mua</a>
-      </li>
-      <li class="header__nav-user-item" (click)="logout()">
-        <a href="#">Đăng Xuất</a>
-      </li>
-    </ul>
-  </div>
-</ng-container>
-
-
-          </ul>
-        </nav>
-        
-        <!-- Logo + Menu chính -->
-        <div
-          class="header__contain"
-          style="display: flex; align-items: center; justify-content: space-between;"
+<header class="header">
+  <div class="grid wide">
+    <!-- NAVBAR trên cùng -->
+    <nav style="padding-top: 10px" class="header__navbar hide-on-mobile-tablet">
+      <ul class="header__nav-list">
+        <li
+          class="header__nav-item header__nav-item--hover header__nav-item--separate"
         >
-          <div class="header__logo">
-            <a href="#" class="header__logo-link">
-              <img
-                src="/img/logo/logo-full-white.png"
-                class="header__logo-img"
-                alt="Logo"
-              />
-            </a>
-          </div>
-
-          <ul class="header__navbar-list" style="display: flex; gap: 20px; margin: 0;">
-            <li class="header__navbar-item">
-              <a [routerLink]="'/'" class="header__navbar-link">Trang chủ</a>
-            </li>
-            <li class="header__navbar-item">
-              <a [routerLink]="'/gioi-thieu'" class="header__navbar-link">Giới thiệu</a>
-            </li>
-            <li class="header__navbar-item header__navbar-item--has-dropdown">
-              <a routerLink="/san-pham" class="header__navbar-link">Sản phẩm</a>
-              <div class="header__dropdown">
-                <div class="header__dropdown-col">
-                  <h4>Thương Hiệu Thụy Sỹ</h4>
-                  <ul>
-                    <li>Rado <span class="tag">NEW</span></li>
-                    <li>Longines <span class="tag">🔥</span></li>
-                    <li>Tissot <span class="tag">🔥</span></li>
-                    <li>Jowissa <span class="tag tag--special">ĐỘC QUYỀN</span></li>
-                    <li>Silvana <span class="tag tag--special">ĐỘC QUYỀN</span></li>
-                    <li>Jacques Du Manoir</li>
-                    <li>Claude Bernad</li>
-                  </ul>
-                </div>
-                <div class="header__dropdown-col">
-                  <h4>Thương Hiệu Nhật Bản</h4>
-                  <ul>
-                    <li>Seiko <span class="tag">NEW</span></li>
-                    <li>Citizen</li>
-                    <li>Casio</li>
-                    <li>Orient</li>
-                  </ul>
-                </div>
-                <div class="header__dropdown-col">
-                  <h4>Thương Hiệu Thời Trang</h4>
-                  <ul>
-                    <li>Disney Watch <span class="tag">NEW</span></li>
-                    <li>Titan <span class="tag">NEW</span></li>
-                    <li>Daniel Wellington</li>
-                    <li>Calvin Klein</li>
-                    <li>Michael Kors</li>
-                    <li>Fossil</li>
-                    <li>Skagen</li>
-                  </ul>
-                </div>
-                <div class="header__dropdown-col">
-                  <h4>Thương hiệu thời trang</h4>
-                  <ul>
-                    <li>Daniel Wellington</li>
-                    <li>Calvin Klein</li>
-                    <li>Michael Kors</li>
-                    <li>Fossil</li>
-                    <li>Skagen</li>
-                  </ul>
-                </div>
-                <div class="header__dropdown-col">
-                  <h4>Thương Hiệu Khác</h4>
-                  <ul>
-                    <li>Avi-8 <span class="tag tag--special">ĐỘC QUYỀN</span></li>
-                    <li>Olivia Burton</li>
-                    <li>Kenneth Cole</li>
-                    <li>Just Cavalli</li>
-                    <li>Lancaster <span class="tag tag--special">ĐỘC QUYỀN</span></li>
-                  </ul>
-                </div>
-                <div class="header__dropdown-col">
-                  <h4>Giới Tính</h4>
-                  <ul>
-                    <li>Nam</li>
-                    <li>Nữ</li>
-                    <li>Unisex</li>
-                  </ul>
-                </div>
-                <div class="header__dropdown-col">
-                  <h4>Chủng Loại</h4>
-                  <ul>
-                    <li>Hàng đặt trước</li>
-                    <li>Đồng Hồ</li>
-                    <li>Đồng Hồ Cặp</li>
-                  </ul>
-                </div>
-                <div class="header__dropdown-col">
-                  <h4>Bộ Máy</h4>
-                  <ul>
-                    <li>Quartz (Pin)</li>
-                    <li>Automatic (cơ tự động)</li>
-                    <li>Eco-drive</li>
-                    <li>Powermatic 80</li>
-                    <li>Solar (Pin mặt trời)</li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <li class="header__navbar-item">
-              <a [routerLink]="'/cua-hang'" class="header__navbar-link">Cửa hàng</a>
-            </li>
-            <li class="header__navbar-item">
-              <a [routerLink]="'/lien-he'" class="header__navbar-link">Liên hệ</a>
-            </li>
-            <li class="header__navbar-item">
-              <a [routerLink]="'/tin-tuc'" class="header__navbar-link">Bài viết</a>
-            </li>
-          </ul>
-          
-
-          <!-- Nhóm icon bên phải -->
-          <div
-            class="header__icon-group"
-            style="display: flex; align-items: center; gap: 20px;"
-          >
-            <!-- Tìm kiếm -->
-            <div class="header__svg-icon" (click)="toggleSearch()" style="cursor: pointer;">
-              <svg role="presentation" stroke-width="2" stroke="white" fill="white" width="22" height="22" viewBox="0 0 22 22">
-                <circle cx="11" cy="10" r="7" fill="none"></circle>
-                <path d="m16 15 3 3" stroke-linecap="round" stroke-linejoin="round"></path>
-              </svg>
-            </div>
-
-            <!-- Tài khoản -->
-            <div class="header__svg-icon">
-              <svg
-                role="presentation"
-                stroke-width="2"
-                width="22"
-                stroke="white"
-                fill="white"
-                height="22"
-                viewBox="0 0 22 22"
-              >
-                <circle cx="11" cy="7" r="4" fill="none"></circle>
-                <path
-                  d="M3.5 19c1.421-2.974 4.247-5 7.5-5s6.079 2.026 7.5 5"
-                  fill="none"
-                  stroke-linecap="round"
-                ></path>
-              </svg>
-            </div>
-
-            <!-- Giỏ hàng -->
-            <div class="header__cart header__cart--has-cart">
-              <svg
-                role="presentation"
-                stroke="white"
-                fill="white"
-                stroke-width="2"
-                width="22"
-                height="22"
-                viewBox="0 0 22 22"
-              >
-                <path
-                  d="M11 7H3.577A2 2 0 0 0 1.64 9.497l2.051 8A2 2 0 0 0 5.63 19H16.37a2 2 0 0 0 1.937-1.503l2.052-8A2 2 0 0 0 18.422 7H11Zm0 0V1"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
-              </svg>
-
-              <!-- Danh sách sản phẩm trong giỏ -->
-              <div class="header__cart-list has-cart">
-                <h4 class="header__cart-heading">Sản phẩm đã chọn</h4>
-                <ul class="header__cart-list-item">
-                  <li class="header__cart-item">
-                    <img
-                      src="/img/buy/1.PNG"
-                      class="header__cart-item-img"
-                      alt="item1"
-                    />
-                    <div class="header__cart-item-info">
-                      <div class="header__cart-item-heading">
-                        <h3 class="header__cart-item-name">
-                          Thanh Thanh 2000 1m57 46kg 88-62-89
-                        </h3>
-                        <p class="header__cart-item-price">2.000.000đ</p>
-                      </div>
-                      <div class="header__cart-item-body">
-                        <p class="header__cart-item-number">x 2</p>
-                        <div class="header__cart-item-close">
-                          Xoá <i class="fas fa-times"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <div class="header__cart-footer">
-                  <a [routerLink]="'/gio-hang'" class="btn btn--primary header__cart-see-cart">
-                    Xem giỏ hàng
-                  </a>
-                  
-                </div>
-              </div>
-
-              <div class="header__cart-count">4</div>
+          Kênh Người Bán
+        </li>
+        <li
+          class="header__nav-item header__nav-item--hover header__nav-item--separate"
+        >
+          Trở thành Người bán Shopee
+        </li>
+        <li
+          class="header__nav-item header__nav-item--hover header__nav-item--separate header__show-qr"
+        >
+          Tải ứng dụng
+          <div class="header__qrcode">
+            <img src="/img/qr/qr-code.png" class="header__qr" alt="qr" />
+            <div class="header__apps">
+              <a href="#" class="header__app-link">
+                <img
+                  src="/img/qr/app-store.png"
+                  class="header__app-img"
+                  alt="app-store"
+                />
+              </a>
+              <a href="#" class="header__app-link">
+                <img
+                  src="/img/qr/gg-play.png"
+                  class="header__app-img"
+                  alt="gg-play"
+                />
+              </a>
+              <a href="#" class="header__app-link">
+                <img
+                  src="/img/qr/app-gallery.png"
+                  class="header__app-img"
+                  alt="app-gallery"
+                />
+              </a>
+              <a href="#" class="header__app-link">
+                <img
+                  src="/img/qr/ltp-img.png"
+                  class="header__app-img"
+                  alt="ltp-img"
+                />
+              </a>
             </div>
           </div>
-          
-        </div> <!-- /header__contain -->
-      </div> <!-- /grid wide -->
-
-      <!-- Thanh sắp xếp -->
-      <ul class="header__sort-bar">
-        <li class="header__sort-item">
-          <a href="#" class="header__sort-link">Liên quan</a>
         </li>
-        <li class="header__sort-item header__sort-item--active">
-          <a href="#" class="header__sort-link">Mới nhất</a>
-        </li>
-        <li class="header__sort-item">
-          <a href="#" class="header__sort-link">Bán chạy</a>
-        </li>
-        <li class="header__sort-item">
-          <a href="#" class="header__sort-link">Giá</a>
+        <li class="header__nav-item">
+          Kết nối
+          <a href="#" class="header__nav-icon-link">
+            <i class="header__nav-icon fab fa-facebook"></i>
+          </a>
+          <a href="#" class="header__nav-icon-link">
+            <i class="header__nav-icon fab fa-instagram"></i>
+          </a>
         </li>
       </ul>
-      <div class="search-overlay" [class.open]="openSearch">
-        <div class="row-search-overlay">
-          <input type="text" placeholder="Tìm..." />
-          <span class="overlay-close" (click)="toggleSearch()">✕</span>
+
+      <ul class="header__nav-list">
+        <li class="header__nav-item header__show-note">
+          <a href="#" class="header__nav-item-link">
+            <i class="header__nav-icon far fa-bell"></i>
+            Thông báo
+          </a>
+          <div class="header__notifi">
+            <header class="header__notifi-header">
+              <h3>Thông Báo Mới Nhận</h3>
+            </header>
+            <ul class="header__notifi-list">
+              <li class="header__notifi-item">
+                <a href="#" class="header__notifi-link">
+                  <img
+                    src="/img/sp/casio.png"
+                    class="header__notifi-img"
+                    alt="casio"
+                  />
+                  <div class="header__notifi-info">
+                    <div class="header__notifi-name">Casio fx 580 VN Plus</div>
+                    <div class="header__notifi-desc">
+                      Mua Casio 580 của LTP bao xịn, bao mượt, bao đẹp
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+            <footer class="header__notifi-footer">
+              <a href="#" class="header__notifi-footer-btn">Xem tất cả</a>
+            </footer>
+          </div>
+        </li>
+        <li class="header__nav-item">
+          <a href="#" class="header__nav-item-link">
+            <i class="header__nav-icon far fa-question-circle"></i>
+            Hỗ trợ
+          </a>
+        </li>
+    
+      </ul>
+    </nav>
+
+    <!-- Logo + Menu chính -->
+    <div
+      class="header__contain"
+      style="display: flex; align-items: center; justify-content: space-between"
+    >
+      <div class="header__logo">
+        <a href="#" class="header__logo-link">
+          <img
+            src="assets/client/img/logo/ChatGPT Image 16_30_58 13 thg 4, 2025.png"
+            class="header__logo-img"
+            alt="Logo"
+          />
+        </a>
+      </div>
+
+      <ul
+        class="header__navbar-list"
+        style="display: flex; gap: 20px; margin: 0"
+      >
+        <li class="header__navbar-item">
+          <a [routerLink]="'/'" class="header__navbar-link">Trang chủ</a>
+        </li>
+        <li class="header__navbar-item">
+          <a [routerLink]="'/gioi-thieu'" class="header__navbar-link"
+            >Giới thiệu</a
+          >
+        </li>
+        <li class="header__navbar-item header__navbar-item--has-dropdown">
+          <a routerLink="/san-pham" class="header__navbar-link">Sản phẩm</a>
+          <div class="header__dropdown">
+            <div class="header__dropdown-col">
+              <h4>Thương Hiệu Thụy Sỹ</h4>
+              <ul>
+                <li>Rado <span class="tag">NEW</span></li>
+                <li>Longines <span class="tag">🔥</span></li>
+                <li>Tissot <span class="tag">🔥</span></li>
+                <li>Jowissa <span class="tag tag--special">ĐỘC QUYỀN</span></li>
+                <li>Silvana <span class="tag tag--special">ĐỘC QUYỀN</span></li>
+                <li>Jacques Du Manoir</li>
+                <li>Claude Bernad</li>
+              </ul>
+            </div>
+            <div class="header__dropdown-col">
+              <h4>Thương Hiệu Nhật Bản</h4>
+              <ul>
+                <li>Seiko <span class="tag">NEW</span></li>
+                <li>Citizen</li>
+                <li>Casio</li>
+                <li>Orient</li>
+              </ul>
+            </div>
+            <div class="header__dropdown-col">
+              <h4>Thương Hiệu Thời Trang</h4>
+              <ul>
+                <li>Disney Watch <span class="tag">NEW</span></li>
+                <li>Titan <span class="tag">NEW</span></li>
+                <li>Daniel Wellington</li>
+                <li>Calvin Klein</li>
+                <li>Michael Kors</li>
+                <li>Fossil</li>
+                <li>Skagen</li>
+              </ul>
+            </div>
+            <div class="header__dropdown-col">
+              <h4>Thương hiệu thời trang</h4>
+              <ul>
+                <li>Daniel Wellington</li>
+                <li>Calvin Klein</li>
+                <li>Michael Kors</li>
+                <li>Fossil</li>
+                <li>Skagen</li>
+              </ul>
+            </div>
+            <div class="header__dropdown-col">
+              <h4>Thương Hiệu Khác</h4>
+              <ul>
+                <li>Avi-8 <span class="tag tag--special">ĐỘC QUYỀN</span></li>
+                <li>Olivia Burton</li>
+                <li>Kenneth Cole</li>
+                <li>Just Cavalli</li>
+                <li>
+                  Lancaster <span class="tag tag--special">ĐỘC QUYỀN</span>
+                </li>
+              </ul>
+            </div>
+            <div class="header__dropdown-col">
+              <h4>Giới Tính</h4>
+              <ul>
+                <li>Nam</li>
+                <li>Nữ</li>
+                <li>Unisex</li>
+              </ul>
+            </div>
+            <div class="header__dropdown-col">
+              <h4>Chủng Loại</h4>
+              <ul>
+                <li>Hàng đặt trước</li>
+                <li>Đồng Hồ</li>
+                <li>Đồng Hồ Cặp</li>
+              </ul>
+            </div>
+            <div class="header__dropdown-col">
+              <h4>Bộ Máy</h4>
+              <ul>
+                <li>Quartz (Pin)</li>
+                <li>Automatic (cơ tự động)</li>
+                <li>Eco-drive</li>
+                <li>Powermatic 80</li>
+                <li>Solar (Pin mặt trời)</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="header__navbar-item">
+          <a [routerLink]="'/cua-hang'" class="header__navbar-link">Cửa hàng</a>
+        </li>
+        <li class="header__navbar-item">
+          <a [routerLink]="'/lien-he'" class="header__navbar-link">Liên hệ</a>
+        </li>
+        <li class="header__navbar-item">
+          <a [routerLink]="'/tin-tuc'" class="header__navbar-link">Bài viết</a>
+        </li>
+      </ul>
+
+      <!-- Nhóm icon bên phải -->
+      <div
+        class="header__icon-group"
+        style="display: flex; align-items: center; gap: 20px"
+      >
+      <ng-container *ngIf="isLoggedIn">
+        <div class="header__nav-user">
+          <img
+            [src]="userAvatar || 'https://i.imgur.com/FnBFeW7.png'"
+            alt="avatar"
+            class="header__nav-user-img"
+          />
+      
+    
+          <ul class="header__nav-user-menu">
+            <li class="header__nav-user-item">
+              <a [routerLink]="'/tai-khoan'">Tài Khoản Của Tôi</a>
+            </li>
+            <li class="header__nav-user-item">
+              <a routerLink="/tai-khoan/don-mua">Đơn Mua</a>
+            </li>
+            <li class="header__nav-user-item" (click)="logout()">
+              <a href="#">Đăng Xuất</a>
+            </li>
+          </ul>
         </div>
-        <div class="search-results">
-          <p>Giao diện tĩnh - không có kết quả</p>
+      </ng-container>
+      
+      <!-- Tài khoản -->
+      <ng-container *ngIf="!isLoggedIn">
+        <a [routerLink]="'/dang-nhap'" class="header__svg-icon" style="display: inline-block;">
+          <svg
+            role="presentation"
+            stroke-width="2"
+            width="22"
+            stroke="white"
+            fill="white"
+            height="22"
+            viewBox="0 0 22 22"
+          >
+            <circle cx="11" cy="7" r="4" fill="none"></circle>
+            <path
+              d="M3.5 19c1.421-2.974 4.247-5 7.5-5s6.079 2.026 7.5 5"
+              fill="none"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </a>
+      </ng-container>
+      
+        <!-- Tìm kiếm -->
+        <div
+          class="header__svg-icon"
+          (click)="toggleSearch()"
+          style="cursor: pointer"
+        >
+          <svg
+            role="presentation"
+            stroke-width="2"
+            stroke="white"
+            fill="white"
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+          >
+            <circle cx="11" cy="10" r="7" fill="none"></circle>
+            <path
+              d="m16 15 3 3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </div>
+        
+        
+
+        <!-- Giỏ hàng -->
+        <div class="header__cart header__cart--has-cart">
+          <svg
+            role="presentation"
+            stroke="white"
+            fill="white"
+            stroke-width="2"
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+          >
+            <path
+              d="M11 7H3.577A2 2 0 0 0 1.64 9.497l2.051 8A2 2 0 0 0 5.63 19H16.37a2 2 0 0 0 1.937-1.503l2.052-8A2 2 0 0 0 18.422 7H11Zm0 0V1"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+
+          <!-- Danh sách sản phẩm trong giỏ -->
+          <div class="header__cart-list has-cart">
+            <h4 class="header__cart-heading">Sản phẩm đã chọn</h4>
+            <ul class="header__cart-list-item">
+              <li class="header__cart-item" *ngFor="let item of cartItems">
+                <img
+                  *ngIf="item.product?.image as img"
+                  [src]="
+                    img.startsWith('http')
+                      ? img
+                      : 'http://localhost:3000/uploads/' + img
+                  "
+                  class="header__cart-item-img"
+                  alt="item"
+                />
+
+                <div class="header__cart-item-info">
+                  <div class="header__cart-item-heading">
+                    <h3 class="header__cart-item-name">
+                      {{ item.product?.name }}
+                    </h3>
+                    <p class="header__cart-item-price">
+                      {{
+                        item.product?.finalPrice || item.product?.price
+                          | number
+                      }}đ
+                    </p>
+                  </div>
+                  <div class="header__cart-item-body">
+                    <p class="header__cart-item-number">
+                      x {{ item.quantity }}
+                    </p>
+                    <div class="header__cart-item-close">
+                      Xoá <i class="fas fa-times"></i>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div class="header__cart-footer">
+              <a
+                [routerLink]="'/gio-hang'"
+                class="btn btn--primary header__cart-see-cart"
+              >
+                Xem giỏ hàng
+              </a>
+            </div>
+          </div>
+
+          <div class="header__cart-count">4</div>
         </div>
       </div>
-      <div class="overlay-search" *ngIf="openSearch" (click)="toggleSearch()"></div>
-  
-  
-    </header>
- 
+    </div>
+    <!-- /header__contain -->
+  </div>
+  <!-- /grid wide -->
+
+  <!-- Thanh sắp xếp -->
+  <ul class="header__sort-bar">
+    <li class="header__sort-item">
+      <a href="#" class="header__sort-link">Liên quan</a>
+    </li>
+    <li class="header__sort-item header__sort-item--active">
+      <a href="#" class="header__sort-link">Mới nhất</a>
+    </li>
+    <li class="header__sort-item">
+      <a href="#" class="header__sort-link">Bán chạy</a>
+    </li>
+    <li class="header__sort-item">
+      <a href="#" class="header__sort-link">Giá</a>
+    </li>
+  </ul>
+  <app-search-overlay
+    [openSearch]="openSearch"
+    (openSearchChange)="openSearch = $event"
+  ></app-search-overlay>
+</header>

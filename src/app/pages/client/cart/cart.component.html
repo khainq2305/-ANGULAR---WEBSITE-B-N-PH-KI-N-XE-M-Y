@@ -25,9 +25,22 @@
             </div>
           </div>
           <div class="cart-item__price">
-            <span class="old-price">{{ item.product.price | number }} ₫</span>
-            <span class="new-price">{{ item.product.finalPrice | number }} ₫</span>
+            <ng-container *ngIf="item.product?.discount > 0; else noDiscount">
+              <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
+                <span class="old-price" style="text-decoration: line-through; color: #888;">
+                  {{ item.product.price | number }} ₫
+                </span>
+                <span class="new-price">
+                  {{ item.product.finalPrice | number }} ₫
+                </span>
+              </div>
+            </ng-container>
+          
+            <ng-template #noDiscount>
+              <span class="new-price">{{ item.product.price | number }} ₫</span>
+            </ng-template>
           </div>
+          
           <div class="cart-item__quantity">
        <!-- Giảm -->
 <button class="cart-item__quantity-btn" (click)="decreaseQuantity(item)">-</button>
@@ -35,8 +48,14 @@
 <!-- Hiển thị -->
 <input type="text" [value]="item.quantity" class="cart-item__quantity-input" readonly />
 
-<!-- Tăng -->
-<button class="cart-item__quantity-btn" (click)="increaseQuantity(item)">+</button>
+<button
+  class="cart-item__quantity-btn"
+  (click)="increaseQuantity(item)"
+  [disabled]="item.quantity >= item.product.quantity"
+>
+  +
+</button>
+
           </div>
           <div class="cart-item__total">
             {{ item.product.finalPrice * item.quantity | number }} ₫

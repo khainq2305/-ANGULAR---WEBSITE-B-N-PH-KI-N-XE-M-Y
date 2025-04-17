@@ -5,60 +5,57 @@
     <div class="row m-t-10 align-items-center">
       <!-- Bộ lọc nâng cao căn hàng đẹp -->
       <div class="row mt-3 align-items-end">
-        <!-- Tên danh mục / mô tả -->
         <!-- Tìm kiếm -->
-<div class="col-md-6">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Tìm kiếm tên/mô tả danh mục</mat-label>
-    <input
-      matInput
-      [(ngModel)]="filterDescription"
-      (input)="applyAdvancedFilter()"
-      placeholder="Nhập tên/mô tả danh mục..."
-    />
-  </mat-form-field>
-</div>
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Tìm kiếm tên/mô tả danh mục</mat-label>
+            <input
+              matInput
+              [(ngModel)]="filterDescription"
+              (input)="applyAdvancedFilter()"
+              placeholder="Nhập tên/mô tả danh mục..."
+            />
+          </mat-form-field>
+        </div>
 
-<!-- Ngày tạo -->
-<!-- Ngày tạo (dùng Angular Material Datepicker) -->
-<div class="col-md-3">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Ngày tạo</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker"
-      [(ngModel)]="filterCreatedAt"
-      placeholder="Chọn ngày"
-    />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-</div>
+        <!-- Ngày tạo -->
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Ngày tạo</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="filterCreatedAt"
+              placeholder="Chọn ngày"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
 
+        <!-- Trạng thái -->
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Trạng thái</mat-label>
+            <mat-select
+              [(ngModel)]="filterStatus"
+              (selectionChange)="setFilterStatus($event.value)"
+            >
+              <mat-option [value]="'all'">Tất cả</mat-option>
+              <mat-option [value]="1">Đang hoạt động</mat-option>
+              <mat-option [value]="0">Dừng hoạt động</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
 
-
-<!-- Trạng thái -->
-<div class="col-md-3">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Trạng thái</mat-label>
-    <mat-select
-      [(ngModel)]="filterStatus"
-      (selectionChange)="setFilterStatus($event.value)"
-    >
-      <mat-option [value]="'all'">Tất cả</mat-option>
-      <mat-option [value]="1">Đang hoạt động</mat-option>
-      <mat-option [value]="0">Dừng hoạt động</mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-</div>
-</div>
     <div class="mb-2 d-flex">
       <button
         mat-raised-button
         color="warn"
         class="rounded px-3 py-2 d-flex align-items-center gap-2"
-        [routerLink]="['/ui-components/category/delete']"
+        [routerLink]="['/admin/ui-components/category/delete']"
       >
         <mat-icon>delete</mat-icon>
         <span>Thùng rác</span>
@@ -81,8 +78,7 @@
               (change)="toggleSelectAll($event)"
               [checked]="isAllSelected()"
               [indeterminate]="isIndeterminate()"
-            >
-            </mat-checkbox>
+            ></mat-checkbox>
           </th>
           <td mat-cell *matCellDef="let element">
             <mat-checkbox [(ngModel)]="element.selected"></mat-checkbox>
@@ -95,7 +91,7 @@
             #
           </th>
           <td mat-cell *matCellDef="let element; let i = index" class="p-l-0">
-            <h6 class="f-s-14 f-w-600 text-start">{{ i + 1 }}</h6>
+            <h6 class="f-s-14 f-w-600 text-start">{{ getItemIndex(i) }}</h6>
           </td>
         </ng-container>
 
@@ -110,12 +106,11 @@
           </th>
           <td mat-cell *matCellDef="let element" class="p-l-0 text-center">
             <img
-              [src]="element.imageUrl"
+              [src]="getImageUrl(element.imageUrl)"
               alt="{{ element.name }}"
               class="img-thumbnail ms-3"
               width="50"
               height="50"
-              
             />
           </td>
         </ng-container>
@@ -143,31 +138,32 @@
             </h6>
           </td>
         </ng-container>
-<!-- Cột số lượng sản phẩm -->
-<ng-container matColumnDef="productCount">
-  <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14 text-center">
-    Sản phẩm
-  </th>
-  <td mat-cell *matCellDef="let element" class="text-center">
-    {{ element.productCount || 0 }}
-  </td>
-</ng-container>
+
+        <!-- Cột số lượng sản phẩm -->
+        <ng-container matColumnDef="productCount">
+          <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14 text-center">
+            Sản phẩm
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.productCount || 0 }}
+          </td>
+        </ng-container>
 
         <!-- Cột trạng thái -->
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">
-            Trạng thái
-          </th>
+          <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">Trạng thái</th>
           <td mat-cell *matCellDef="let element">
             <span
-              *ngIf="element.status == 1"
+              *ngIf="element.status === 1"
               class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12"
+              (click)="toggleStatus(element)"
             >
               Đang hoạt động
             </span>
             <span
-              *ngIf="element.status == 0"
+              *ngIf="element.status === 0"
               class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12"
+              (click)="toggleStatus(element)"
             >
               Dừng hoạt động
             </span>
@@ -185,12 +181,11 @@
               <button
                 mat-menu-item
                 [routerLink]="['/admin/ui-components/category/edit', element.id]"
-
               >
                 <mat-icon>edit</mat-icon>
-                <span >Chỉnh sửa</span>
+                <span>Chỉnh sửa</span>
               </button>
-              <button mat-menu-item (click)="confirmDelete(element)">
+              <button mat-menu-item (click)="confirmSoftDelete(element)">
                 <mat-icon>delete</mat-icon>
                 <span>Xóa</span>
               </button>
@@ -201,12 +196,21 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
       </table>
-    </div>
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+      <!-- Thông báo khi không có dữ liệu -->
+      <div class="text-center mt-4" *ngIf="dataSource1.data.length === 0">
+        <mat-icon color="warn">info</mat-icon>
+        <p class="text-muted">
+          Không tìm thấy danh mục nào phù hợp với điều kiện lọc.
+        </p>
+      </div>
 
-    <div *ngIf="showNotFound" class="text-center m-t-10">
-      Không tìm thấy dữ liệu
+      <!-- Phân trang -->
+      
     </div>
   </mat-card-content>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </mat-card>

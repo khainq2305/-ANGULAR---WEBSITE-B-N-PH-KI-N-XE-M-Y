@@ -1,252 +1,289 @@
 .slide__image {
-    width: 100%;
-    height: 550px;
-    object-fit: cover;
-  }
-  
-  .why-choose {
-    margin-top: 30px;
-    text-align: center;
-    margin-bottom: 50px;
-  }
-  
-  .why-choose__title {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .why-choose__highlight {
-    color: rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
-    font-weight: bold;
-  }
-  
-  .why-choose__items {
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-  }
-  
-  .why-choose__item {
-    text-align: center;
-    max-width: 500px;
-    margin-top: 30px;
-  }
-  
-  .why-choose__icon {
-    font-size: 3em;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  .why-choose__item-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-bottom: 5px;
-    padding-bottom: 18px; /* Space between text and underline */
-    border-bottom: 2px dotted rgb(69, 17, 17); /* Dotted underline, thay bằng màu của biến $color-primary */
-    transition: border-bottom 0.3s ease; /* Smooth transition */
-  }
-  
-  .why-choose__item-title:hover {
-    border-bottom: 2px solid rgb(69, 17, 17); /* Solid underline on hover, thay bằng màu của biến $color-primary */
-  }
-  
-  .why-choose__item-description {
-    font-size: 0.9em;
-    margin-top: 15px;
-    color: #666;
-  }
-  
-  .brand-introduction {
-    padding: 40px 0;
-  }
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+}
+
+.why-choose {
+  margin-top: 30px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.why-choose__title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.why-choose__highlight {
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+
+.why-choose__items {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.why-choose__item {
+  text-align: center;
+  max-width: 500px;
+  margin-top: 30px;
+}
+
+.why-choose__icon {
+  font-size: 3em;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+}
+
+.why-choose__item-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding-bottom: 18px;
+  border-bottom: 2px dotted #000428;
+  transition: border-bottom 0.3s ease;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.why-choose__item-title:hover {
+  border-bottom: 2px solid #000428;
+}
+
+.why-choose__item-description {
+  font-size: 0.9em;
+  margin-top: 15px;
+  color: #666;
+}
+
+.brand-introduction {
+  padding: 40px 0;
+}
+
+.brand-introduction .content {
+  display: flex;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
   .brand-introduction .content {
-    display: flex;
-    gap: 10px;
-    margin: 0 auto;
-  }
-  @media (max-width: 768px) {
-    .brand-introduction .content {
-      flex-direction: column;
-    }
-  }
-  .brand-introduction .content .image-container {
-    flex: 1;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .brand-introduction .content .image-container img {
-    width: 100%;
-    height: 550px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  .brand-introduction .content .text-content {
-    flex: 1;
-    padding: 20px;
-  }
-  .brand-introduction .content .text-content h2 {
-    font-size: 2.4rem;
-    color: rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
-    margin-bottom: 20px;
-  }
-  @media (max-width: 576px) {
-    .brand-introduction .content .text-content h2 {
-      font-size: 2rem;
-    }
-  }
-  .brand-introduction .content .text-content p {
-    font-size: 1.6rem;
-    color: #555;
-    margin-bottom: 15px;
-    line-height: 1.6;
-    text-align: justify;
-  }
-  @media (max-width: 375px) {
-    .brand-introduction .content .text-content p {
-      font-size: 1.4rem;
-    }
-  }
-  .brand-introduction .content .text-content .cta-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.6rem;
-    padding: 10px 20px;
-    background-color: #fff;
-    color: rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
-    border: 1px solid rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
-    border-radius: 5px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.4s ease;
-  }
-  @media (max-width: 576px) {
-    .brand-introduction .content .text-content .cta-button {
-      font-size: 1.4rem;
-    }
-  }
-  .brand-introduction .content .text-content .cta-button:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
-    transform: translateX(-100%);
-    transition: transform 0.4s ease;
-    z-index: -1;
-  }
-  .brand-introduction .content .text-content .cta-button:hover::before {
-    transform: translateX(0);
-  }
-  .brand-introduction .content .text-content .cta-button:hover {
-    color: #fff;
-    z-index: 1;
-  }
-  .brand-introduction.reverse {
-    flex-direction: row-reverse;
-  }
-  
-  .philosophy {
-    text-align: center;
-    padding: 20px;
-    z-index: 1;
-    margin-top: 20px;
-    margin-bottom: 60px;
-  }
-  
-  .philosophy__title {
-    font-size: 2em;
-    color: rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
-    margin-bottom: 30px;
-  }
-  
-  .philosophy__items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
-    justify-content: center;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  
-  .philosophy__item {
-    width: 300px;
-    margin-top: 30px;
-    height: 370px;
-    perspective: 1000px;
-    cursor: pointer;
-  }
-  
-  .philosophy__item-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-  }
-  
-  .philosophy__item:hover .philosophy__item-inner,
-  .philosophy__item.flipped .philosophy__item-inner {
-    transform: rotateY(180deg);
-  }
-  
-  .philosophy__image,
-  .philosophy__text-content {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 8px;
-  }
-  
-  .philosophy__image img {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-  
-  .philosophy__caption {
-    background-color: rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 0 0 8px 8px;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  .philosophy__text-content {
-    background-color: #fff;
-    color: #333;
-    display: flex;
-    align-items: flex-start;
     flex-direction: column;
-    padding: 20px;
-    border: 1px solid rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
-    transform: rotateY(180deg);
-    border-radius: 8px;
-    box-sizing: border-box;
   }
-  
-  .philosophy__text-content h3 {
-    color: rgb(69, 17, 17); /* Thay bằng màu của biến $color-primary */
+}
+
+.brand-introduction .content .image-container {
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.brand-introduction .content .image-container img {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.brand-introduction .content .text-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.brand-introduction .content .text-content h2 {
+  font-size: 2.4rem;
+  text-transform: uppercase;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 576px) {
+  .brand-introduction .content .text-content h2 {
     font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
   }
-  .philosophy__text-content p {
-    color: #666;
-    font-size: 1em; /* Kích thước chữ */
-    text-align: justify; /* Căn chỉnh hai bên */
-    line-height: 1.5; /* Khoảng cách dòng */
+}
+
+.brand-introduction .content .text-content p {
+  font-size: 1.6rem;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+@media (max-width: 375px) {
+  .brand-introduction .content .text-content p {
+    font-size: 1.4rem;
   }
+}
+
+.brand-introduction .content .text-content .cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border: 1px solid #000428;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s ease;
+}
+
+@media (max-width: 576px) {
+  .brand-introduction .content .text-content .cta-button {
+    font-size: 1.4rem;
+  }
+}
+
+.brand-introduction .content .text-content .cta-button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #000428, #004e92);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+  z-index: -1;
+}
+
+.brand-introduction .content .text-content .cta-button:hover::before {
+  transform: translateX(0);
+}
+
+.brand-introduction .content .text-content .cta-button:hover {
   
+  z-index: 1;
+  -webkit-text-fill-color: white !important; 
+  color: white !important;                 
+  z-index: 1;
+}
+
+.brand-introduction.reverse {
+  flex-direction: row-reverse;
+}
+
+.philosophy {
+  text-align: center;
+  padding: 20px;
+  z-index: 1;
+  margin-top: 20px;
+  padding: 20px 0 100px !important;
+}
+
+.philosophy__title {
+  font-size: 2em;
+  text-transform: uppercase;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 30px;
+}
+
+.philosophy__items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.philosophy__item {
+  width: 300px;
+  margin-top: 30px;
+  height: 370px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.philosophy__item-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.philosophy__item:hover .philosophy__item-inner,
+.philosophy__item.flipped .philosophy__item-inner {
+  transform: rotateY(180deg);
+}
+
+.philosophy__image,
+.philosophy__text-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+}
+
+.philosophy__image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.philosophy__caption {
+  background: linear-gradient(to right, #000428, #004e92);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 0 0 8px 8px;
+  margin-bottom: 0 !important;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.philosophy__text-content {
+  background-color: #fff;
+  color: #333;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #000428;
+  transform: rotateY(180deg);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.philosophy__text-content h3 {
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.philosophy__text-content p {
+  color: #666;
+  font-size: 1em;
+  text-align: justify;
+  line-height: 1.5;
+}

@@ -1,0 +1,14 @@
+<div class="category-wrapper">
+    <div class="category-container">
+      <div class="category-box">
+        <h2 class="category-title">DANH MỤC</h2>
+        <div class="category-grid">
+          <div class="category-item" *ngFor="let category of categories">
+            <img [src]="category.image" [alt]="category.name" />
+            <div>{{ category.name }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,130 @@
+.profile-container {
+   margin-top: -23px;
+padding: 24px;
+    background: #fff;
+    border-radius: 4px;
+    font-family: 'Segoe UI', sans-serif;
+  
+    .profile-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+  
+    .profile-subtitle {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+  
+    hr {
+      border: none;
+      border-top: 1px solid #f0f0f0;
+      margin-bottom: 24px;
+    }
+  }
+  
+  .profile-wrapper {
+    display: flex;
+    align-items: flex-start; // ✅ Đảm bảo avatar nằm cùng hàng với title
+    justify-content: space-between;
+    gap: 40px;
+  }
+  
+  
+  .profile-form {
+    flex: 1;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  
+    label {
+      width: 140px;
+      font-weight: 500;
+    }
+  
+    input[type='text'],
+    select {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    .form-static {
+      font-weight: 500;
+      margin-left: 12px;
+    }
+  
+    .link-change {
+      margin-left: 8px;
+      color: #4080ff;
+      font-size: 13px;
+      text-decoration: underline;
+    }
+  }
+  
+  .form-group.gender {
+    align-items: center;
+  
+    > label:first-child {
+      width: 140px;
+      font-weight: 500;
+      margin-right: 8px;
+    }
+  
+    label:not(:first-child) {
+      display: inline-flex;
+      align-items: center;
+      margin-right: 20px; // 👈 Giảm xuống từ 40–50px còn 20px
+      font-weight: 400;
+    }
+  
+    input[type='radio'] {
+      margin-right: 6px;
+    }
+  }
+  
+  .btn-save {
+    padding: 10px 28px;
+    background-color: #ee4d2d;
+    border: none;
+    color: white;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .profile-avatar {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 12px;
+    }
+  
+    .btn-upload {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 6px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+  
+    .file-note {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+    }
+  }
+  

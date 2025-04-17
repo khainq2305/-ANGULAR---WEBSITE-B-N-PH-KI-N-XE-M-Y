@@ -7,7 +7,7 @@ import { CartService } from '../../../services/apis/cart.service';
 import { ICartItem } from 'src/app/interface/cart.interface';
 import { jwtDecode } from 'jwt-decode';
 
-
+import { ToastrService } from 'ngx-toastr'; // ✅ import ToastrService
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -19,7 +19,7 @@ export class CartComponent implements OnInit {
   selectAll = false;
   cartItems: any[] = [];
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService,  private toastr: ToastrService ) {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -32,15 +32,12 @@ export class CartComponent implements OnInit {
       next: (res: { data: ICartItem[] }) => {
         console.log('🟡 Cart items:', res.data);
   
-        this.cartItems = res.data.reduce((acc: any[], curr: ICartItem) => {
-          const found = acc.find(item => item.product?.id === curr.product?.id);
-          if (found) {
-            found.quantity += curr.quantity;
-          } else {
-            acc.push({ ...curr, selected: false, variant: 'Mặc định' });
-          }
-          return acc;
-        }, []);
+        this.cartItems = res.data.map(item => ({
+          ...item,
+          selected: false,
+          variant: 'Mặc định'
+        }));
+        
       },
       error: (err) => console.error('❌ Lỗi khi load giỏ hàng:', err)
     });
@@ -57,22 +54,49 @@ export class CartComponent implements OnInit {
   }
 
   increaseQuantity(item: any) {
+    const maxQuantity = item.product?.quantity || 0;
+    if (item.quantity >= maxQuantity) {
+      this.toastr.warning(`Bạn chỉ có thể mua tối đa ${maxQuantity} sản phẩm này.`);
+      return;
+    }
     item.quantity++;
   }
-
+  
+  
   decreaseQuantity(item: any) {
     if (item.quantity > 1) item.quantity--;
   }
 
   removeItem(item: any) {
-    this.cartItems = this.cartItems.filter(i => i.id !== item.id);
+    this.cartService.deleteCartItem(item.id).subscribe({
+      next: () => {
+        this.cartItems = this.cartItems.filter(i => i.id !== item.id);
+        this.toastr.success('Đã xoá sản phẩm khỏi giỏ hàng');
+      },
+      error: () => {
+        this.toastr.error('Không thể xoá sản phẩm');
+      }
+    });
   }
+  
   goToCheckout() {
     const selectedItems = this.cartItems.filter(item => item.selected);
     localStorage.setItem('selectedCartItems', JSON.stringify(selectedItems));
   }
   
   deleteSelectedItems() {
-    this.cartItems = this.cartItems.filter(item => !item.selected);
+    const selectedIds = this.cartItems.filter(i => i.selected).map(i => i.id);
+  
+    this.cartService.deleteMultipleItems(selectedIds).subscribe({
+      next: () => {
+        this.cartItems = this.cartItems.filter(i => !i.selected);
+        this.selectAll = false;
+        this.toastr.success('Đã xoá các sản phẩm được chọn');
+      },
+      error: () => {
+        this.toastr.error('Không thể xoá các sản phẩm');
+      }
+    });
   }
+  
 }

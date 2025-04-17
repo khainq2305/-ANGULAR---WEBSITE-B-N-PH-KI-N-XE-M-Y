@@ -63,13 +63,15 @@
 
 <mat-form-field appearance="outline" class="w-100">
   <mat-label>Giảm giá</mat-label>
-  <input matInput type="number" formControlName="discount" placeholder="Nhập số tiền giảm" />
-<!-- ✅ Cách hiển thị giá sau giảm đúng hơn -->
-<div *ngIf="f['discount'].valid && f['price'].valid" class="discount-preview">
-  <strong>Giá sau giảm: {{ getDiscountedPrice() | number: '1.0-0' }} VNĐ</strong>
-</div>
+  <input
+  matInput
+  type="text"
+  [value]="f['discount'].value | number:'1.0-0'"
+  (input)="onDiscountInput($event)"
+  placeholder="Nhập số tiền giảm"
+/>
 
-  <!-- ✅ Hiển thị lỗi -->
+  <!-- Lỗi -->
   <mat-error *ngIf="f['discount'].hasError('negative')">
     Giảm giá không được âm.
   </mat-error>
@@ -80,6 +82,13 @@
     Giá trị giảm giá không hợp lệ.
   </mat-error>
 </mat-form-field>
+
+<p *ngIf="f['price'].value && f['discount'].value >= 0">
+  <strong>Giá sau giảm: {{ getDiscountedPrice() | number: '1.0-0' }} VNĐ</strong>
+</p>
+
+
+
 
 
 
@@ -129,7 +138,8 @@
 <mat-form-field appearance="outline" class="w-100" style="margin-top: 16px; margin-bottom: 0;">
   <mat-label>Danh mục</mat-label>
   <mat-select formControlName="categories" multiple>
-    <mat-option *ngFor="let cat of categories()" [value]="cat.id">{{ cat.name }}</mat-option>
+    <mat-option *ngFor="let cat of categoryList" [value]="cat.id">{{ cat.name }}</mat-option>
+
   </mat-select>
 </mat-form-field>
 
@@ -153,9 +163,10 @@
           <mat-form-field appearance="outline" class="w-100 mt-2">
             <mat-label>Trạng thái</mat-label>
             <mat-select formControlName="status">
-              <mat-option value="1">Xuất bản</mat-option>
-              <mat-option value="0">Nháp</mat-option>
+              <mat-option [value]="'1'">Còn hàng</mat-option>
+              <mat-option [value]="'0'">Hêt hàng</mat-option>
             </mat-select>
+            
           </mat-form-field>
 
           <!-- Sản phẩm nổi bật -->

@@ -10,9 +10,10 @@
           <mat-label class="f-w-600 m-b-8 d-block">Tên Danh Mục</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
             <input matInput placeholder="Tên danh mục" formControlName="name" />
-            <mat-error *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched">
+            <mat-error *ngIf="categoryForm.get('name')?.invalid && (categoryForm.get('name')?.touched || isSubmitted)">
               Tên danh mục không được để trống
             </mat-error>
+            
           </mat-form-field>
         </div>
       </div>
@@ -35,10 +36,10 @@
           <mat-label class="f-w-600 m-b-8 d-block">Hình ảnh sản phẩm</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary" [formGroup]="categoryForm">
             <input matInput 
-                   formControlName="imageUrl"
-                   readonly 
-                   [value]="selectedFileName || 'Chưa chọn file nào'" 
-                   (click)="fileInput.click()" />
+       formControlName="imageUrl"
+       readonly
+       (click)="fileInput.click()" />
+
           
             <mat-icon matSuffix class="upload-icon" (click)="fileInput.click()">cloud_upload</mat-icon>
           
@@ -50,20 +51,20 @@
           <input #fileInput type="file" (change)="onImageUpload($event)" accept="image/*" hidden />
 
           <!-- Hiển thị ảnh xem trước -->
-          <div class="image-preview" *ngIf="selectedImage">
+          <div class="image-preview" *ngIf="selectedFilePreview">
             <div class="image-container">
-              <img [src]="selectedImage" alt="Ảnh sản phẩm" width="50px" class="preview-img" />
+              <img [src]="selectedFilePreview" alt="Ảnh sản phẩm" width="50px" class="preview-img" />
               <mat-icon class="delete-icon" (click)="removeImage()">close</mat-icon>
             </div>
-          </div>
+          </div>          
         </div>
-      </div>
+      </div> 
 
       <div class="row">
         <div class="col-12">
           <mat-label class="f-w-600 m-b-8 d-block">Mô tả danh mục</mat-label>
           <div class="editor-container w-100 border rounded p-1">
-            <app-editor [(data)]="description"></app-editor>
+            <app-editor [data]="description" (dataChange)="onDescriptionChange($event)"></app-editor>
           </div>
           <!-- Đồng bộ description vào Form -->
           <input type="hidden" formControlName="description" [value]="description">

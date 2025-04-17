@@ -1,0 +1,28 @@
+<div class="search-overlay" [class.open]="openSearch">
+    <div class="row-search-overlay">
+      <input
+        type="text"
+        placeholder="Tìm sản phẩm..."
+        [value]="searchTerm"
+        (input)="onSearchChange($event)"
+      />
+      <span class="overlay-close" (click)="toggleSearch()">✕</span>
+    </div>
+  
+    <div class="search-results">
+      <div class="search-item" *ngFor="let item of products">
+        <img [src]="'http://localhost:3000/uploads/' + item.image" />
+        <div class="search-info">
+          <h4>{{ item.name }}</h4>
+          <div class="search-price">
+            <span class="price-new" *ngIf="item.finalPrice">{{ item.finalPrice | number }}₫</span>
+            <span class="price-old" *ngIf="item.discount > 0">{{ item.price | number }}₫</span>
+          </div>
+        </div>
+      </div>
+      <p *ngIf="products.length === 0 && searchTerm">Không tìm thấy sản phẩm phù hợp.</p>
+    </div>
+  </div>
+  
+  <div class="overlay-search" *ngIf="openSearch" (click)="toggleSearch()"></div>
+  

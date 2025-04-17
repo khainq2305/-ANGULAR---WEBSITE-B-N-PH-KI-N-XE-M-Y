@@ -1,0 +1,27 @@
+.section-wrapper {
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+    position: relative;
+  
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 6px;
+      width: 100%;
+      background: linear-gradient(to right, #000428, #004e92); 
+    }
+  }
+  
+  .section-header h5 {
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #000428, #004e92); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  

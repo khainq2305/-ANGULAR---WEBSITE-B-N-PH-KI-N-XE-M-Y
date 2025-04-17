@@ -41,9 +41,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { ThongTinComponent } from './pages/client/account/thong-tin/thong-tin.component';
+import { DonMuaComponent } from './pages/client/account/don-mua/don-mua.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ThongTinComponent,
+    
+  ],
   exports: [
     MatAutocompleteModule,
     MatCheckboxModule,

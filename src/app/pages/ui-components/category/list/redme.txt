@@ -1,0 +1,118 @@
+// Hàm xử lý soft delete
+softDeleteCategory(category: CategoryData) {
+  // Đánh dấu thời gian xóa
+  const updatedCategory = { ...category, deletedAt: new Date() };
+  
+  this.categoryService.softDeleteCategory(updatedCategory).subscribe({
+    next: (response) => {
+      console.log(`Danh mục "${category.name}" đã được xóa mềm thành công`);
+      // Cập nhật lại dataSource để loại bỏ item đã xóa mềm
+      this.dataSource1.data = this.dataSource1.data.filter(item => item.id !== category.id);
+      // Thông báo thành công
+      this.snackBar.open(`Danh mục "${category.name}" đã được xóa mềm`, 'Đóng', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+    },
+    error: (err) => {
+      console.error('Có lỗi xảy ra khi xóa mềm danh mục', err);
+      this.snackBar.open('Có lỗi xảy ra khi xóa mềm danh mục', 'Đóng', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+    }
+  });
+}
+
+// Hàm mở hộp thoại xác nhận xóa
+confirmSoftDelete(category: CategoryData) {
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    width: '400px',
+    data: { 
+      title: 'Xác nhận xóa mềm',
+      message: `Bạn có chắc chắn muốn xóa mềm danh mục "${category.name}" không?`,
+      confirmText: 'Xóa mềm',
+      cancelText: 'Hủy'
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.softDeleteCategory(category);
+    }
+  });
+}
+
+// Hàm mở hộp thoại xác nhận xóa vĩnh viễn
+confirmHardDelete(category: CategoryData) {
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    width: '400px',
+    data: { 
+      title: 'Xác nhận xóa vĩnh viễn',
+      message: `Bạn có chắc chắn muốn xóa vĩnh viễn danh mục "${category.name}" không? Hành động này không thể hoàn tác!`,
+      confirmText: 'Xóa vĩnh viễn',
+      cancelText: 'Hủy'
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.hardDeleteCategory(category);
+    }
+  });
+}
+
+// Hàm xóa vĩnh viễn danh mục
+hardDeleteCategory(category: CategoryData) {
+  this.categoryService.deleteCategory(category.id).subscribe({
+    next: (response) => {
+      console.log(`Danh mục "${category.name}" đã bị xóa vĩnh viễn!`);
+      // Cập nhật lại dataSource
+      this.dataSource1.data = this.dataSource1.data.filter(item => item.id !== category.id);
+      // Thông báo thành công
+      this.snackBar.open(`Danh mục "${category.name}" đã được xóa vĩnh viễn`, 'Đóng', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+    },
+    error: (err) => {
+      console.error('Có lỗi xảy ra khi xóa vĩnh viễn danh mục', err);
+      this.snackBar.open('Có lỗi xảy ra khi xóa vĩnh viễn danh mục', 'Đóng', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+    }
+  });
+}
+
+// Hàm khôi phục danh mục đã xóa mềm
+restoreCategory(category: CategoryData) {
+  // Đặt lại giá trị deletedAt thành null để khôi phục
+  const restoredCategory = { ...category, deletedAt: null };
+  
+  this.categoryService.updateCategory(restoredCategory).subscribe({
+    next: (response) => {
+      console.log(`Danh mục "${category.name}" đã được khôi phục`);
+      // Cập nhật lại trạng thái trong dataSource nếu cần
+      this.getAllCategory(); // Hoặc cập nhật trực tiếp vào dataSource
+      
+      this.snackBar.open(`Danh mục "${category.name}" đã được khôi phục thành công`, 'Đóng', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+    },
+    error: (err) => {
+      console.error('Có lỗi xảy ra khi khôi phục danh mục', err);
+      this.snackBar.open('Có lỗi xảy ra khi khôi phục danh mục', 'Đóng', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+    }
+  });
+}

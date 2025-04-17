@@ -2,11 +2,9 @@
   <mat-card-content>
     <h2 style="margin-bottom: 12px">Danh sách sản phẩm</h2>
 
-    <!-- ✅ Hàng trên -->
     <div
       class="d-flex justify-content-between align-items-start flex-wrap mb-3"
     >
-      <!-- Nút trạng thái: Tất cả, Hiển thị, Ẩn, Thùng rác -->
       <div class="d-flex flex-wrap gap-2">
         <button
           mat-stroked-button
@@ -171,39 +169,39 @@
         </ng-container>
 
         <ng-container matColumnDef="thumbnail">
-  <th mat-header-cell *matHeaderCellDef>
-    <mat-icon>image</mat-icon> <!-- Icon hình ảnh -->
-  </th>
-  <td mat-cell *matCellDef="let element">
-    <img
-      [src]="'http://localhost:3000/uploads/' + element.image"
-      alt="Hình sản phẩm"
-      width="80"
-      height="80"
-      style="object-fit: cover"
-      class="rounded"
-    />
-  </td>
-</ng-container>
-<ng-container matColumnDef="name">
-  <th mat-header-cell *matHeaderCellDef>Tên sản phẩm</th>
-  <td mat-cell *matCellDef="let element">
-    <strong
-      style="
-        display: block;
-        max-width: 320px;
-        white-space: normal;
-        word-wrap: break-word;
-        font-size: 14px;
-        font-weight: 500;
-        color: #333;
-      "
-    >
-      {{ element.name }}
-    </strong>
-  </td>
-</ng-container>
-
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-icon>image</mat-icon>
+            <!-- Icon hình ảnh -->
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <img
+              [src]="'http://localhost:3000/uploads/' + element.image"
+              alt="Hình sản phẩm"
+              width="80"
+              height="80"
+              style="object-fit: cover"
+              class="rounded"
+            />
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Tên sản phẩm</th>
+          <td mat-cell *matCellDef="let element">
+            <strong
+              style="
+                display: block;
+                max-width: 320px;
+                white-space: normal;
+                word-wrap: break-word;
+                font-size: 14px;
+                font-weight: 500;
+                color: #333;
+              "
+            >
+              {{ element.name }}
+            </strong>
+          </td>
+        </ng-container>
 
         <ng-container matColumnDef="price">
           <th mat-header-cell *matHeaderCellDef>Giá</th>
@@ -215,12 +213,10 @@
         <ng-container matColumnDef="discount">
           <th mat-header-cell *matHeaderCellDef>Giá sau giảm</th>
           <td mat-cell *matCellDef="let element">
-            <strong>
-              {{ element.finalPrice | number : "1.0-0" }} VNĐ
+            <strong> {{ element.discount > 0 ? (element.finalPrice | number : "1.0-0") + ' VNĐ' : '—' }}
             </strong>
           </td>
         </ng-container>
-        
 
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef>Danh mục</th>

@@ -50,12 +50,14 @@
           <input #fileInput type="file" (change)="onImageUpload($event)" accept="image/*" hidden />
 
           <!-- Hiển thị ảnh xem trước -->
-          <div class="image-preview" *ngIf="selectedImage">
-            <div class="image-container">
-              <img [src]="selectedImage" alt="Ảnh sản phẩm" width="50px" class="preview-img" />
-              <mat-icon class="delete-icon" (click)="removeImage()">close</mat-icon>
-            </div>
-          </div>
+          <!-- Hiển thị ảnh xem trước -->
+<div class="image-preview" *ngIf="selectedFilePreview">
+  <div class="image-container">
+    <img [src]="selectedFilePreview" alt="Ảnh sản phẩm" width="50px" class="preview-img" />
+    <mat-icon class="delete-icon" (click)="removeImage()">close</mat-icon>
+  </div>
+</div>
+
         </div>
       </div>
 

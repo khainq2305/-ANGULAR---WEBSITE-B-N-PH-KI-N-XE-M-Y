@@ -1,0 +1,19 @@
+<h2>Đánh Giá Sản Phẩm</h2>
+<div class="product">
+  <img [src]="'http://localhost:3000/uploads/' + data.product.image" width="80" />
+  <div>{{ data.product.name }}</div>
+</div>
+
+<div class="rating">
+  <label>Chất lượng sản phẩm</label>
+  <span *ngFor="let star of [1,2,3,4,5]" (click)="rating = star">
+    <i class="fa" [ngClass]="star <= rating ? 'fa-star checked' : 'fa-star-o'"></i>
+  </span>
+</div>
+
+<textarea [(ngModel)]="comment" rows="5" placeholder="Hãy chia sẻ điều bạn thích về sản phẩm này..."></textarea>
+
+<div class="buttons">
+  <button (click)="close()">Trở Lại</button>
+  <button (click)="submit()">Hoàn Thành</button>
+</div>

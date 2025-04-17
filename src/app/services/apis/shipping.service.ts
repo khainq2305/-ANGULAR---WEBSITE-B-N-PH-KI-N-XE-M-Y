@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { API_ENDPOINT } from 'src/app/config/api-endpoint.config';
+import { API_ENDPOINT } from '../../config/api-endpoint.config';
+
 import { ApiService } from '../common/api.service'; // thêm
 @Injectable({ providedIn: 'root' })
 export class ShippingService {

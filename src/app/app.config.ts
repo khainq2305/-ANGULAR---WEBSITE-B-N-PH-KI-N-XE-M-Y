@@ -1,3 +1,5 @@
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 import {
   ApplicationConfig,
@@ -45,18 +47,23 @@ export const appConfig: ApplicationConfig = {
       }),
       withComponentInputBinding()
     ),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptorsFromDi()), // 👈 dùng Interceptors
     provideClientHydration(),
-    provideAnimations(), // ✅ Bắt buộc cho Toastr
-    provideToastr(),      // ✅ Cấu hình toastr ở đây
+    provideAnimations(),
+    provideToastr(),
     provideAnimationsAsync(),
     importProvidersFrom(
       FormsModule,
       ReactiveFormsModule,
       MaterialModule,
       TablerIconsModule.pick(TablerIcons),
-      NgScrollbarModule,  
-      
+      NgScrollbarModule
     ),
-  ],
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ]
+  
 };

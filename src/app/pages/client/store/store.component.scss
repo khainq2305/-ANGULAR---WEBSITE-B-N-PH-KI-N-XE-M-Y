@@ -40,7 +40,9 @@
   }
   .store__sidebar-title {
     font-size: 1.2em;
-    color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 15px;
     font-weight: bold;
   }
@@ -87,7 +89,9 @@
   }
   .store-card__name {
     font-size: 1.1em;
-    color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
     margin-bottom: 5px;
     font-weight: bold;
   }
@@ -97,7 +101,7 @@
     display: flex;
     justify-content: center;
     padding: 11px 30%;
-    background-color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
     color: #fff;
     font-size: 0.9em;
     text-decoration: none;
@@ -130,7 +134,9 @@
   }
   .store-card__feature i {
     margin-right: 19px;
-    color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   .store-card__share {
     display: flex;
@@ -148,14 +154,16 @@
     transition: color 0.3s;
   }
   .store-card__share i:hover {
-    color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   .store__see-more {
     text-align: center;
     margin-top: 20px;
   }
   .store__see-more-button {
-    background-color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
     color: white;
     border: none;
     padding: 10px 20px;

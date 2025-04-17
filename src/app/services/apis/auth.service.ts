@@ -1,31 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { API_ENDPOINT } from '../../config/api-endpoint.config'; // ✅ Đảm bảo file này có client.user
+import { API_ENDPOINT } from '../../config/api-endpoint.config';
+import { ApiService } from '../common/api.service'; // ✅ Import service custom này
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientUserService {
-  constructor(private http: HttpClient) {}
+  constructor(private api: ApiService) {}
 
   register(data: any): Observable<any> {
-    return this.http.post(
+    return this.api.post(
       `${API_ENDPOINT.auth.base}${API_ENDPOINT.auth.register}`,
       data
     );
   }
 
   login(data: any): Observable<any> {
-    return this.http.post(
+    return this.api.post(
       `${API_ENDPOINT.auth.base}${API_ENDPOINT.auth.login}`,
       data
     );
   }
+
   getUserId(): number | null {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user?.id || null;
   }
-  
-  
 }

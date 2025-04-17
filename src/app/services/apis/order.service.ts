@@ -1,30 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { API_ENDPOINT } from '../../config/api-endpoint.config';
 import { Observable } from 'rxjs';
-import { enviroment } from '../../../environments/environment';
+import { API_ENDPOINT } from '../../config/api-endpoint.config';
+import { ApiService } from '../common/api.service'; // ✅ import đúng service dùng chung
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  constructor(private http: HttpClient) {}
+  constructor(private api: ApiService) {} // ✅ inject ApiService
 
   getOrders(params: any = {}): Observable<any> {
-    return this.http.get(API_ENDPOINT.order.base + API_ENDPOINT.order.list, {
-      params
-    });
+    return this.api.get(`${API_ENDPOINT.order.base}${API_ENDPOINT.order.list}`, [], undefined, params);
   }
-  
-  
+
   getOrderById(id: number): Observable<any> {
-    return this.http.get(`${API_ENDPOINT.order.base}/${id}`);
+    return this.api.get(`${API_ENDPOINT.order.base}`, [id]);
   }
+
   cancelOrder(orderId: number, reason: string): Observable<any> {
-    return this.http.put(`${API_ENDPOINT.order.base}/${orderId}/cancel`, { reason });
+    return this.api.put(`${API_ENDPOINT.order.base}/${orderId}/cancel`, { reason });
   }
-  
+
   updateStatus(orderId: number, status: number): Observable<any> {
-    return this.http.put(`${API_ENDPOINT.order.base}/${orderId}/update-status`, { status });
+    return this.api.put(`${API_ENDPOINT.order.base}/${orderId}/update-status`, { status });
+  }
+  getOrdersByUser(): Observable<any> {
+    return this.api.get(`${API_ENDPOINT.orderClient.base}${API_ENDPOINT.orderClient.getByUser}`);
   }
   
- 
 }

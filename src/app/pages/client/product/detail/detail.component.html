@@ -33,17 +33,30 @@
           </div>
   
           <div class="bg-light py-3 px-4 mb-4 rounded d-flex align-items-center gap-4">
-            <h3 class="text-danger fw-bold mb-0">
-              {{ product?.finalPrice | currency:'VND':'symbol' }}
-            </h3>
-          <div class="text-muted text-decoration-line-through">
-            {{ product?.price | currency:'VND':'symbol' }}
+
+            <!-- Nếu có giảm giá -->
+            <ng-container *ngIf="product?.discount > 0; else noDiscount">
+              <h3 class="text-danger fw-bold mb-0">
+                {{ (product?.price - product?.discount) | currency:'VND':'symbol' }}
+              </h3>
+          
+              <div class="text-muted text-decoration-line-through">
+                {{ product?.price | currency:'VND':'symbol' }}
+              </div>
+          
+              <span class="badge bg-light text-danger border border-danger px-2 py-1">
+                -{{ ((product?.discount / product?.price) * 100) | number:'1.0-0' }}%
+              </span>
+            </ng-container>
+          
+            <!-- Nếu không giảm giá -->
+            <ng-template #noDiscount>
+              <h3 class="text-danger fw-bold mb-0">
+                {{ product?.price | currency:'VND':'symbol' }}
+              </h3>
+            </ng-template>
           </div>
           
-          <span class="badge bg-light text-danger border border-danger px-2 py-1">
-            -{{ product?.discountValue || 0 }}%
-          </span>
-          </div>
   
           <div class="mb-3">
             <strong>Vận Chuyển:</strong>
@@ -74,33 +87,54 @@
           </div>
   
           <!-- QUANTITY -->
-          <div class="d-flex align-items-center gap-2 mb-4">
-            <label class="fw-semibold mb-0" style="min-width: 70px">Số Lượng</label>
-            <div class="d-flex align-items-center border rounded overflow-hidden" style="height: 36px;">
-              <button class="border-0 bg-light px-3" style="height: 100%" (click)="decreaseQuantity()">-</button>
-              
-              <input
-                type="number"
-                min="1"
-                [(ngModel)]="quantity"
-                class="text-center border-0"
-                style="width: 50px; height: 100%; outline: none;"
-              />
-              
-              <button class="border-0 bg-light px-3" style="height: 100%" (click)="increaseQuantity()">+</button>
-            </div>
-            <span class="text-muted ms-2" style="font-size: 14px;">{{ product?.quantity }} sản phẩm có sẵn</span>
-          </div>
+          <!-- QUANTITY -->
+<div class="d-flex align-items-start flex-column gap-1 mb-4">
+  <div class="d-flex align-items-center gap-2">
+    <label class="fw-semibold mb-0" style="min-width: 70px;">Số Lượng</label>
+
+    <!-- Nhóm nút + input -->
+    <div class="d-flex align-items-center border rounded overflow-hidden" style="height: 36px;">
+      <button class="border-0 bg-light px-3" style="height: 100%" (click)="decreaseQuantity()">-</button>
+
+      <input
+        type="number"
+        min="1"
+        [(ngModel)]="quantity"
+        class="text-center border-0"
+        style="width: 50px; height: 100%; outline: none;"
+      />
+
+      <button
+        class="border-0 bg-light px-3"
+        style="height: 100%"
+        (click)="increaseQuantity()"
+        [disabled]="quantity >= product?.quantity">
+        +
+      </button>
+    </div>
+
+    <!-- Sản phẩm có sẵn -->
+    <span class="text-muted ms-2" style="font-size: 14px;">
+      {{ product?.quantity }} sản phẩm có sẵn
+    </span>
+  </div>
+
+  <!-- ✅ Cảnh báo nằm dưới -->
+  <span *ngIf="quantity >= product?.quantity" class="text-danger ms-5" style="font-size: 14px;">
+    Bạn đã chọn số lượng tối đa.
+  </span>
+</div>
+
           
           
   
           <!-- ACTIONS -->
           <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <button style="border-color: linear-gradient(to right, #000428, #004e92); color: linear-gradient(to right, #000428, #004e92);" (click)="addToCart()" class="btn border  bg-white fw-semibold">
+            <button  (click)="addToCart()" class="btn-action btn-cart">
               🛒 Thêm Vào Giỏ Hàng
             </button>
             
-            <button style="background: linear-gradient(to right, #000428, #004e92);" class="btn  text-white fw-semibold">Mua Ngay</button>
+            <button class="btn-action btn-buy">Mua Ngay</button>
           </div>
         </div>
       </div>

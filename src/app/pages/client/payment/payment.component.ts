@@ -1,4 +1,4 @@
-// payment.component.ts (Sửa hoàn chỉnh)
+// ✅ payment.component.ts (ĐÃ XOÁ finalPrice)
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services/apis/cart.service';
 import { ShippingService } from '../../../services/apis/shipping.service';
@@ -42,18 +42,41 @@ export class PaymentComponent implements OnInit {
 
     const productRequests = selectedRaw.map((item: any) =>
       this.productService.getProductById(item.product_id).toPromise().then((res: any) => {
+        const price = res.data.price ?? 0;
+        const discount = res.data.discount ?? 0;
+        const finalPrice = price - discount;
+    
+        console.log('✅ FINAL PRICE:', { price, discount, finalPrice });
+    
         return {
           ...item,
           product: res.data,
-          finalPrice: res.data.finalPrice
+          price,
+          finalPrice
         };
       })
     );
+    
+    
+    
 
     Promise.all(productRequests).then((itemsWithProduct: any[]) => {
-      this.cartItems = itemsWithProduct;
+      this.cartItems = itemsWithProduct.map((item: any) => {
+        return {
+          ...item,
+          product: {
+            ...item.product,
+            finalPrice: item.finalPrice  // ✅ Dùng đúng finalPrice đã tính từ trên
+          }
+        };
+      });
+      
+    
       this.calculateTotal();
     });
+    
+    
+    
 
     this.shippingService.getProvinces().subscribe({
       next: (res) => this.provinces = res.data,
@@ -62,8 +85,13 @@ export class PaymentComponent implements OnInit {
   }
 
   calculateTotal(): void {
-    this.totalAmount = this.cartItems.reduce((sum, item) => sum + (item.finalPrice || 0) * item.quantity, 0);
+    this.totalAmount = this.cartItems.reduce((sum, item) => {
+      const price = item.product?.finalPrice ?? 0;
+      return sum + price * item.quantity;
+    }, 0);
   }
+  
+  
 
   totalWeight(): number {
     return this.cartItems.reduce((total, item) => total + item.quantity * 500, 0);
@@ -121,10 +149,11 @@ export class PaymentComponent implements OnInit {
       cartItems: selectedItems.map(item => ({
         productId: item.product?.id,
         quantity: item.quantity,
-        price: item.finalPrice
+        price: item.product?.finalPrice // ✅ SỬA LẠI Ở ĐÂY
       })),
-      totalPrice: selectedItems.reduce((sum, item) => sum + item.quantity * (item.finalPrice ?? 0), 0),
+      
       paymentMethod: 'COD',
+      totalPrice: this.totalAmount + this.shippingFee, // ✅ THÊM DÒNG NÀY
       shippingMethod: 'GHN',
       shippingFee: this.shippingFee,
       address: {
@@ -140,18 +169,13 @@ export class PaymentComponent implements OnInit {
     this.shippingService.placeOrder(payload).subscribe({
       next: () => {
         alert('🎉 Đặt hàng thành công!');
-
-        // ✅ Chỉ cập nhật lại this.cartItems và localStorage với item còn lại
         const allItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
         const updatedItems = allItems.filter((item: any) =>
           !selectedRaw.some((s: any) => s.product_id === item.product_id)
         );
         localStorage.setItem('cartItems', JSON.stringify(updatedItems));
         localStorage.removeItem('selectedCartItems');
-
-        // ✅ Đúng: dùng updatedItems từ localStorage
-this.cartItems = updatedItems;
-
+        this.cartItems = updatedItems;
         this.calculateTotal();
       },
       error: (err) => console.error('Lỗi đặt hàng:', err)

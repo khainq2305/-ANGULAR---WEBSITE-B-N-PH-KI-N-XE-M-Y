@@ -1,130 +1,230 @@
-import { Component } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { MatCardModule } from "@angular/material/card";
-import { MatTableModule } from "@angular/material/table";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatIconModule } from "@angular/material/icon";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatSelectModule } from "@angular/material/select";
-import { MatInputModule } from "@angular/material/input";
-import { FormsModule } from "@angular/forms";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { ConfirmDialogComponent } from "src/app/components/shared/confirm-dialog/confirm-dialog.component";
 import { ConfirmRestoreDialogComponent } from 'src/app/components/shared/confirm-restore-dialog/confirm-restore-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { CategoryService } from "src/app/services/apis/category.service";
+import { ICategory } from "src/app/interface/category.interface";
+import { CommonModule } from "@angular/common";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSelect, MatSelectModule } from "@angular/material/select";
+import { MatCardModule } from "@angular/material/card";
+import { FormsModule } from "@angular/forms";
+import { MatInputModule } from "@angular/material/input";
+import { API_ENDPOINT } from "src/app/config/api-endpoint.config";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-delete",
   standalone: true,
   imports: [
     CommonModule,
-    MatDatepickerModule,
-MatNativeDateModule,
-
-    MatCardModule,
-    MatMenuModule,
-    MatTableModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
     FormsModule,
-    MatDialogModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule, 
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule, 
+    MatSelectModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    MatButtonModule
   ],
   templateUrl: "./delete.component.html",
-  styleUrl: "./delete.component.scss",
+  styleUrls: ["./delete.component.scss"],
 })
-export class DeleteComponent {
-  constructor(private dialog: MatDialog) {} 
+export class DeleteComponent implements OnInit {
+  apiUrlImage = API_ENDPOINT.category.uploads;
   filterDate: Date | null = null;
   searchText: string = '';
+  showNotFound: boolean = false;
+  list: ICategory[] = [];
+  deleteCategory = new MatTableDataSource<ICategory>([]);
+  selectedCategories: ICategory[] = [];
+  sortCriteria: string = 'nameAsc';
 
-  applyFilters() {
-    this.filteredcategorys = this.deleteCategory.filter(item => {
-      const nameMatch = item.name.toLowerCase().includes(this.searchText.toLowerCase());
-  
-      
-      if (!this.filterDate) return nameMatch;
-  
-      const deletedAt = new Date(item.deletedAt);
-      const filterDate = new Date(this.filterDate);
-  
-    
-      return nameMatch &&
-             deletedAt.getFullYear() === filterDate.getFullYear() &&
-             deletedAt.getMonth() === filterDate.getMonth() &&
-             deletedAt.getDate() === filterDate.getDate();
+  constructor(private dialog: MatDialog, private categoryService: CategoryService, private toastr: ToastrService) {}
+
+  ngOnInit() {
+    this.getAllDeleteCategories();
+  }
+
+  getImageUrl(relativePath: string) {
+    return `${this.apiUrlImage}/${relativePath}`;
+  }
+
+  toggleSelectAll(event: any) {
+    const isChecked = event.checked;
+    this.deleteCategory.data.forEach(row => {
+      row.selected = isChecked;
+      // Cập nhật selectedCategories
+      if (isChecked) {
+        this.selectedCategories = [...this.deleteCategory.data]; // Thêm tất cả vào selectedCategories
+      } else {
+        this.selectedCategories = []; // Xóa tất cả khi không chọn
+      }
     });
   }
-  
-  deleteCategory = [
-    {
-      id: 1,
-      imagePath:
-        "https://shop2banh.vn/images/thumbs/2024/11/nhot-fuchs-silkolene-max-10w40-4t-08l-products-2374.png",
-      name: "Đĩa KingSpeed 260mm mẫu mới 4 lỗ",
-      deletedAt: new Date("2025-03-10"),
-    },
-    {
-      id: 2,
-      imagePath:
-        "https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg",
-      name: "Phuộc RCB Flow Pro cho Vario, Click chính hãng",
-      deletedAt: new Date("2025-03-12"),
-    },
-    {
-      id: 3,
-      imagePath:
-        "https://shop2banh.vn/images/thumbs/2025/03/lop-goodride-h571-8090-14-9090-14-products-2420.jpg",
-      name: "Nhớt Liqui Moly Molygen Scooter 5W30 0.8L",
-      deletedAt: new Date("2025-03-14"),
-    },
-  ];
+  updateSelectedCategories(element: ICategory) {
+    if (element.selected) {
+      this.selectedCategories.push(element);
+    } else {
+      const index = this.selectedCategories.findIndex(item => item.id === element.id);
+      if (index !== -1) {
+        this.selectedCategories.splice(index, 1);
+      }
+    }
+  }
+    
 
-  confirmDelete(category: any) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: "400px",
-      data: {
-        message: `Bạn có chắc chắn muốn xóa vĩnh viễn "${category.name}" không?`,
+  isAllSelected() {
+    return this.deleteCategory.data.length > 0 && this.deleteCategory.data.every(row => row.selected);
+  }
+
+  isIndeterminate() {
+    return this.deleteCategory.data.some(row => row.selected) && !this.isAllSelected();
+  }
+  
+
+  getAllDeleteCategories(): void {
+    this.categoryService.getCategoryListDelete().subscribe({
+      next: (res: any) => {
+        this.list = res?.data ?? res;  
+        this.deleteCategory.data = this.list;
+        this.showNotFound = this.deleteCategory.filteredData.length === 0;
+      },
+      error: (err: any) => {
+        console.error('Error fetching categories:', err);
       },
     });
+  }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.deleteForever(category);
-      }
+  applySort() {
+    switch (this.sortCriteria) {
+      case 'nameAsc': this.sortByNameAsc(); break;
+      case 'nameDesc': this.sortByNameDesc(); break;
+      case 'dateAsc': this.sortByDateAsc(); break;
+      case 'dateDesc': this.sortByDateDesc(); break;
+      default: break;
+    }
+  }
+
+  sortByNameAsc() {
+    this.deleteCategory.data = this.deleteCategory.data.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  sortByNameDesc() {
+    this.deleteCategory.data = this.deleteCategory.data.sort((a, b) => b.name.localeCompare(a.name));
+  }
+
+  sortByDateAsc() {
+    this.deleteCategory.data = this.deleteCategory.data.sort((a, b) => {
+      const dateA = a.deletedAt ? new Date(a.deletedAt).getTime() : 0;
+      const dateB = b.deletedAt ? new Date(b.deletedAt).getTime() : 0;
+      return dateA - dateB;
     });
   }
-  filteredcategorys = [...this.deleteCategory]; 
- 
-  restoreCategory(category: any) {
-    const dialogRef = this.dialog.open(ConfirmRestoreDialogComponent, {
-      width: '400px',
-      data: {
-        message: `Bạn có chắc chắn muốn khôi phục danh mục "${category.name}" không?`
-      }
-    });
   
+  
+  sortByDateDesc() {
+  this.deleteCategory.data = this.deleteCategory.data.sort((a, b) => {
+    const dateA = a.deletedAt ? new Date(a.deletedAt).getTime() : 0;
+    const dateB = b.deletedAt ? new Date(b.deletedAt).getTime() : 0;
+    return dateB - dateA; // Sắp xếp theo thứ tự giảm dần
+  });
+}
+
+
+  applyFilters() {
+    this.deleteCategory.filterPredicate = (data: ICategory, filter: string) => {
+      const nameMatch = data.name.toLowerCase().includes(filter);
+      const deletedAtMatch = this.filterDate
+            ? !!data.deletedAt && new Date(data.deletedAt).toLocaleDateString() === new Date(this.filterDate!).toLocaleDateString()
+            : true;
+          return nameMatch && deletedAtMatch;
+    };
+    this.deleteCategory.filter = this.searchText.trim().toLowerCase();
+    if (!this.searchText) {
+      this.deleteCategory.filter = Math.random().toString();
+    }
+
+    this.showNotFound = this.deleteCategory.filteredData.length === 0;
+  }
+
+  confirmDelete(category: ICategory) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: "400px",
+      data: { message: `Bạn có chắc chắn muốn xóa vĩnh viễn "${category.name}" không?` },
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        alert(`Đã khôi phục danh mục: ${category.name}`);
+        this.deleteForever(category);
+        this.toastr.success(`Danh mục "${category.name}" đã bị xóa vĩnh viễn!`);
       }
     });
   }
- 
-  deleteForever(category: any) {
-    if (
-      confirm(
-        `Bạn có chắc muốn xóa vĩnh viễn sản phẩm "${category.name}" không?`
-      )
-    ) {
-      alert(`Đã xóa vĩnh viễn sản phẩm: ${category.name}`);
-    }
+
+  restoreSelectedCategories() {
+    if (this.selectedCategories.length === 0) return;
+
+    const dialogRef = this.dialog.open(ConfirmRestoreDialogComponent, {
+      width: '400px',
+      data: { message: `Bạn có chắc chắn muốn khôi phục ${this.selectedCategories.length} danh mục đã chọn không?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.selectedCategories.forEach(category => {
+          const restoredCategory = { ...category, deletedAt: null };
+          this.categoryService.restoreCategory(restoredCategory).subscribe({
+            next: () => {
+              this.getAllDeleteCategories();
+              this.toastr.success(`Danh mục "${category.name}" đã được khôi phục!`);
+            },
+            error: (err) => {
+              this.toastr.error(`Có lỗi xảy ra khi khôi phục danh mục "${category.name}"`);
+            }
+          });
+        });
+      }
+    });
+  }
+
+  restoreCategory(category: ICategory) {
+    const dialogRef = this.dialog.open(ConfirmRestoreDialogComponent, {
+      width: '400px',
+      data: { message: `Bạn có chắc chắn muốn khôi phục danh mục "${category.name}" không?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const restoredCategory = { ...category, deletedAt: null };
+        this.categoryService.restoreCategory(restoredCategory).subscribe(() => {
+          this.getAllDeleteCategories();
+          this.toastr.success(`Danh mục "${category.name}" đã được khôi phục!`);
+        });
+      }
+    });
+  }
+
+  deleteForever(category: ICategory) {
+    this.categoryService.deleteCategory(category.id).subscribe({
+      next: () => {
+        this.getAllDeleteCategories();
+        this.toastr.success(`Danh mục "${category.name}" đã bị xóa vĩnh viễn!`);
+      },
+      error: err => {
+        this.toastr.error(`Có lỗi xảy ra khi xóa danh mục "${category.name}"`);
+      }
+    });
   }
 }

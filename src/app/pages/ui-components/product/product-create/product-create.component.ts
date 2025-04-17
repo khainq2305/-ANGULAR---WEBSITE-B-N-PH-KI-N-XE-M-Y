@@ -153,13 +153,21 @@ calculateDiscountedPrice(): number {
 
   fetchCategories() {
     this.categoryService.getCategoryList().subscribe({
-      next: (res) => {
-        const data = Array.isArray(res) ? res : [];
-        this.categories.set(data);
-        this.categoryList = data; // dùng biến thường cho HTML
+      next: (res: any) => {
+        const allCategories = res?.data ?? [];
+        const activeCategories = allCategories.filter((cat: any) => cat.status === 1); // 👉 lọc status = 1
+  
+        this.categories.set(activeCategories);
+        this.categoryList = activeCategories;
+  
+        console.log('📦 Danh mục đang hoạt động:', activeCategories);
+      },
+      error: () => {
+        console.error('❌ Không load được danh mục');
       }
     });
   }
+  
   
   
   onImageUpload(event: any) {

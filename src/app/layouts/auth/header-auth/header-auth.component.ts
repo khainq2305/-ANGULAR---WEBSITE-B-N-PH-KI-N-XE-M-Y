@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { RouterModule } from '@angular/router'; // ✅ QUAN TRỌNG!
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header-auth',
   standalone: true,
   templateUrl: './header-auth.component.html',
   styleUrls: ['./header-auth.component.scss'],
-  imports: [RouterModule] // ✅ THÊM DÒNG NÀY
+  imports: [CommonModule, RouterModule] // ✅ THÊM VÀO
 })
 export class HeaderAuthComponent implements OnInit {
   isLoginPage = false;

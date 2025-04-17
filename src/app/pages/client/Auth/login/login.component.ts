@@ -43,14 +43,22 @@ export class LoginComponent {
   
     this.userService.login(loginData).subscribe(
       (res: any) => {
-        localStorage.setItem('token', `Bearer ${res.token}`);
+        localStorage.setItem('token', res.token); // ❌ KHÔNG thêm chữ "Bearer"
+
         localStorage.setItem('email', res.email);
-        this.router.navigate(['/']);
+        localStorage.setItem('role', res.role); // 👈 Lưu role
+    
+        if (res.role === 1) {
+          this.router.navigate(['/admin']); // 👉 Admin login thì về trang admin
+        } else {
+          this.router.navigate(['/']); // 👉 Client thì về trang home
+        }
       },
       err => {
         this.error = 'Tài khoản hoặc mật khẩu không chính xác';
       }
     );
+    
   }
   
 }

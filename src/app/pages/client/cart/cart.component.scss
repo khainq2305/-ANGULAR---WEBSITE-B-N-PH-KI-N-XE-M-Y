@@ -232,4 +232,20 @@
   .btn-purchase:hover {
     background-color: #ba0017;
   }
+  .summary-right {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* 👈 khoảng cách giữa tổng tiền và nút */
+  }
+  
+  .shopping-cart__summary-right {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* 👈 khoảng cách giữa "Tổng thanh toán" và giá */
+  }
+  .cart-item__quantity-btn.disabled-btn {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
   

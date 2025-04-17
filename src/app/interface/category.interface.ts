@@ -1,8 +1,12 @@
 export interface ICategory{
-    name: string
-    description: string
-    status: number
-    imageUrl: string | null
-    id: number
-
-}
+    deletedAt: string | number | Date | null;
+    description: string;
+    id: number;
+    name: string;
+    created_at: string;
+    status: number; 
+    updated_at: string;
+    imageUrl: string;
+    selected?: boolean;
+    productCount?: number;
+  }

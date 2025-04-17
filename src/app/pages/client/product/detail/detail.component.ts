@@ -29,15 +29,25 @@ export class DetailComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.productService.getProductById(id).subscribe({
+  
+    this.productService.getClientProductById(id).subscribe({
       next: (res) => {
-        this.product = res.data;
+        this.product = res?.data || res; // 👈 Nếu API không bọc trong `{ data }` thì dùng `res` luôn
+  
+        if (!this.product) {
+          console.error('❌ Không có dữ liệu sản phẩm');
+          return;
+        }
+  
         this.product.image = `http://localhost:3000/uploads/${this.product.image}`;
         this.thumbs = [this.product.image];
       },
-      error: (err) => console.error('❌ Lỗi khi lấy chi tiết sản phẩm:', err)
+      error: (err) => {
+        console.error('❌ Lỗi khi lấy chi tiết sản phẩm:', err);
+      }
     });
   }
+  
 
   increaseQuantity() {
     this.quantity++;

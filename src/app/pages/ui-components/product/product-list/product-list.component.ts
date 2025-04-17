@@ -14,7 +14,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
+import { ICategory } from 'src/app/interface/category.interface'; // đảm bảo đúng đường dẫn
 import { ProductService } from 'src/app/services/apis/product.service';
 import { CategoryService } from 'src/app/services/apis/category.service';
 import { IProduct } from 'src/app/interface/product.interface';
@@ -73,11 +73,16 @@ export class ProductListComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.categoryService.getCategoryList().subscribe((res) => {
-      console.log('🔥 CATEGORY API RESULT:', res);
-      this.categoryOptions = Array.isArray(res) ? res : []; // ✅ ép chắc chắn là array
+    this.categoryService.getCategoryList().subscribe((res: any) => {
+      const allCategories: ICategory[] = res.data || [];
+     
+  
+      this.categoryOptions = allCategories.filter((cat: ICategory) => cat.status == 1);
+    
     });
   }
+  
+  
   
   currentPage = 1;
   totalPages = 1;
@@ -96,12 +101,15 @@ export class ProductListComponent implements OnInit {
     if (this.deleted !== '') filters.deleted = this.deleted;
   
     this.productService.getProductList(filters).subscribe((res: { data: IProduct[], totalPages: number }) => {
-      this.dataSource.data = res.data.map(p => ({ ...p, selected: false }));
+      console.log('🟨 Dữ liệu sản phẩm:', res.data); // 👈 check có "image" không
+      this.dataSource.data = res.data.map(p => ({
+        ...p,
+        selected: false,
+        finalPrice: p.price - p.discount  
+      }));
       this.totalPages = res.totalPages || 1;
-  
-      // 👉 Thêm dòng này để xem giá trị trả về
-      console.log('📦 Tổng số trang:', this.totalPages);
     });
+    
   }
   
   onPageChange(page: number): void {

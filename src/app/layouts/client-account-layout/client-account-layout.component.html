@@ -1,0 +1,27 @@
+<div class="account-container">
+    <div class="account-wrapper">
+      <!-- Sidebar -->
+      <div class="account-sidebar">
+        <!-- ✅ KHỐI AVATAR -->
+        <div class="account-user">
+          <img src="https://i.imgur.com/FnBFeW7.png" alt="avatar" />
+          <div class="account-user-info">
+            <span class="account-user-name">vanhaihia2002</span>
+            <a href="#" class="edit-profile">Sửa Hồ Sơ</a>
+          </div>
+        </div>
+  
+        <!-- ✅ MENU -->
+        <ul class="account-menu">
+          <li><a routerLink="thong-tin" routerLinkActive="active">Tài Khoản Của Tôi</a></li>
+          <li><a routerLink="don-mua" routerLinkActive="active">Đơn Mua</a></li>
+        </ul>
+      </div>
+  
+      <!-- Nội dung -->
+      <div class="account-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+  
