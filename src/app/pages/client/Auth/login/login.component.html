@@ -1,71 +1,56 @@
 <form (ngSubmit)="handleLogin(loginForm)" #loginForm="ngForm" class="login-page">
-
   <div class="container-css">
     <div class="login-bg">
       <div class="login-brand">
-        <img src="assets/client/img/logo/logo-full-white.png" alt="Shopee" />
-        <p>
-          Nền tảng thương mại điện tử<br />
-          yêu thích ở Đông Nam Á & Đài Loan
-        </p>
+        <img src="assets/client/img/logo/ChatGPT Image 16_30_58 13 thg 4, 2025.png" alt="Shopee" />
+        <p>Nền tảng thương mại điện tử<br />yêu thích ở Đông Nam Á & Đài Loan</p>
       </div>
     </div>
 
     <div class="login-form">
       <div class="login-form-box">
-        <!-- Tabs -->
         <div class="login-tabs">
           <h2 class="active">Đăng nhập</h2>
           <div class="qr-login" href="#">
             <span>Đăng nhập với mã QR</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ee4d2d" viewBox="0 0 24 24">
-              <path d="M3 3h4v4H3V3zm2 2v0H5v0h0zm12-2h4v4h-4V3zm2 2v0h0v0h0zM3 17h4v4H3v-4zm2 2v0H5v0h0zm14-2h2v2h-2v-2zm0 4h2v2h-2v-2zM9 3h2v2H9V3zm0 4h2v2H9V7zm4-4h2v2h-2V3zm0 4h2v2h-2V7zM9 11h2v2H9v-2zm4 0h2v2h-2v-2zm-4 4h2v2H9v-2zm4 0h2v2h-2v-2z" />
+              <path d="M3 3h4v4H3V3zm2 2v0H5v0h0zm12-2h4v4h-4V3zm2 2v0h0v0h0zM3 17h4v4H3v-4zm2 2v0H5v0h0zm14-2h2v2h-2v-2zm0 4h2v2h-2v-2zM9 3h2v2H9V3zm0 4h2v2H9V7zm4-4h2v2h-2V3zm0 4h2v2h-2V7zM9 11h2v2H9v-2zm4 0h2v2h-2v-2zm-4 4h2v2H9v-2zm4 0h2v2h-2v-2z"/>
             </svg>
             <span class="corner-triangle"></span>
           </div>
         </div>
+
         <div *ngIf="error" class="error-box">
-          <span class="icon-error">✖</span>
-          {{ error }}
+          <span class="icon-error">✖</span> {{ error }}
         </div>
-        
 
-        <input
-  type="email"
-  name="email"
-  required
-  [(ngModel)]="email"
-  placeholder="Email/Số điện thoại/Tên đăng nhập"
-  #emailRef="ngModel"
-  [class.invalid]="emailRef.invalid && emailRef.touched"
-/>
-<div *ngIf="emailRef.invalid && emailRef.touched" class="error">Vui lòng nhập tài khoản</div>
+        <!-- Email -->
+        <div class="form-group">
+          <input
+            type="email"
+            name="email"
+            required
+            [(ngModel)]="email"
+            placeholder="Email/Số điện thoại/Tên đăng nhập"
+            #emailRef="ngModel"
+            [class.invalid]="emailRef.invalid && emailRef.touched"
+          />
+          <div *ngIf="emailRef.invalid && emailRef.touched" class="error">Vui lòng nhập tài khoản</div>
+        </div>
 
-        <div class="input-password">
-          <div class="input-password">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              name="password"
-              required
-              [(ngModel)]="password"
-              placeholder="Mật khẩu"
-              #passwordRef="ngModel"
-              [class.invalid]="passwordRef.invalid && passwordRef.touched"
-            />
-            <!-- con mắt svg như cũ -->
-            <span class="eye-icon" (click)="togglePassword()">...</span>
-          </div>
-          <div *ngIf="passwordRef.invalid && passwordRef.touched" class="error">Vui lòng nhập mật khẩu</div>
-          
-        
-          <!-- Con mắt SVG -->
+        <!-- Password -->
+        <div class="form-group input-password">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            required
+            [(ngModel)]="password"
+            placeholder="Mật khẩu"
+            #passwordRef="ngModel"
+            [class.invalid]="passwordRef.invalid && passwordRef.touched"
+          />
           <span class="eye-icon" (click)="togglePassword()">
-            <svg
-              fill="none"
-              viewBox="0 0 20 10"
-              class="eye-svg"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg fill="none" viewBox="0 0 20 10" class="eye-svg" xmlns="http://www.w3.org/2000/svg">
               <path
                 stroke="none"
                 [attr.fill]="showPassword ? '#f53d2d' : '#000'"
@@ -74,23 +59,19 @@
               ></path>
             </svg>
           </span>
+          <div *ngIf="passwordRef.invalid && passwordRef.touched" class="error">Vui lòng nhập mật khẩu</div>
         </div>
-        
 
-       
+        <!-- Submit -->
         <button class="btn-login" type="submit" [disabled]="!email || !password">ĐĂNG NHẬP</button>
 
-
-        <!-- Links -->
         <div class="login-links">
           <a href="#">Quên mật khẩu</a>
           <a href="#">Đăng nhập với SMS</a>
         </div>
 
-        <!-- OR -->
         <div class="login-or"><span>HOẶC</span></div>
 
-        <!-- Social -->
         <div class="login-social">
           <button class="fb">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/2023_Facebook_icon.svg/1024px-2023_Facebook_icon.svg.png" /> Facebook
@@ -100,12 +81,7 @@
           </button>
         </div>
 
-        <!-- Register -->
-        <p class="login-register">
-          Bạn mới biết đến Shopee?
-          <a routerLink="/dang-ky">Đăng ký</a>
-
-        </p>
+        <p class="login-register">Bạn mới biết đến Shopee? <a routerLink="/dang-ky">Đăng ký</a></p>
       </div>
     </div>
   </div>

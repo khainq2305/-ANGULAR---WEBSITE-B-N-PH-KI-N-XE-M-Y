@@ -1,57 +1,82 @@
-<div style="margin-top: -23px;" class="container-donmua">
-    <!-- Tabs trạng thái đơn hàng -->
-    <div class="order-tabs sticky-top">
-      <ul class="order-tabs__list">
-        <li class="order-tabs__item active">Tất cả</li>
-        <li class="order-tabs__item">Chờ xác nhận</li>
-        <li class="order-tabs__item">Đã xác nhận</li>
-        <li class="order-tabs__item">Đang giao</li>
-        <li class="order-tabs__item">Đã giao</li>
-        <li class="order-tabs__item">Đã huỷ</li>
-      </ul>
-    </div>
+
+
+<div class="container-donmua">
+  <!-- Tabs trạng thái -->
+  <div class="order-tabs sticky-top">
+    <ul class="order-tabs__list">
+      <li *ngFor="let tab of tabs"
+          class="order-tabs__item"
+          [class.active]="selectedTab === tab.label"
+          (click)="onTabChange(tab.label)">
+        {{ tab.label }}
+      </li>
+    </ul>
+  </div>
   
-    <!-- Thanh tìm kiếm -->
-    <div class="order-search">
-      <input
-        type="text"
-        placeholder="Bạn có thể tìm kiếm theo Tên Shop, ID đơn hàng hoặc Tên Sản phẩm"
-      />
-    </div>
-  
-    <!-- Danh sách đơn hàng -->
-    <div class="order-container">
-      <div *ngFor="let order of orders" class="order-item">
-        <div *ngFor="let detail of order.orderDetails" class="product">
-          <img [src]="'http://localhost:3000/uploads/' + detail.product.image" class="product-img" />
-          <div class="product-info">
-            <div class="name">{{ detail.product.name }}</div>
-            <div class="variant">Phân loại hàng: Mặc định</div>
-            <div class="qty">x{{ detail.quantity }}</div>
-            <div class="price">
-              <span *ngIf="detail.product.price !== detail.price" class="old">
-                ₫{{ detail.product.price | number }}
-              </span>
-              <span class="new">₫{{ detail.price | number }}</span>
-            </div>
-            <div class="total-amount">Thành tiền: <span>₫{{ detail.price * detail.quantity | number }}</span></div>
-          </div>
+
+  <!-- Tìm kiếm -->
+  <div class="order-search">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Bạn có thể tìm kiếm theo Tên Shop, ID đơn hàng hoặc Tên Sản phẩm"
+    />
+  </div>
+
+  <!-- Danh sách đơn -->
+  <div class="order-container">
+    <div *ngFor="let order of filteredOrders" class="order-item">
       
-          <div class="footer">
-            <button *ngIf="isReviewAvailable(order.createdAt)" class="orange" (click)="openReviewPopup(order, detail)">
-              Đánh Giá
-            </button>
-            <button>Liên Hệ Người Bán</button>
-            <button>Mua Lại</button>
-          </div>
+      <!-- ✅ Shop Header -->
+      <div class="order-header">
+        <div class="shop-info">
+          <span class="label-love">Yêu thích</span>
+          <span class="shop-name">Topick Global</span>
+          <button class="btn-outline">Chat</button>
+          <button class="btn-outline">Xem Shop</button>
         </div>
-      
-        <div class="status">
-          <span style="display: flex; margin-left: auto;" class="red">{{ mapStatus(order.status) }}</span>
+  
+        <div class="order-status">
+          <span [class]="getOrderStatusDisplay(order.status).color">
+            {{ getOrderStatusDisplay(order.status).label }}
+          </span>
+        </div>
+        
+      </div>
+  
+      <!-- ✅ Danh sách sản phẩm -->
+      <div *ngFor="let detail of order.orderDetails" class="product">
+        <img [src]="'http://localhost:3000/uploads/' + detail.product.image" class="product-img" />
+        <div class="product-info">
+          <div class="name">{{ detail.product.name }}</div>
+          <div class="variant">Phân loại hàng: {{ detail.variant || 'Mặc định' }}</div>
+          <div class="qty">x{{ detail.quantity }}</div>
+          <div class="price">
+            <span class="old" *ngIf="detail.product.price !== detail.price">₫{{ detail.product.price | number }}</span>
+            <span class="new">₫{{ detail.price | number }}</span>
+          </div>
         </div>
       </div>
-      
-      
+  
+      <!-- ✅ Ngày đánh giá -->
+      <div class="evaluate-note">
+        Đánh giá sản phẩm trước 
+        <span class="evaluate-date">{{ getReviewDeadline(order.createdAt) }}</span><br>
+        <span class="evaluate-promo">Đánh giá ngay và nhận 200 Xu</span>
+      </div>
+  
+      <!-- ✅ Tổng tiền -->
+      <div class="total-amount">
+        Thành tiền: <span class="new">₫{{ order.total_price | number }}</span>
+      </div>
+  
+      <!-- ✅ Footer nút -->
+      <div class="footer">
+        <button *ngIf="isReviewAvailable(order.createdAt)" class="orange" (click)="openReviewPopup(order, order.orderDetails[0])">Đánh Giá</button>
+        <button>Yêu Cầu Trả Hàng/Hoàn Tiền</button>
+        <button>Thêm</button>
+      </div>
     </div>
   </div>
   
+</div>

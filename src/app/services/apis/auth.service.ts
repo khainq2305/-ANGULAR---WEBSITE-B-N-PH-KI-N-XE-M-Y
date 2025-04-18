@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_ENDPOINT } from '../../config/api-endpoint.config';
-import { ApiService } from '../common/api.service'; // ✅ Import service custom này
+import { ApiService } from '../common/api.service'; 
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,13 @@ export class ClientUserService {
       data
     );
   }
-
+  googleLogin(data: { credential: string }): Observable<any> {
+    return this.api.post(
+      `${API_ENDPOINT.auth.base}${API_ENDPOINT.auth.googleLogin}`,
+      data
+    );
+  }
+  
   getUserId(): number | null {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user?.id || null;

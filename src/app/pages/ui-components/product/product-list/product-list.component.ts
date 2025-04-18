@@ -73,14 +73,11 @@ export class ProductListComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.categoryService.getCategoryList().subscribe((res: any) => {
-      const allCategories: ICategory[] = res.data || [];
-     
-  
-      this.categoryOptions = allCategories.filter((cat: ICategory) => cat.status == 1);
-    
+    this.productService.getActiveCategories().subscribe((res: any) => {
+      this.categoryOptions = res.data || [];
     });
   }
+  
   
   
   

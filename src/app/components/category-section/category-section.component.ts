@@ -19,79 +19,79 @@ export class CategorySectionComponent {
     },
     {
       name: 'Điện Thoại & Phụ Kiện',
-      image: 'https://down-vn.img.susercontent.com/file/089b2aef20fa08978a3ff6e887c6b7df',
+      image: 'https://down-vn.img.susercontent.com/file/31234a27876fb89cd522d7e3db1ba5ca@resize_w640_nl.webp',
     },
     {
       name: 'Thiết Bị Điện Tử',
-      image: 'https://down-vn.img.susercontent.com/file/7d6c1ad3a90c3a15c5f7c486f23792fc',
+      image: 'https://down-vn.img.susercontent.com/file/978b9e4cb61c611aaaf58664fae133c5@resize_w640_nl.webp',
     },
     {
       name: 'Máy Tính & Laptop',
-      image: 'https://down-vn.img.susercontent.com/file/9dc1cfb895cd321b9e6a9c4f3bbebdd9',
+      image: 'https://down-vn.img.susercontent.com/file/c3f3edfaa9f6dafc4825b77d8449999d@resize_w640_nl.webp',
     },
     {
       name: 'Máy Ảnh & Quay Phim',
-      image: 'https://down-vn.img.susercontent.com/file/2f3dd89df159c6a5fc5196c5d76f9a84',
+      image: 'https://down-vn.img.susercontent.com/file/ec14dd4fc238e676e43be2a911414d4d@resize_w640_nl.webp',
     },
     {
       name: 'Đồng Hồ',
-      image: 'https://down-vn.img.susercontent.com/file/cb2a0e3cf6b9022db3d45a9ea65e49a4',
+      image: 'https://down-vn.img.susercontent.com/file/86c294aae72ca1db5f541790f7796260@resize_w640_nl.webp',
     },
     {
       name: 'Giày Dép Nam',
-      image: 'https://down-vn.img.susercontent.com/file/e4298a9dfc755cf7b937b8aaf60d6233',
+      image: 'https://down-vn.img.susercontent.com/file/74ca517e1fa74dc4d974e5d03c3139de@resize_w640_nl.webp',
     },
     {
       name: 'Thiết Bị Điện Gia Dụng',
-      image: 'https://down-vn.img.susercontent.com/file/86a7cf52e0c416c598bcf7df02ab35b7',
+      image: 'https://down-vn.img.susercontent.com/file/7abfbfee3c4844652b4a8245e473d857@resize_w640_nl.webp',
     },
     {
       name: 'Thể Thao & Du Lịch',
-      image: 'https://down-vn.img.susercontent.com/file/5911fc2e64e32d2280e53a5425d09b87',
+      image: 'https://down-vn.img.susercontent.com/file/6cb7e633f8b63757463b676bd19a50e4@resize_w640_nl.webp',
     },
     {
       name: 'Ô Tô & Xe Máy',
-      image: 'https://down-vn.img.susercontent.com/file/3a06cc36b0a9b94c9600b949b353cd10',
+      image: 'https://down-vn.img.susercontent.com/file/3fb459e3449905545701b418e8220334@resize_w640_nl.webp',
     },
     {
       name: 'Thời Trang Nữ',
-      image: 'https://down-vn.img.susercontent.com/file/d61bc68a34b42a8d05a0141653c8d234',
+      image: 'https://down-vn.img.susercontent.com/file/75ea42f9eca124e9cb3cde744c060e4d@resize_w640_nl.webp',
     },
     {
       name: 'Mẹ & Bé',
-      image: 'https://down-vn.img.susercontent.com/file/994a468be14be2c4e5c8696b5b8b90e1',
+      image: 'https://down-vn.img.susercontent.com/file/099edde1ab31df35bc255912bab54a5e@resize_w640_nl.webp',
     },
     {
       name: 'Nhà Cửa & Đời Sống',
-      image: 'https://down-vn.img.susercontent.com/file/d5aa6dff3fcaeacc8c330a8b94d86043',
+      image: 'https://down-vn.img.susercontent.com/file/24b194a695ea59d384768b7b471d563f@resize_w640_nl.webp',
     },
     {
       name: 'Sắc Đẹp',
-      image: 'https://down-vn.img.susercontent.com/file/282bd8c03016557fc2d9eb4d2f5fc8b2',
+      image: 'https://down-vn.img.susercontent.com/file/ef1f336ecc6f97b790d5aae9916dcb72@resize_w640_nl.webp',
     },
     {
       name: 'Sức Khỏe',
-      image: 'https://down-vn.img.susercontent.com/file/84120489337627622821b2c962ca08c7',
+      image: 'https://down-vn.img.susercontent.com/file/49119e891a44fa135f5f6f5fd4cfc747@resize_w640_nl.webp',
     },
     {
       name: 'Giày Dép Nữ',
-      image: 'https://down-vn.img.susercontent.com/file/121e2e2b121bdce8e90cf1f308f1745d',
+      image: 'https://down-vn.img.susercontent.com/file/48630b7c76a7b62bc070c9e227097847@resize_w640_nl.webp',
     },
     {
       name: 'Túi Ví Nữ',
-      image: 'https://down-vn.img.susercontent.com/file/38adf52f25e6ec3c3de5aa999c080cd0',
+      image: 'https://down-vn.img.susercontent.com/file/fa6ada2555e8e51f369718bbc92ccc52@resize_w640_nl.webp',
     },
     {
       name: 'Phụ Kiện & Trang Sức',
-      image: 'https://down-vn.img.susercontent.com/file/8012dba54073e6dba2166b1b4084b97e',
+      image: 'https://down-vn.img.susercontent.com/file/8e71245b9659ea72c1b4e737be5cf42e@resize_w640_nl.webp',
     },
     {
       name: 'Bách Hóa Online',
-      image: 'https://down-vn.img.susercontent.com/file/5016a6c49f434da7c2a24b056bcc1b3b',
+      image: 'https://down-vn.img.susercontent.com/file/c432168ee788f903f1ea024487f2c889@resize_w640_nl.webp',
     },
     {
       name: 'Nhà Sách Online',
-      image: 'https://down-vn.img.susercontent.com/file/7b4c44c9492de9b5ff9d2e15e7c5ef1c',
+      image: 'https://down-vn.img.susercontent.com/file/36013311815c55d303b0e6c62d6a8139@resize_w640_nl.webp',
     },
   ];
 }

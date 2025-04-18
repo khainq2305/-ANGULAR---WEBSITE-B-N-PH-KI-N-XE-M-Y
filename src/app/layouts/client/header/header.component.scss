@@ -1,7 +1,7 @@
 .header__nav-user {
   position: relative;
   display: flex;
-  align-items: center !important;
+  align-items: center;
   gap: 6px;
   cursor: pointer;
 
@@ -10,69 +10,60 @@
   }
 
   &-img {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     object-fit: cover;
-    flex-shrink: 0;
-  }
-
-  &-name {
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #fff;
-    font-weight: 500;
-    font-size: 14px;
+    border: 1px solid #fff;
   }
 
   &-menu {
     position: absolute;
-    top: calc(100% + 2px);
-    right: 0;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
     background-color: #fff;
-    width: 200px;
-    border-radius: 6px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-    z-index: 100;
+    border-radius: 2px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
     display: none;
-    padding: 4px 0;
+    z-index: 1000;
 
+    // 🟧 Tam giác giống Shopee
     &::before {
       content: "";
       position: absolute;
-      top: -10px;
-      right: 18px;
-      border-width: 6px;
-      border-style: solid;
-      border-color: transparent transparent #fff transparent;
+      top: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid #fff;
     }
 
     .header__nav-user-item {
-      font-size: 13.5px;
-      line-height: 1.4;
-      padding: 0;
-
       a {
         display: block;
-        width: 100%;
         padding: 10px 16px;
-        color: #333;
+        font-size: 14px;
+        color: #222;
         text-decoration: none;
-        background-color: transparent;
-        transition: background-color 0.2s ease, color 0.2s ease;
+        transition: all 0.2s ease;
       }
 
       a:hover {
-        color: #00bfa5;
-        background-color: #f5f5f5;
+        background-color: #f8f8f8;
+        color: #ee4d2d;
       }
 
       &:first-child a {
-        color: #00bfa5;
         font-weight: 500;
       }
     }
   }
+}
+.header {
+  position: relative;
+  overflow: visible !important;
+  z-index: 1;
 }

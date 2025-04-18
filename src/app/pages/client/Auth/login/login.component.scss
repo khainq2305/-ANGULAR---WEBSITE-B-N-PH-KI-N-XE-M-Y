@@ -34,16 +34,18 @@
 
 .login-brand {
   color: white;
+  gap: 6px;
   text-align: center;
 
   img {
-    width: 360px !important; // tăng size logo
-    margin-bottom: 20px;
+    width: 280px !important; // tăng size logo
+   
   }
 
   p {
     font-size: 20px;
     line-height: 1.6;
+    margin-top: -22px !important; // loại bỏ khoảng trắng dư
   }
 }
 
@@ -251,6 +253,10 @@
   cursor: not-allowed;
   opacity: 0.7;
 }
+i.form-group {
+  margin-bottom: 8px;
+}
+
 input.invalid {
   border: 1px solid red !important;
 }
@@ -258,8 +264,10 @@ input.invalid {
 .error {
   color: red;
   font-size: 13px;
-  margin-top: 4px;
+  margin-top: -5px; // ⚠ Gần input hơn
+  margin-bottom: 5px;
 }
+
 .error-box {
   border: 1px solid #f33;
   background-color: #fff0f0;
@@ -270,10 +278,13 @@ input.invalid {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  margin-bottom: 12px;
+  margin-bottom: 5px;
 }
 
-.icon-error {
-  color: #f33;
-  font-size: 16px;
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

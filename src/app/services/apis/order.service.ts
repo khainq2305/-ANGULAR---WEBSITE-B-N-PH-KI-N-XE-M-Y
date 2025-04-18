@@ -22,8 +22,8 @@ export class OrderService {
   updateStatus(orderId: number, status: number): Observable<any> {
     return this.api.put(`${API_ENDPOINT.order.base}/${orderId}/update-status`, { status });
   }
-  getOrdersByUser(): Observable<any> {
-    return this.api.get(`${API_ENDPOINT.orderClient.base}${API_ENDPOINT.orderClient.getByUser}`);
+  getOrdersByUser(params: any ={}): Observable<any> {
+    return this.api.get(`${API_ENDPOINT.orderClient.base}${API_ENDPOINT.orderClient.getByUser}`, [], undefined, params);
   }
   
 }

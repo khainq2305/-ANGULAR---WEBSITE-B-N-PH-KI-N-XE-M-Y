@@ -86,5 +86,9 @@ export class ProductService {
   getClientProductById(id: number): Observable<any> {
     return this.api.get(`${API_ENDPOINT.productClient.base}`, [id]);
   }
-  
+  // 🔍 ADMIN - Lấy danh mục có status = 1 để filter
+getActiveCategories(): Observable<any> {
+  return this.api.get(`${API_ENDPOINT.product.base}/active-categories`);
+}
+
 }

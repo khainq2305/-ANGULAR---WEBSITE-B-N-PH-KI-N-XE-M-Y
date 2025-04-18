@@ -1,6 +1,8 @@
 import { enviroment } from '../../environments/environment';
 
+
 export const API_BASE_URL = enviroment.apiUrl;
+export const DEFAULT_IMAGE_URL = `${API_BASE_URL}/uploads/default.jpg`;
 
 export const API_ENDPOINT = {
   category: {
@@ -56,6 +58,7 @@ export const API_ENDPOINT = {
     base: API_BASE_URL,
     register: '/register',
     login: '/login',
+    googleLogin: '/google', // ✅ thêm dòng này
   },
   comment: {
     base: `${API_BASE_URL}/admin/comment`,
