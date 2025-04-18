@@ -23,7 +23,7 @@ import { ICategory } from 'src/app/interface/category.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
 import { PaginationComponent } from '../../../../components/shared/pagination/pagination.component';
-
+import { DEFAULT_IMAGE_URL } from 'src/app/config/api-endpoint.config';
 @Component({
   selector: 'app-list',
   standalone: true,
@@ -50,7 +50,7 @@ import { PaginationComponent } from '../../../../components/shared/pagination/pa
 })
 export class ListComponent implements OnInit, AfterViewInit {
   apiUrlImage = API_ENDPOINT.category.uploads;
-
+  DEFAULT_IMAGE_URL = DEFAULT_IMAGE_URL;
   filterStatus: number | string = 'all';
   filterCreatedAt: string = '';
   filterDescription: string = '';
@@ -78,6 +78,10 @@ export class ListComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.getAllCategory();
   }
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = this.DEFAULT_IMAGE_URL;
+  }
   getItemIndex(index: number): number {
     // If you need to account for pagination, you can add this logic
     return this.pageSize * (this.currentPage - 1) + (index + 1);
@@ -95,9 +99,14 @@ export class ListComponent implements OnInit, AfterViewInit {
     };
   }
 
-  getImageUrl(relativePath: string) {
-    return `${this.apiUrlImage}/${relativePath}`;
+  
+  // Cách gọi đúng
+  getImageUrl(relativePath: string): string {
+    return  `${this.apiUrlImage}/${relativePath}`;
+    
   }
+
+
 
   getAllCategory() {
     const filters: any = {

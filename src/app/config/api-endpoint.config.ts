@@ -1,7 +1,7 @@
 import { enviroment } from '../../environments/environment';
 
 export const API_BASE_URL = enviroment.apiUrl;
-
+export const DEFAULT_IMAGE_URL = `${API_BASE_URL}/uploads/default.jpg`;
 export const API_ENDPOINT = {
   category: {
     base: API_BASE_URL + '/admin/' + 'categories',

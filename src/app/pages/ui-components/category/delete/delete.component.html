@@ -65,7 +65,14 @@
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Hình ảnh</th>
           <td mat-cell *matCellDef="let element">
-            <img [src]="getImageUrl(element.imageUrl)" alt="{{ element.name }}" class="img-thumbnail" width="50" height="50">
+            <img
+              [src]="getImageUrl(element.imageUrl)"
+              (error)="onImageError($event)"
+              alt="{{ element.name }}"
+              class="img-thumbnail ms-3"
+              width="50"
+              height="50"
+            />
           </td>
         </ng-container>
 

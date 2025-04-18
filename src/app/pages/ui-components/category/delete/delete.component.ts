@@ -19,7 +19,7 @@ import { FormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { API_ENDPOINT } from "src/app/config/api-endpoint.config";
 import { ToastrService } from "ngx-toastr";
-
+import { DEFAULT_IMAGE_URL } from "src/app/config/api-endpoint.config";
 @Component({
   selector: "app-delete",
   standalone: true,
@@ -43,6 +43,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class DeleteComponent implements OnInit {
   apiUrlImage = API_ENDPOINT.category.uploads;
+  DEFAULT_IMAGE_URL = DEFAULT_IMAGE_URL;
   filterDate: Date | null = null;
   searchText: string = '';
   showNotFound: boolean = false;
@@ -59,6 +60,10 @@ export class DeleteComponent implements OnInit {
 
   getImageUrl(relativePath: string) {
     return `${this.apiUrlImage}/${relativePath}`;
+  }
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = this.DEFAULT_IMAGE_URL;
   }
 
   toggleSelectAll(event: any) {
@@ -168,7 +173,7 @@ export class DeleteComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.deleteForever(category);
-        this.toastr.success(`Danh mục "${category.name}" đã bị xóa vĩnh viễn!`);
+        this.getAllDeleteCategories();
       }
     });
   }

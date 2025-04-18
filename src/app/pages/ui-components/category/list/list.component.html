@@ -107,6 +107,7 @@
           <td mat-cell *matCellDef="let element" class="p-l-0 text-center">
             <img
               [src]="getImageUrl(element.imageUrl)"
+              (error)="onImageError($event)"
               alt="{{ element.name }}"
               class="img-thumbnail ms-3"
               width="50"
