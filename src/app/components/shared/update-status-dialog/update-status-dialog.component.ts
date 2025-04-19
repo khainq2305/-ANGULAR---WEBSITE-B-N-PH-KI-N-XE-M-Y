@@ -33,19 +33,19 @@ export class UpdateStatusDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<UpdateStatusDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: { orderId: number, statusCode: number }
   ) {
-    this.selectedStatus = this.statusList.find(
-      s => s.label === data.order.status
-    )?.value ?? null;
+    this.selectedStatus = data.statusCode ?? null;
   }
+  
 
   cancel() {
     this.dialogRef.close();
   }
 
   save() {
-    this.dialogRef.close(this.selectedStatus);
+    this.dialogRef.close(this.selectedStatus); // Trả selectedStatus là số
   }
 }
+
 

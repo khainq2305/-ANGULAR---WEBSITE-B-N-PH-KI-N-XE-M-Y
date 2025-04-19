@@ -13,6 +13,7 @@ export const API_ENDPOINT = {
     delete: '/delete/',
     uploads: API_BASE_URL + '/uploads',
     getById: '/',
+    active: '/active',
     
     softDelete: '/soft-delete/list',
     softDeleteById: '/soft-delete/',
@@ -38,10 +39,10 @@ export const API_ENDPOINT = {
     list: '/list',
     add: '/add',
     deleteMultiple: '/delete-multiple',
-    restore: '/restore', // PATCH /restore/:id
-    restoreMultiple: '/restore-multiple', // PATCH /restore-multiple
-    permanentDelete: '/permanent', // DELETE /permanent/:id
-    permanentDeleteMultiple: '/permanent-delete-multiple', // DELETE body { ids }
+    restore: '/restore', 
+    restoreMultiple: '/restore-multiple',
+    permanentDelete: '/permanent', 
+    permanentDeleteMultiple: '/permanent-delete-multiple', 
   },
 
   user: {
@@ -58,7 +59,7 @@ export const API_ENDPOINT = {
     base: API_BASE_URL,
     register: '/register',
     login: '/login',
-    googleLogin: '/google', // ✅ thêm dòng này
+    googleLogin: '/google', 
   },
   comment: {
     base: `${API_BASE_URL}/admin/comment`,
@@ -89,7 +90,7 @@ export const API_ENDPOINT = {
   },
   review: {
     base: API_BASE_URL + '/comments',
-    create: '/', // ✅ đúng
+    create: '/', 
     getByProduct: (productId: number) => `/product/${productId}`,
   }
   

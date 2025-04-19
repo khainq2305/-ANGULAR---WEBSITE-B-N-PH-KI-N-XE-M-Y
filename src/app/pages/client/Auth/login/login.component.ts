@@ -55,8 +55,13 @@ export class LoginComponent {
         }
       },
       err => {
-        this.error = 'Tài khoản hoặc mật khẩu không chính xác';
+        if (err.status === 403 && err.error?.message.includes('khóa')) {
+          this.error = 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.';
+        } else {
+          this.error = 'Tài khoản hoặc mật khẩu không chính xác';
+        }
       }
+      
     );
     
   }

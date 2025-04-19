@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_ENDPOINT } from '../../config/api-endpoint.config';
-import { ApiService } from '../common/api.service'; // ✅ import đúng service dùng chung
+import { ApiService } from '../common/api.service'; 
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {

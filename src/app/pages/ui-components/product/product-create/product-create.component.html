@@ -227,7 +227,8 @@
           >
             <mat-label>Danh mục</mat-label>
             <mat-select formControlName="categories" multiple>
-              <mat-option *ngFor="let cat of categories()" [value]="cat.id">{{
+              <mat-option *ngFor="let cat of categoriesList" [value]="cat.id">
+                {{
                 cat.name
               }}</mat-option>
             </mat-select>
@@ -265,8 +266,8 @@
           <mat-form-field appearance="outline" class="w-100 mt-2">
             <mat-label>Trạng thái</mat-label>
             <mat-select formControlName="status">
-              <mat-option value="1">Xuất bản</mat-option>
-              <mat-option value="0">Nháp</mat-option>
+              <mat-option value="1">Hiển thị</mat-option>
+              <mat-option value="0">Ẩn</mat-option>
             </mat-select>
           </mat-form-field>
 

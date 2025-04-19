@@ -35,9 +35,10 @@ export class UserService {
     return this.http.patch(this.endpoint.base + this.endpoint.toggleStatus(id), {});
   }
 
-  updateUserStatus(id: number | string, status: number): Observable<any> {
-    return this.http.patch(this.endpoint.base + this.endpoint.toggleStatus(id), { status });
+  updateUserStatus(id: number | string, data: { status: number, reason?: string }): Observable<any> {
+    return this.http.patch(this.endpoint.base + this.endpoint.toggleStatus(id), data);
   }
+  
 
   resetPassword(id: number | string): Observable<{ success: boolean; password: string }> {
     return this.http.patch<{ success: boolean; password: string }>(

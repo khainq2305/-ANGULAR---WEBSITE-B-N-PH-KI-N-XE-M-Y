@@ -17,6 +17,7 @@ import { UpdateStatusComponent } from '../update-status/update-status.component'
 import { UserService } from 'src/app/services/apis/user.service';
 import { PaginationComponent } from 'src/app/components/shared/pagination/pagination.component';
 import { ToastrService } from 'ngx-toastr';
+import { ConfirmResetDialogComponent } from 'src/app/components/shared/confirm-reset-dialog/confirm-reset-dialog.component';
 
 import { User } from 'src/app/interface/user.interface';
 
@@ -85,16 +86,19 @@ export class UserListComponent implements AfterViewInit {
     if (this.filterStatusValue !== '') queryParams.status = this.filterStatusValue;
     if (this.filterGenderValue !== '') queryParams.gender = this.filterGenderValue;
   
-    console.log('📦 Query gửi backend:', queryParams);
+   
   
     this.userService.getUsers(queryParams).subscribe((res: any) => {
-      console.log('📥 Data từ API:', res.data);  // 👈 debug tại đây
+    
   
       const usersWithAvatarUrl: User[] = res.data.map((user: User) => ({
         ...user,
-        avatarUrl: user.avatar?.startsWith('/') 
-          ? `http://localhost:3000${user.avatar}` 
-          : `http://localhost:3000/${user.avatar}`,
+        avatarUrl: user.avatar
+        ? (user.avatar.startsWith('/')
+            ? `http://localhost:3000${user.avatar}`
+            : `http://localhost:3000/${user.avatar}`)
+        : 'https://i.pinimg.com/736x/8f/1c/a2/8f1ca2029e2efceebd22fa05cca423d7.jpg', 
+      
       }));
   
       this.dataSource1 = new MatTableDataSource<User>(usersWithAvatarUrl);
@@ -116,43 +120,66 @@ export class UserListComponent implements AfterViewInit {
     this.loadData();
   }
 
-  resetPassword(user: User) {
-    const confirmReset = confirm(`Bạn có chắc chắn muốn cấp lại mật khẩu cho ${user.name}?`);
-    if (!confirmReset) return;
 
-    this.userService.resetPassword(user.id!).subscribe({
-      next: (res) => {
-        alert(`Đã cấp lại mật khẩu cho ${user.name}\nMật khẩu mới: ${res.password}`);
-      },
-      error: (err) => {
-        console.error('Lỗi khi cấp lại mật khẩu:', err);
-        alert('Cấp lại mật khẩu thất bại');
-      },
+  resetPassword(user: User) {
+    const dialogRef = this.dialog.open(ConfirmResetDialogComponent, {
+      width: '400px',
+      data: { name: user.name }
+    });
+  
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+      
+        this.toastr.success(`Đã cấp lại mật khẩu cho ${user.name}.`, 'Email đã được gửi ');
+      }
     });
   }
+  
+
 
   openUpdateStatusDialog(user: User) {
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}'); // hoặc cách bạn đang lưu
+  
+    if (user.id === currentUser?.id) {
+      this.toastr.warning("Bạn không thể tự khóa tài khoản của chính mình.", "Cảnh báo");
+      return;
+    }
+  
     const dialogRef = this.dialog.open(UpdateStatusComponent, {
       width: '300px',
       data: { status: user.status },
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== null && result !== undefined) {
-        this.userService.updateUserStatus(user.id!, result).subscribe({
+        this.userService.updateUserStatus(user.id!, {
+          status: result.status,
+          reason: result.reason
+        }).subscribe({
           next: (res) => {
-            user.status = res.data.status;
+            const updatedUser = res.data;
+            user.status = updatedUser.status;
             this.toastr.success('Cập nhật trạng thái thành công', 'Thành công');
             this.loadData();
+  
+            if (updatedUser.status === 0) {
+              const reasonText = updatedUser.reason || 'Không rõ';
+              setTimeout(() => {
+                this.toastr.info(
+                  `Tài khoản của ${user.name} đã bị tạm ngưng với lý do: ${reasonText}. Email đã được gửi đến ${user.email}.`,
+                  '📩 Đã gửi email'
+                );
+              }, 1000);
+            }
           },
           error: (err) => {
-            console.error('Cập nhật trạng thái lỗi:', err);
-            alert('Cập nhật trạng thái thất bại');
-          },
+            this.toastr.error(err.error?.message || 'Cập nhật trạng thái thất bại', 'Lỗi');
+          }
         });
       }
     });
   }
+  
 
   filterStatus(status: string | number) {
     this.filterStatusValue = status.toString();

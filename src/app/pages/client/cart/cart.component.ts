@@ -8,6 +8,7 @@ import { ICartItem } from 'src/app/interface/cart.interface';
 import { jwtDecode } from 'jwt-decode';
 
 import { ToastrService } from 'ngx-toastr'; // ✅ import ToastrService
+import { enviroment } from 'src/environments/environment';
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -30,13 +31,24 @@ export class CartComponent implements OnInit {
   
     this.cartService.getCartByUser(idUser).subscribe({
       next: (res: { data: ICartItem[] }) => {
-        console.log('🟡 Cart items:', res.data);
+       
   
-        this.cartItems = res.data.map(item => ({
-          ...item,
-          selected: false,
-          variant: 'Mặc định'
-        }));
+        this.cartItems = res.data.map(item => {
+          const imageUrl = item.product?.image?.startsWith('http')
+  ? item.product.image
+  : `${enviroment.apiUrl}/uploads/${item.product?.image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'}`;
+
+        
+          return {
+            ...item,
+            selected: false,
+            product: {
+              ...item.product,
+              image: imageUrl
+            }
+          };
+        });
+        
         
       },
       error: (err) => console.error('❌ Lỗi khi load giỏ hàng:', err)
@@ -78,11 +90,21 @@ export class CartComponent implements OnInit {
       }
     });
   }
+  get isCheckoutDisabled(): boolean {
+    return this.cartItems.length > 0 && this.cartItems.every(item => !item.selected);
+  }
   
   goToCheckout() {
     const selectedItems = this.cartItems.filter(item => item.selected);
+  
+    if (selectedItems.length === 0) {
+      this.toastr.error('Vui lòng chọn ít nhất 1 sản phẩm để mua hàng!');
+      return;
+    }
+  
     localStorage.setItem('selectedCartItems', JSON.stringify(selectedItems));
   }
+  
   
   deleteSelectedItems() {
     const selectedIds = this.cartItems.filter(i => i.selected).map(i => i.id);

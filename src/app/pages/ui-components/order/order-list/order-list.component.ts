@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UpdateStatusDialogComponent } from 'src/app/components/shared/update-status-dialog/update-status-dialog.component';
 import { ConfirmCancelDialogComponent } from 'src/app/components/shared/confirm-cancel-dialog/confirm-cancel-dialog.component';
 import { OrderService } from 'src/app/services/apis/order.service';
+import { PaginationComponent } from 'src/app/components/shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-order-list',
@@ -40,11 +41,13 @@ import { OrderService } from 'src/app/services/apis/order.service';
     MatNativeDateModule,
     FormsModule,
     RouterModule,
-    MatDialogModule
+    MatDialogModule,
+    PaginationComponent
   ]
 })
 export class OrderListComponent implements OnInit {
-  displayedColumns = ['orderId', 'email', 'createdAt', 'totalAmount', 'status', 'paymentStatus', 'actions'];
+  displayedColumns = ['orderCode', 'email', 'createdAt', 'totalAmount', 'status', 'paymentStatus', 'actions'];
+
   dataSource: any[] = [];
   filteredOrders: any[] = [];
 
@@ -54,6 +57,10 @@ export class OrderListComponent implements OnInit {
   sortOrder: string = 'desc';
   fromDate?: Date;
   toDate?: Date;
+
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pageSize: number = 10;
 
   constructor(
     private orderService: OrderService,
@@ -73,7 +80,9 @@ export class OrderListComponent implements OnInit {
       search: this.searchOrderId,
       status: statusCode !== null ? statusCode : '',
       payment_status: this.selectedPaymentStatus,
-      sort: this.sortOrder
+      sort: this.sortOrder,
+      page: this.currentPage,
+      limit: this.pageSize
     };
 
     if (this.fromDate) params.fromDate = this.fromDate.toISOString();
@@ -82,7 +91,9 @@ export class OrderListComponent implements OnInit {
     this.orderService.getOrders(params).subscribe({
       next: (res) => {
         this.dataSource = res.data.map((order: any) => ({
+          orderCode: order.order_code,
           orderId: order.id,
+          rawStatusCode: order.status, // 👈 thêm dòng này để truyền vào dialog
           email: order.customer?.email || 'Không có email',
           createdAt: new Date(order.createdAt).toLocaleDateString(),
           totalAmount: order.total_price,
@@ -94,11 +105,17 @@ export class OrderListComponent implements OnInit {
           } as Record<string, string>)[order.payment_status] || 'Không rõ',
         }));
         this.filteredOrders = [...this.dataSource];
+        this.totalPages = res.totalPages || 1;
       },
       error: (err) => {
         this.toastr.error('Không thể lấy danh sách đơn hàng', 'Lỗi');
       }
     });
+  }
+
+  changePage(newPage: number) {
+    this.currentPage = newPage;
+    this.fetchOrders();
   }
 
   mapStatus(statusCode: number): string {
@@ -129,34 +146,35 @@ export class OrderListComponent implements OnInit {
 
   openConfirmCancelDialog(orderId: number) {
     const order = this.filteredOrders.find(o => o.orderId === orderId);
-  
+
     if (order?.status === 'Đã hủy') {
       this.toastr.warning('Đơn hàng đã bị hủy trước đó rồi', 'Thông báo');
       return;
     }
-  
+
     const dialogRef = this.dialog.open(ConfirmCancelDialogComponent, {
       width: '400px',
       data: { orderId }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.cancelOrder(orderId, result);
       }
     });
   }
-  
+
   cancelOrder(orderId: number, reason: string) {
     this.orderService.cancelOrder(orderId, reason).subscribe({
       next: () => {
-        this.toastr.success(`Đã hủy đơn hàng #${orderId}`, 'Thành công');
+        const order = this.filteredOrders.find(o => o.orderId === orderId);
+        this.toastr.success(`Đã hủy đơn hàng ${order?.orderCode || '#' + orderId}`, 'Thành công');
         this.fetchOrders();
       },
       error: (err) => {
         const status = err?.status;
         const message = err?.error?.message || 'Lỗi khi hủy đơn hàng';
-  
+
         if (status === 400 && message.includes('đã thanh toán')) {
           this.toastr.error('Không thể hủy đơn đã thanh toán hoặc đang giao', 'Thông báo');
         } else if (status === 400 && message.includes('đã bị hủy')) {
@@ -167,24 +185,24 @@ export class OrderListComponent implements OnInit {
       }
     });
   }
-  
 
   updateOrderStatus(order: any) {
     if (order.status === 'Đã hủy') {
       this.toastr.warning('Không thể cập nhật đơn hàng đã bị hủy', 'Cảnh báo');
       return;
     }
-  
+
     const dialogRef = this.dialog.open(UpdateStatusDialogComponent, {
       width: '400px',
-      data: { order }
+      data: { orderId: order.orderId, statusCode: order.rawStatusCode } // 👈 truyền mã trạng thái hiện tại
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined && result !== null) {
         this.orderService.updateStatus(order.orderId, +result).subscribe({
           next: () => {
-            this.toastr.success(`Đã cập nhật trạng thái đơn hàng #${order.orderId}`, 'Thành công');
+            this.toastr.success(`Đã cập nhật trạng thái đơn hàng ${order.orderCode}`, 'Thành công');
+
             const index = this.filteredOrders.findIndex(o => +o.orderId === +order.orderId);
             if (index !== -1) {
               this.filteredOrders[index].status = this.mapStatus(result);
@@ -198,7 +216,6 @@ export class OrderListComponent implements OnInit {
       }
     });
   }
-  
 
   filterStatus(status: string) {
     this.selectedStatus = status;

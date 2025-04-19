@@ -6,30 +6,37 @@
     border: 2px solid #ccc;
   }
   .drop-zone {
-    border: 2px dashed #ccc;
+    border: 2px dashed #3f51b5;
     border-radius: 12px;
-    padding: 20px;
+    padding: 30px;
     text-align: center;
     cursor: pointer;
     transition: 0.3s;
+    height: 160px; // ← tăng chiều cao
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   
     &:hover {
-      border-color: #3f51b5;
-      background: #f5f5f5;
+      border-color: #303f9f;
+      background: #f0f4ff;
     }
   
     p {
       margin: 0;
       color: #666;
+      font-size: 15px;
     }
   
     .avatar-preview {
+      max-height: 100%;
       max-width: 100%;
-      max-height: 200px;
-      margin-top: 8px;
+      margin-top: 12px;
       border-radius: 8px;
     }
   }
+  
 
   ::ng-deep .mat-form-field-invalid .mat-input-element {
     border-color: #f44336 ;

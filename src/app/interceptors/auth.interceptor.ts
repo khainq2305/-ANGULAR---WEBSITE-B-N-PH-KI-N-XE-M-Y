@@ -17,14 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
       : req;
 
     return next.handle(authReq).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          this.toastr.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!');
-          localStorage.removeItem('token');
-          this.router.navigate(['/dang-nhap']);
-        }
-        return throwError(() => error);
-      })
+      
     );
   }
 }

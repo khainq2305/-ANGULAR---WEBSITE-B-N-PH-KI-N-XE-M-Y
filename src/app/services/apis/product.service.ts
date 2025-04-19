@@ -9,6 +9,7 @@ import { ApiService } from '../../services/common/api.service';
   providedIn: 'root'
 })
 export class ProductService {
+  [x: string]: any;
   constructor(private http: HttpClient, private api: ApiService) {}
 
   // 🔍 ADMIN - Lấy danh sách sản phẩm có filter
@@ -18,9 +19,9 @@ export class ProductService {
 
   // 🔍 ADMIN - Lấy sản phẩm theo ID
   getProductById(id: number): Observable<any> {
-    return this.api.get(`${API_ENDPOINT.product.base}`, [id]);
+    return this.api.get(`${API_ENDPOINT.product.base}/${id}`);
   }
-
+  
   // ✏️ ADMIN - Cập nhật sản phẩm (dùng FormData nên giữ nguyên http)
   updateProduct(id: number, data: FormData): Observable<any> {
     return this.http.put(`${API_ENDPOINT.product.base}/${id}`, data);
@@ -86,9 +87,5 @@ export class ProductService {
   getClientProductById(id: number): Observable<any> {
     return this.api.get(`${API_ENDPOINT.productClient.base}`, [id]);
   }
-  // 🔍 ADMIN - Lấy danh mục có status = 1 để filter
-getActiveCategories(): Observable<any> {
-  return this.api.get(`${API_ENDPOINT.product.base}/active-categories`);
-}
-
+  
 }

@@ -218,9 +218,13 @@
                           <a class="home-product-item-link" [routerLink]="['/chi-tiet-san-pham', product.id]">
                             
                             <div
-                              class="home-product-item__img"
-                              [ngStyle]="{'background-image': 'url(' + product.image + ')'}">
-                            </div>
+                            class="home-product-item__img"
+                            [ngStyle]="{
+                              'background-image': 'url(' + product.image + ')'
+                            }"
+                            (error)="product.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'"
+                          ></div>
+                          
                       
                             <div class="home-product-item__info">
                               <h4 class="home-product-item__name">{{ product.name }}</h4>

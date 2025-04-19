@@ -263,22 +263,22 @@
           <mat-form-field appearance="outline" class="w-100 mt-2">
             <mat-label>Trạng thái</mat-label>
             <mat-select formControlName="status">
-              <mat-option [value]="'1'">Còn hàng</mat-option>
-              <mat-option [value]="'0'">Hêt hàng</mat-option>
+              <mat-option [value]=1>Hiển thị</mat-option>
+              <mat-option [value]=0>Ẩn</mat-option>
+              
             </mat-select>
           </mat-form-field>
 
           <!-- Sản phẩm nổi bật -->
           <label class="form-label">Sản phẩm nổi bật</label>
           <mat-slide-toggle
-            color="accent"
-            [checked]="f['is_feature'].value === '1'"
-            (change)="
-              productForm.patchValue({ is_feature: $event.checked ? '1' : '0' })
-            "
-          >
-            Bật / Tắt
-          </mat-slide-toggle>
+          color="accent"
+          [checked]="productForm.get('is_feature')?.value === 1"
+          (change)="productForm.patchValue({ is_feature: $event.checked ? 1 : 0 })"
+        >
+          Bật / Tắt
+        </mat-slide-toggle>
+        
         </div>
       </div>
 

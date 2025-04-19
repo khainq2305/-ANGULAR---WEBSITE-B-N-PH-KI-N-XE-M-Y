@@ -81,7 +81,11 @@ export class CommentDetailComponent implements OnInit {
       this.loadComments();
     });
   }
-
+  onAvatarError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'https://i.pinimg.com/736x/8f/1c/a2/8f1ca2029e2efceebd22fa05cca423d7.jpg';
+  }
+  
   loadComments() {
     this.commentService.getCommentsByProduct(this.productId).subscribe({
       next: (res) => {

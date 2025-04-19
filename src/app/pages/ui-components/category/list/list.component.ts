@@ -95,9 +95,12 @@ export class ListComponent implements OnInit, AfterViewInit {
     };
   }
 
-  getImageUrl(relativePath: string) {
-    return `${this.apiUrlImage}/${relativePath}`;
+  getImageUrl(relativePath?: string): string {
+    return relativePath
+      ? `${this.apiUrlImage}/${relativePath}`
+      : 'https://cdn.viettablet.com/images/companies/1/sua-chua/thay-man-hinh-iphone-chinh-hang-o-dau.gif';
   }
+  
 
   getAllCategory() {
     const filters: any = {

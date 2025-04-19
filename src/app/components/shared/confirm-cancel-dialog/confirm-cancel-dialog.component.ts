@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-confirm-cancel-dialog',
@@ -33,23 +34,24 @@ export class ConfirmCancelDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmCancelDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { orderId: number }
+    @Inject(MAT_DIALOG_DATA)
+    public data: { orderId: number, orderCode: string }, // ✅ bổ sung orderCode
+    private toastr: ToastrService
   ) {}
 
-  // ✅ Khi chọn lý do hủy, kiểm tra nếu là "Lý do khác"
   onReasonChange(value: string) {
     this.isOtherReason = value === 'other';
   }
 
-  // ✅ Xác nhận hủy đơn hàng
   confirmCancel() {
     const finalReason = this.isOtherReason ? this.customReason : this.selectedReason;
-    
+
     if (!finalReason.trim()) {
-      alert("Vui lòng nhập lý do hủy!");
+      this.toastr.warning("Vui lòng nhập lý do hủy đơn!", "Cảnh báo");
       return;
     }
 
     this.dialogRef.close(finalReason);
   }
 }
+

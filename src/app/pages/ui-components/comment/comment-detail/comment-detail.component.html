@@ -57,7 +57,13 @@
         <ng-container matColumnDef="avatar">
           <th mat-header-cell *matHeaderCellDef>Avatar</th>
           <td mat-cell *matCellDef="let comment">
-            <img [src]="comment.avatar" alt="Avatar" class="avatar">
+            <img
+            [src]="comment.avatar || 'https://i.pinimg.com/736x/8f/1c/a2/8f1ca2029e2efceebd22fa05cca423d7.jpg'"
+            (error)="onAvatarError($event)"
+            alt="Avatar"
+            class="avatar"
+          />
+          
           </td>
         </ng-container>
 

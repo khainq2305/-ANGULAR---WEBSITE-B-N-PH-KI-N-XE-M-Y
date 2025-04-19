@@ -97,10 +97,10 @@ export class ApiService {
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: this.getToken() ?? '',
+      Authorization: `Bearer ${this.getToken() ?? ''}`,
     });
   }
-
+  
   /**
    * Lấy token từ localStorage
    */

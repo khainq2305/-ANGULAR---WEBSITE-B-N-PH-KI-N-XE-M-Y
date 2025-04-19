@@ -62,18 +62,15 @@ export class ProductEditComponent implements OnInit {
   ngOnInit(): void {
     this.productId = +this.route.snapshot.paramMap.get('id')!;
     this.initForm();
-    this.fetchCategories();
-    this.fetchProduct();
   
-    // Lắng nghe sự thay đổi của giá gốc và giảm giá để tính lại giá sau giảm
-    this.productForm.get('price')?.valueChanges.subscribe(() => {
-      this.updateFinalPrice();
+    this.fetchCategories().then(() => {
+      this.fetchProduct(); // gọi sau khi danh mục đã sẵn sàng
     });
   
-    this.productForm.get('discount')?.valueChanges.subscribe(() => {
-      this.updateFinalPrice();
-    });
+    this.productForm.get('price')?.valueChanges.subscribe(() => this.updateFinalPrice());
+    this.productForm.get('discount')?.valueChanges.subscribe(() => this.updateFinalPrice());
   }
+  
   
   updateFinalPrice() {
     const price = this.productForm.get('price')?.value || 0;
@@ -92,15 +89,20 @@ export class ProductEditComponent implements OnInit {
   
   initForm() {
     this.productForm = this.fb.group({
-      finalPrice: [0], // 👈 thêm dòng này
-      name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[\p{L}0-9 ]+$/u)]],
+      finalPrice: [0],
+      name: ['', [
+        Validators.required,
+        Validators.minLength(3)
+      ]],
+      
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [null, [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]+(\.[0-9]+)?$/)]],
-      discount: [0, [Validators.min(0)]], // Chỉ còn discount duy nhất
+      discount: [0, [Validators.min(0)]], 
       quantity: [null, [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]+$/)]],
       categories: [[], Validators.required],
-      status: ['1', Validators.required],
-      is_feature: ['0'],
+      status: [1, Validators.required], 
+
+      is_feature: [0],
       image: [null]
     }, { validators: this.discountValidator.bind(this) });
   }
@@ -125,20 +127,21 @@ export class ProductEditComponent implements OnInit {
     return null;
   }
 
-  fetchCategories() {
-    this.categoryService.getCategoryList().subscribe({
-      next: (res: any) => {
-        const all = res?.data ?? [];
-        const active = all.filter((cat: any) => cat.status === 1);
-        this.categories.set(active); // 👈 THÊM DÒNG NÀY
-        this.categoryList = active;
-        console.log('📦 Danh mục đang hoạt động:', active);
-      },
-      error: () => {
-        this.toastr.error('Không lấy được danh mục');
-      }
+  fetchCategories(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.categoryService.getActiveCategories().subscribe({
+        next: (res) => {
+          this.categoryList = res.data; // chỉ danh mục status = 1
+          resolve();
+        },
+        error: (err) => {
+          this.toastr.error('Không lấy được danh mục');
+          reject(err);
+        }
+      });
     });
   }
+  
   
   
   fetchProduct() {
@@ -152,14 +155,14 @@ export class ProductEditComponent implements OnInit {
         discount: Number(product.discount) || 0,
 
         quantity: product.quantity,
-        categories: [product.idCategory], // giữ nguyên
-        status: product.status === 1 ? '1' : '0',
+        categories: [product.idCategory], 
+        status: Number(product.status), 
 
 
-        is_feature: String(product.is_feature),
+        is_feature: Number(product.is_feature),
         finalPrice: product.finalPrice || 0
       });
-      console.log('📦 PATCHED STATUS:', this.productForm.get('status')?.value);
+
 
   
       // Tính giá sau giảm khi tải sản phẩm
@@ -172,7 +175,7 @@ export class ProductEditComponent implements OnInit {
           size: 0
         };
       
-        // 👇 Patch vào form để không bị null khi submit
+        
         this.productForm.patchValue({ image: this.productImage });
       }
       
@@ -184,11 +187,10 @@ export class ProductEditComponent implements OnInit {
     if (this.productForm.invalid) {
       Object.values(this.productForm.controls).forEach(control => control.markAsTouched());
       
-      // 🔥 Log lỗi từng field
-      console.log('🧨 Form không hợp lệ!');
+
       Object.entries(this.productForm.controls).forEach(([key, control]) => {
         if (control.invalid) {
-          console.log(`❌ ${key} invalid:`, control.errors);
+    
         }
       });
     
@@ -226,7 +228,8 @@ export class ProductEditComponent implements OnInit {
     this.productService.updateProduct(this.productId, formData).subscribe({
       next: () => {
         this.toastr.success('Cập nhật thành công!');
-        this.router.navigate(['/admin/products']);
+        this.router.navigate(['/admin/ui-components/product/product-list']);
+
       },
       error: () => {
         this.toastr.error('Cập nhật thất bại!');
@@ -260,8 +263,9 @@ export class ProductEditComponent implements OnInit {
   }
   
   getCategoryName(id: number): string {
-    return this.categories().find(c => c.id === id)?.name || '';
+    return this.categoryList.find(c => c.id === id)?.name || '';
   }
+  
   getDiscountedPrice(): number {
     const price = this.productForm.get('price')?.value || 0;
     const discount = this.productForm.get('discount')?.value || 0;

@@ -29,6 +29,16 @@ th {
   white-space: nowrap;
   vertical-align: middle;
 }
+td.center,
+th.center {
+  text-align: center;
+}
+
+td, th {
+  vertical-align: middle;
+  padding: 10px;
+  font-size: 14px;
+}
 
 .avatar-img {
   width: 60px;

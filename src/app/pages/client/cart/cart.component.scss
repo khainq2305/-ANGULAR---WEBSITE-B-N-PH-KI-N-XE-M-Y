@@ -91,6 +91,13 @@
     color: #ff424e;
     font-size: 16px;
   }
+  .cart-item__name {
+    max-width: 250px; // hoặc tuỳ ý như 200px, 300px
+    white-space: normal; // cho phép xuống dòng
+    word-wrap: break-word; // tự động xuống dòng nếu không có dấu cách
+    line-height: 1.4;
+  }
+  
   .cart-container .cart-item__quantity {
     display: flex;
     justify-content: center;
@@ -218,7 +225,7 @@
   }
   .btn-purchase {
     display: inline-block;
-    background-color: #d0011b;
+    background: linear-gradient(to right, #000428, #004e92);
     color: #fff;
     padding: 12px 28px;
     font-size: 16px;
@@ -227,6 +234,11 @@
     border-radius: 4px;
     text-decoration: none;
     transition: background-color 0.2s ease;
+  }
+  .btn-purchase.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
   }
   
   .btn-purchase:hover {

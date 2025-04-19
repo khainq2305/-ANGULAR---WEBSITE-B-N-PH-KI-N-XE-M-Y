@@ -10,10 +10,14 @@
           <mat-label class="f-w-600 m-b-8 d-block">Tên Danh Mục</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
             <input matInput placeholder="Tên danh mục" formControlName="name" />
-            <mat-error *ngIf="categoryForm.get('name')?.invalid && (categoryForm.get('name')?.touched || isSubmitted)">
+            <mat-error
+              *ngIf="
+                categoryForm.get('name')?.invalid &&
+                (categoryForm.get('name')?.touched || isSubmitted)
+              "
+            >
               Tên danh mục không được để trống
             </mat-error>
-            
           </mat-form-field>
         </div>
       </div>
@@ -26,7 +30,12 @@
               <mat-option [value]="1">Hoạt động</mat-option>
               <mat-option [value]="0">Không hoạt động</mat-option>
             </mat-select>
-            <mat-error *ngIf="categoryForm.get('status')?.invalid && categoryForm.get('status')?.touched">
+            <mat-error
+              *ngIf="
+                categoryForm.get('status')?.invalid &&
+                categoryForm.get('status')?.touched
+              "
+            >
               Vui lòng chọn trạng thái
             </mat-error>
           </mat-form-field>
@@ -34,46 +43,82 @@
 
         <div class="col-lg-3">
           <mat-label class="f-w-600 m-b-8 d-block">Hình ảnh sản phẩm</mat-label>
-          <mat-form-field appearance="outline" class="w-100" color="primary" [formGroup]="categoryForm">
-            <input matInput 
-       formControlName="imageUrl"
-       readonly
-       (click)="fileInput.click()" />
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input
+              matInput
+              formControlName="imageUrl"
+              readonly
+              (click)="fileInput.click()"
+            />
 
-          
-            <mat-icon matSuffix class="upload-icon" (click)="fileInput.click()">cloud_upload</mat-icon>
-          
-            <mat-error *ngIf="categoryForm.get('imageUrl')?.invalid && categoryForm.get('imageUrl')?.touched">
+            <mat-icon matSuffix class="upload-icon" (click)="fileInput.click()"
+              >cloud_upload</mat-icon
+            >
+
+            <mat-error
+              *ngIf="
+                categoryForm.get('imageUrl')?.invalid &&
+                categoryForm.get('imageUrl')?.touched
+              "
+            >
               Vui lòng chọn hình ảnh
             </mat-error>
           </mat-form-field>
-          
-          <input #fileInput type="file" (change)="onImageUpload($event)" accept="image/*" hidden />
+
+          <input
+            #fileInput
+            type="file"
+            (change)="onImageUpload($event)"
+            accept="image/*"
+            hidden
+          />
 
           <!-- Hiển thị ảnh xem trước -->
           <div class="image-preview" *ngIf="selectedFilePreview">
             <div class="image-container">
-              <img [src]="selectedFilePreview" alt="Ảnh sản phẩm" width="50px" class="preview-img" />
-              <mat-icon class="delete-icon" (click)="removeImage()">close</mat-icon>
+              <img
+                [src]="selectedFilePreview"
+                alt="Ảnh sản phẩm"
+                width="50px"
+                class="preview-img"
+              />
+              <mat-icon class="delete-icon" (click)="removeImage()"
+                >close</mat-icon
+              >
             </div>
-          </div>          
+          </div>
         </div>
-      </div> 
+      </div>
 
       <div class="row">
         <div class="col-12">
           <mat-label class="f-w-600 m-b-8 d-block">Mô tả danh mục</mat-label>
           <div class="editor-container w-100 border rounded p-1">
-            <app-editor [data]="description" (dataChange)="onDescriptionChange($event)"></app-editor>
+            <app-editor
+              [data]="description"
+              (dataChange)="onDescriptionChange($event)"
+            ></app-editor>
           </div>
           <!-- Đồng bộ description vào Form -->
-          <input type="hidden" formControlName="description" [value]="description">
+          <input
+            type="hidden"
+            formControlName="description"
+            [value]="description"
+          />
         </div>
       </div>
 
       <div class="m-t-12">
-        <button mat-flat-button color="primary" class="m-r-8" type="submit">Thêm mới</button>
-        <button mat-stroked-button color="warn" [routerLink]="['/ui-components/category/list']">Hủy</button>
+        <button mat-flat-button color="primary" class="m-r-8" type="submit">
+          Thêm mới
+        </button>
+        <button
+          mat-stroked-button
+          color="warn"
+          [routerLink]="['/ui-components/category/list']"
+        >
+          Hủy
+        </button>
       </div>
     </form>
   </mat-card-content>

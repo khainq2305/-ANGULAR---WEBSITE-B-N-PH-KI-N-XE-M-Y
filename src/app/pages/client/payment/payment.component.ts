@@ -7,7 +7,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from 'src/app/services/apis/product.service';
 import { ClientUserService } from '../../../services/apis/auth.service';
-
+import { ToastrService } from 'ngx-toastr'; // nếu chưa import
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-payment',
   standalone: true,
@@ -28,12 +29,15 @@ export class PaymentComponent implements OnInit {
   selectedProvinceId!: number;
   selectedDistrictId!: number;
   selectedWardCode!: string;
+  showErrors = false;
 
   constructor(
     private cartService: CartService,
     private shippingService: ShippingService,
     private productService: ProductService,
-    private authService: ClientUserService
+    private authService: ClientUserService,
+    private toastr: ToastrService    ,
+    private router: Router,  
   ) {}
 
   ngOnInit(): void {
@@ -135,6 +139,19 @@ export class PaymentComponent implements OnInit {
   }
 
   onPlaceOrder() {
+    this.showErrors = true;
+
+  if (
+    !this.selectedProvinceId ||
+    !this.selectedDistrictId ||
+    !this.selectedWardCode ||
+    !this.detailedAddress ||
+    !this.phone ||
+    !this.name
+  ) {
+    this.toastr.error('Vui lòng điền đầy đủ thông tin giao hàng!');
+    return;
+  }
     const selectedRaw = JSON.parse(localStorage.getItem('selectedCartItems') || '[]');
     if (!selectedRaw.length) {
       alert('Bạn chưa chọn sản phẩm!');
@@ -168,7 +185,11 @@ export class PaymentComponent implements OnInit {
 
     this.shippingService.placeOrder(payload).subscribe({
       next: () => {
-        alert('🎉 Đặt hàng thành công!');
+        this.toastr.success('Đặt hàng thành công!', 'Thành công');
+        setTimeout(() => {
+          this.router.navigate(['/gio-hang']);
+        }); // đợi 1.5 giây cho toast hiển thị xong rồi chuyển
+        
         const allItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
         const updatedItems = allItems.filter((item: any) =>
           !selectedRaw.some((s: any) => s.product_id === item.product_id)

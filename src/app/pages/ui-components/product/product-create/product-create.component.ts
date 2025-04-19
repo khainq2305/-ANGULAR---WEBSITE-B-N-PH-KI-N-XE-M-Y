@@ -55,7 +55,7 @@ export class ProductCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchCategories();
+    this.getActiveCategories();
     this.initForm();
   
     // Theo dõi sự thay đổi của giá và giảm giá để tính toán lại giá sau giảm
@@ -112,14 +112,11 @@ calculateDiscountedPrice(): number {
 
   initForm() {
     this.productForm = this.fb.group({
-      name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^[\p{L}0-9 ]+$/u)
-        ]
-      ],
+      name: ['', [
+        Validators.required,
+        Validators.minLength(3)
+      ]]
+,      
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [
         null,
@@ -149,25 +146,18 @@ calculateDiscountedPrice(): number {
       this.productForm.get('discount')?.updateValueAndValidity();
     });
   }
-  categoryList: ICategory[] = [];
+  categoriesList: { id: number; name: string }[] = [];
 
-  fetchCategories() {
-    this.categoryService.getCategoryList().subscribe({
-      next: (res: any) => {
-        const allCategories = res?.data ?? [];
-        const activeCategories = allCategories.filter((cat: any) => cat.status === 1); // 👉 lọc status = 1
-  
-        this.categories.set(activeCategories);
-        this.categoryList = activeCategories;
-  
-        console.log('📦 Danh mục đang hoạt động:', activeCategories);
+  getActiveCategories(): void {
+    this.categoryService.getActiveCategories().subscribe({
+      next: (res) => {
+        this.categoriesList = res.data;
       },
-      error: () => {
-        console.error('❌ Không load được danh mục');
-      }
+      error: (err) => {
+        console.error("❌ Lỗi khi lấy danh mục:", err);
+      },
     });
   }
-  
   
   
   onImageUpload(event: any) {
@@ -191,8 +181,9 @@ calculateDiscountedPrice(): number {
   }
 
   getCategoryName(id: number): string {
-    return this.categories().find((c) => c.id === id)?.name || '';
+    return this.categoriesList.find((c) => c.id === id)?.name || '';
   }
+  
 
   onDescriptionChange(value: string) {
     this.productForm.get('description')?.setValue(value);

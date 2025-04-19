@@ -57,9 +57,12 @@ export class DeleteComponent implements OnInit {
     this.getAllDeleteCategories();
   }
 
-  getImageUrl(relativePath: string) {
-    return `${this.apiUrlImage}/${relativePath}`;
+  getImageUrl(relativePath?: string): string {
+    return relativePath
+      ? `${this.apiUrlImage}/${relativePath}`
+      : 'https://cdn.viettablet.com/images/companies/1/sua-chua/thay-man-hinh-iphone-chinh-hang-o-dau.gif'; // ảnh mặc định
   }
+  
 
   toggleSelectAll(event: any) {
     const isChecked = event.checked;

@@ -6,7 +6,7 @@ import { CategoryService } from 'src/app/services/apis/category.service';
 import { ProductService } from 'src/app/services/apis/product.service';
 import { ICategory } from 'src/app/interface/category.interface';
 import { IProduct } from 'src/app/interface/product.interface';
-
+import { enviroment } from 'src/environments/environment';
 @Component({
   selector: 'app-product',
   standalone: true,
@@ -37,9 +37,9 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
-    this.categoryService.getClientCategoryList().subscribe(res => {
-      this.categories = res;
-    });
+    // this.categoryService.getClientCategoryList().subscribe(res => {
+    //   this.categories = res;
+    // });
   }
 
   toggleSortDropdown(): void {
@@ -69,16 +69,27 @@ export class ProductComponent implements OnInit {
     }
 
     this.productService.getClientProductsWithFilter(filters).subscribe((res: any) => {
-      this.products = res.data.map((product: IProduct) => ({
-        ...product,
-        image: product.image?.startsWith('http')
+      this.products = res.data.map((product: IProduct) => {
+        const imageUrl = product.image?.startsWith('http')
           ? product.image
-          : `http://localhost:3000/uploads/${product.image}`
-      }));
+          : product.image
+            ? `${enviroment.apiUrl}/uploads/${product.image}`
+            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s';
+      
+        return {
+          ...product,
+          image: imageUrl
+        };
+      });
+      
+      
       this.totalPages = res.totalPages;
     });
   }
-
+  onImageError(product: IProduct) {
+    product.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s';
+  }
+  
   onCategoryChange(categoryId: number, event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
 

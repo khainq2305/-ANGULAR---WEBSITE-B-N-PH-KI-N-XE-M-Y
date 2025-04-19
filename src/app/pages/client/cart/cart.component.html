@@ -17,11 +17,15 @@
             <input type="checkbox" [(ngModel)]="item.selected" class="custom-checkbox" />
           </div>
           <div class="cart-item__details">
-            <img [src]="item.product?.image" class="cart-item__image" />
+            <img 
+  [src]="item.product?.image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'" 
+  class="cart-item__image" 
+  (error)="item.product.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'" 
+/>
+
             <div class="cart-item__info">
               <h3 class="cart-item__name">{{ item.product?.name }}</h3>
-              <span class="discount-badge">{{ item.product?.discount }}%</span>
-              <p class="cart-item__variant">{{ item.variant}}</p>
+              <p class="cart-item__variant">SIZE XL</p>
             </div>
           </div>
           <div class="cart-item__price">
@@ -80,7 +84,14 @@
               <span class="summary-total-label">Tổng thanh toán:</span>
               <span class="summary-total-amount">{{ totalAmount | number }} ₫</span>
             </div>
-            <a (click)="goToCheckout()" [routerLink]="['/thanh-toan']" class="btn-purchase">Mua Hàng</a>
+            <a 
+            (click)="goToCheckout()" 
+            [routerLink]="['/thanh-toan']" 
+            class="btn-purchase" 
+            [class.disabled]="isCheckoutDisabled">
+            Mua Hàng
+          </a>
+          
 
           </div>
         </div>

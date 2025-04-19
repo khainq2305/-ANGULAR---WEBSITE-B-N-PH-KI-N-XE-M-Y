@@ -8,57 +8,60 @@
   
         <div class="section">
           <h2>Giao hàng</h2>
-          <div class="radio-group">
-            <select name="selected_address">
-              <option>123 Đường A, Phường B, Quận C, Tỉnh D</option>
-            </select>
-          </div>
+ 
   
           <div class="location-fields">
-            <div class="select-wrapper">
-              <select class="input-field"
-              [(ngModel)]="selectedProvinceId"
-              name="province"
-              (change)="onProvinceChange()"
-              [ngModelOptions]="{ standalone: true }">
-        <option value="">Chọn tỉnh/thành</option>
-        <option *ngFor="let p of provinces" [value]="p.ProvinceID">
-          {{ p.ProvinceName }}
-        </option>
-      </select>
-      
-              
-            </div>
-            <div class="select-wrapper">
-              <!-- Quận/Huyện -->
-              <select class="input-field" [(ngModel)]="selectedDistrictId" name="district" (change)="onDistrictChange()">
-                <option value="">Chọn quận/huyện</option>
-                <option *ngFor="let d of districts" [value]="d.DistrictID">{{ d.DistrictName }}</option>
-              </select>
+     <!-- Tỉnh -->
+<div class="select-wrapper">
+  <select class="input-field"
+          [(ngModel)]="selectedProvinceId"
+          name="province"
+          (change)="onProvinceChange()"
+          [ngModelOptions]="{ standalone: true }">
+    <option value="">Chọn tỉnh/thành</option>
+    <option *ngFor="let p of provinces" [value]="p.ProvinceID">
+      {{ p.ProvinceName }}
+    </option>
+  </select>
+  <p class="error-text" *ngIf="showErrors && !selectedProvinceId">Vui lòng chọn tỉnh/thành</p>
+</div>
 
+<!-- Quận -->
+<div class="select-wrapper">
+  <select class="input-field" [(ngModel)]="selectedDistrictId" name="district" (change)="onDistrictChange()">
+    <option value="">Chọn quận/huyện</option>
+    <option *ngFor="let d of districts" [value]="d.DistrictID">{{ d.DistrictName }}</option>
+  </select>
+  <p class="error-text" *ngIf="showErrors && !selectedDistrictId">Vui lòng chọn quận/huyện</p>
+</div>
 
-            </div>
-            <div class="select-wrapper">
-         
-<!-- Phường/Xã -->
-<select
-  class="input-field"
-  [(ngModel)]="selectedWardCode"
-  name="ward"
-  (change)="onWardChange()"
-  [ngModelOptions]="{ standalone: true }">
-  <option value="">Chọn phường/xã</option>
-  <option *ngFor="let w of wards" [value]="w.WardCode">{{ w.WardName }}</option>
-</select>
-
-            </div>
+<!-- Xã -->
+<div class="select-wrapper">
+  <select class="input-field"
+          [(ngModel)]="selectedWardCode"
+          name="ward"
+          (change)="onWardChange()"
+          [ngModelOptions]="{ standalone: true }">
+    <option value="">Chọn phường/xã</option>
+    <option *ngFor="let w of wards" [value]="w.WardCode">{{ w.WardName }}</option>
+  </select>
+  <p class="error-text" *ngIf="showErrors && !selectedWardCode">Vui lòng chọn phường/xã</p>
+</div>
           </div>
-          <input class="input-field detailed-address" placeholder="Địa chỉ chi tiết"
-          [(ngModel)]="detailedAddress" name="detailedAddress" [ngModelOptions]="{ standalone: true }" />
+          <input class="input-field detailed-address"
+          placeholder="Địa chỉ chi tiết"
+          [(ngModel)]="detailedAddress"
+          name="detailedAddress"
+          [ngModelOptions]="{ standalone: true }" />
+   <p class="error-text" *ngIf="showErrors && !detailedAddress">Vui lòng nhập địa chỉ chi tiết</p>
         
           <div class="name-fields">
             <input class="input-field" placeholder="Tên người nhận" [(ngModel)]="name" name="name" />
+            <p class="error-text" *ngIf="showErrors && !name">Vui lòng nhập tên người nhận</p>
+            
+            <!-- Số điện thoại -->
             <input class="input-field" placeholder="Điện thoại" [(ngModel)]="phone" name="phone" />
+            <p class="error-text" *ngIf="showErrors && !phone">Vui lòng nhập số điện thoại</p>
           </div>
         </div>
   
@@ -98,7 +101,7 @@
           <div style="display: flex; align-items: center; gap: 12px;">
             <div style="position: relative;">
               <img 
-                [src]="'http://localhost:3000/uploads/' + item.product?.image" 
+                [src]="'http://localhost:3001/uploads/' + item.product?.image" 
                 width="50"
                 height="50"
                 style="object-fit: cover; border-radius: 6px;"
@@ -125,15 +128,15 @@
             <div>
               <h3 style="font-size: 14px; font-weight: 500; margin: 0;">{{ item.product?.name }}</h3>
               <p style="font-size: 12px; color: #666; margin: 4px 0 0;">
-               fff
+               SIZE XL
               </p>
             </div>
           </div>
         
           <div style="min-width: 100px; text-align: right;">
             <ng-container *ngIf="item.product as product">
-              <ng-container *ngIf="product.finalPrice !== undefined && product.finalPrice !== product.price; else noDiscount">
-
+              <!-- Nếu có giảm giá -->
+              <ng-container *ngIf="product.discount && product.discount > 0; else onlyPrice">
                 <span style="text-decoration: line-through; color: #888; font-size: 13px;">
                   {{ product.price | number }} ₫
                 </span><br />
@@ -141,16 +144,16 @@
                   {{ product.finalPrice | number }} ₫
                 </span>
               </ng-container>
-              
-              <ng-template #noDiscount>
+          
+              <!-- Nếu không có giảm giá -->
+              <ng-template #onlyPrice>
                 <span style="font-weight: 500; color: #d0021b; font-size: 14px;">
                   {{ product.price | number }} ₫
                 </span>
               </ng-template>
-              
             </ng-container>
-            
           </div>
+          
         </div>
         
       

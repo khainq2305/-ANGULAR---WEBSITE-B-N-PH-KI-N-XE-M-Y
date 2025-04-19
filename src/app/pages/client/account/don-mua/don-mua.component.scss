@@ -25,8 +25,11 @@
 }
 
 .order-tabs__item.active {
-  color: #ee4d2d;
-  border-color: #ee4d2d;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text; /* Cắt nền theo văn bản */
+  color: transparent; /* Làm cho màu văn bản trong suốt */
+  border-color: 1px solid transparent; /* Tạo border trong suốt */
+  border-image:linear-gradient(to right, #000428, #004e92)1; /* Áp dụng gradient vào border */
 }
 
 /* Container các đơn hàng */
@@ -145,7 +148,9 @@
 }
 
 .red {
-  color: #ee4d2d;
+  background-image: linear-gradient(to right, #FF5733, #FF8C00); /* Gradient từ đỏ sang cam */
+  -webkit-background-clip: text; /* Cắt nền theo văn bản */
+  color: transparent; /* Làm cho màu văn bản trong suốt */
   margin-left: 8px;
 }
 
@@ -165,7 +170,7 @@
 }
 
 .footer .orange {
-  background: #ee4d2d;
+  background: linear-gradient(to right, #000428, #004e92);
   color: white;
   border: none;
 }
@@ -183,7 +188,7 @@
   border-radius: 4px;
 }
 .label-love {
-  background: #ee4d2d;
+  background: linear-gradient(to right, #000428, #004e92);
   color: white;
   font-size: 12px;
   padding: 2px 4px;margin-right: 6px;
@@ -222,11 +227,15 @@
 }
 
 .evaluate-promo {
-  color: #ee4d2d;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text; /* Cắt nền theo văn bản */
+  color: transparent; /* Làm cho màu văn bản trong suốt */
   font-weight: bold;
 }
 .red {
-  color: #ee4d2d;
+  background: linear-gradient(to right, #000428, #004e92);
+  -webkit-background-clip: text; /* Cắt nền theo văn bản */
+  color: transparent; /* Làm cho màu văn bản trong suốt */
 }
 
 .green {

@@ -13,11 +13,13 @@
           <img
           [src]="product?.image"
           class="img-fluid border mb-3"
+          (error)="onImageError($event)"
           alt="Ảnh sản phẩm"
+          style="max-width: 100%; width: 100%; height: auto; object-fit: cover; border-radius: 6px;"
         />
-          <div class="d-flex justify-content-between">
-            <img *ngFor="let thumb of thumbs" [src]="thumb" width="90" height="90" class="img-thumbnail" />
-          </div>
+        
+        
+       
         </div>
   
         <div class="col-md-7 text-start">
@@ -97,7 +99,7 @@
       <button class="border-0 bg-light px-3" style="height: 100%" (click)="decreaseQuantity()">-</button>
 
       <input
-        type="number"
+        type="text"
         min="1"
         [(ngModel)]="quantity"
         class="text-center border-0"
@@ -108,21 +110,30 @@
         class="border-0 bg-light px-3"
         style="height: 100%"
         (click)="increaseQuantity()"
-        [disabled]="quantity >= product?.quantity">
+        [disabled]="quantity + totalInCart >= product?.quantity"
+        >
         +
       </button>
     </div>
 
     <!-- Sản phẩm có sẵn -->
-    <span class="text-muted ms-2" style="font-size: 14px;">
-      {{ product?.quantity }} sản phẩm có sẵn
-    </span>
+ <!-- Dòng 1: Tổng số sản phẩm -->
+<span class="text-muted ms-2" style="font-size: 14px;">
+  {{ product?.quantity }} sản phẩm có sẵn
+</span>
+
+
+
   </div>
 
   <!-- ✅ Cảnh báo nằm dưới -->
-  <span *ngIf="quantity >= product?.quantity" class="text-danger ms-5" style="font-size: 14px;">
-    Bạn đã chọn số lượng tối đa.
+  <span *ngIf="quantity + totalInCart > product?.quantity" class="text-danger ms-5" style="font-size: 14px;">
+    Bạn chỉ có thể thêm tối đa {{ product?.quantity - totalInCart }} sản phẩm nữa.
   </span>
+  
+  <!-- ✅ Lỗi khi vượt quá số lượng -->
+
+
 </div>
 
           
@@ -130,9 +141,15 @@
   
           <!-- ACTIONS -->
           <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <button  (click)="addToCart()" class="btn-action btn-cart">
-              🛒 Thêm Vào Giỏ Hàng
-            </button>
+            <button
+            class="btn-action btn-cart"
+            (click)="addToCart()"
+            [disabled]="quantity + totalInCart >= product?.quantity"
+          >
+            🛒 Thêm Vào Giỏ Hàng
+          </button>
+          
+          
             
             <button class="btn-action btn-buy">Mua Ngay</button>
           </div>

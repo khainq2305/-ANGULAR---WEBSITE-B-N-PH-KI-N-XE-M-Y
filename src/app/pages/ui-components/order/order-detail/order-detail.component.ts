@@ -11,6 +11,8 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from 'src/app/services/common/api.service';
 import { API_ENDPOINT } from 'src/app/config/api-endpoint.config'; // nhớ import nếu chưa
+import { enviroment } from 'src/environments/environment';
+const BASE_IMAGE_URL = `${enviroment.apiUrl}/uploads`;
 
 @Component({
   selector: 'app-order-detail',
@@ -60,25 +62,39 @@ export class OrderDetailComponent implements OnInit {
   // Định dạng dữ liệu đơn hàng để hiển thị
   formatOrder(data: any) {
     return {
-      orderId: data.idOrder,
-      customerName: data.customer?.name,
-      phoneNumber: data.customer?.phone,
-      email: data.customer?.email,
+      
+      orderId: data.id,
+      orderCode: data.order_code, // ✅ thêm dòng này
+      customerName: data.name || data.customer?.name || 'Không rõ',
+      phoneNumber: data.phone || data.customer?.phone || 'Không rõ',
+      email: data.customer?.email || 'Không rõ',
       orderDate: new Date(data.createdAt).toLocaleDateString(),
-
       status: data.status,
       totalAmount: data.total_price,
-      cancelReason: data.cancel_reason,
-      products: data.orderDetails?.map((item: any) => ({
-        image: item.product?.image || 'https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1606896462429-8O8VDQAB9SE5Z1YJ0LIV/454a7f83d9497c1b26edae3780534544.jpg?format=1000w',
-        name: item.product?.name,
-        quantity: item.quantity,
-        originalPrice: item.product?.price,
-        discountPrice: item.unit_price
-      })) || []
+      cancelReason: data.cancel_reason || '',
+      address: data.shippingAddress
+        ? `${data.shippingAddress.address_detail}, ${data.shippingAddress.ward_name}, ${data.shippingAddress.district_name}, ${data.shippingAddress.province_name}`
+        : 'Không có địa chỉ',
+  
+        products: data.orderDetails?.map((item: any) => {
+          const price = item.product?.price ?? 0;
+          const discount = item.product?.discount ?? 0;
+          const finalPrice = price - discount;
+        
+          return {
+            image: item.product?.image 
+              ? `${BASE_IMAGE_URL}/${item.product.image}` 
+              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s',
+            name: item.product?.name,
+            quantity: item.quantity,
+            originalPrice: price,
+            discountPrice: finalPrice // ✅ tính lại đúng giá giảm
+          };
+        }) || []
+        
     };
   }
-
+  
   mapStatus(statusCode: number): string {
     const statusMap: any = {
       0: 'Chờ xác nhận',

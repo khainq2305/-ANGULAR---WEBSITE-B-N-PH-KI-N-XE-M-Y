@@ -30,7 +30,7 @@ import { PaginationComponent } from 'src/app/components/shared/pagination/pagina
     MatMenuModule,
     MatSortModule,
     FormsModule,
-    PaginationComponent
+    PaginationComponent,
   ],
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss'],
@@ -80,13 +80,25 @@ export class CommentComponent implements OnInit, AfterViewInit {
           ...item,
           avgRating: isNaN(Number(item.avgRating)) ? 0 : item.avgRating,
         }));
+        console.log(
+          'Ảnh trả về:',
+          res.data.map((p) => p.imageUrl)
+        );
+
         this.dataSource.data = [...this.originalComments];
-        this.totalPages = Math.ceil(this.dataSource.data.length / this.pageSize);
+        this.totalPages = Math.ceil(
+          this.dataSource.data.length / this.pageSize
+        );
       },
       error: (err) => {
         console.error('Lỗi khi tải danh sách bình luận:', err);
       },
     });
+  }
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src =
+      'https://i.pinimg.com/736x/8f/1c/a2/8f1ca2029e2efceebd22fa05cca423d7.jpg';
   }
 
   get paginatedData(): ProductCommentSummary[] {
@@ -151,6 +163,9 @@ export class CommentComponent implements OnInit, AfterViewInit {
   }
 
   viewDetail(productId: number) {
-    this.router.navigate(['/admin/ui-components/comment/comment-detail', productId]);
+    this.router.navigate([
+      '/admin/ui-components/comment/comment-detail',
+      productId,
+    ]);
   }
 }

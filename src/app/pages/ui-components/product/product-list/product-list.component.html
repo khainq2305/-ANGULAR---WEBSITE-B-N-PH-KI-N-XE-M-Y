@@ -21,7 +21,7 @@
           [class.active-tab]="currentTab === 'active'"
           (click)="setTab('active')"
         >
-          <mat-icon>check_circle</mat-icon> Còn hàng
+          <mat-icon>check_circle</mat-icon> Hiển thị
         </button>
 
         <button
@@ -30,7 +30,7 @@
           [class.active-tab]="currentTab === 'inactive'"
           (click)="setTab('inactive')"
         >
-          <mat-icon>highlight_off</mat-icon> Hết hàng
+          <mat-icon>highlight_off</mat-icon> Ẩn
         </button>
 
         <button
@@ -175,13 +175,15 @@
           </th>
           <td mat-cell *matCellDef="let element">
             <img
-              [src]="'http://localhost:3000/uploads/' + element.image"
-              alt="Hình sản phẩm"
-              width="80"
-              height="80"
-              style="object-fit: cover"
-              class="rounded"
-            />
+            [src]="getImageUrl(element.image)"
+            alt="Hình sản phẩm"
+            width="80"
+            height="80"
+            style="object-fit: cover"
+            class="rounded"
+            (error)="onImageError($event)"
+          />
+          
           </td>
         </ng-container>
         <ng-container matColumnDef="name">
@@ -237,13 +239,13 @@
               *ngIf="element.status === true"
               class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12"
             >
-              Còn hàng
+              Hiển thị
             </span>
             <span
               *ngIf="element.status === false"
               class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12"
             >
-              Hết hàng
+              Ẩn
             </span>
           </td>
         </ng-container>

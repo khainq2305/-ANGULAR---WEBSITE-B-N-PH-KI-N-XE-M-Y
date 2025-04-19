@@ -94,6 +94,8 @@ export class AddComponent implements OnInit{
     const status = this.categoryForm.get('status')?.value;
     const description = this.categoryForm.get('description')?.value;
   
+    console.log("FormData đang gửi:", { name, status, description, selectedFile: this.selectedFile });
+  
     if (!name || !status) return;
   
     formData.append('name', name.trim());
@@ -107,16 +109,15 @@ export class AddComponent implements OnInit{
     this.categoryService.addCategory(formData).subscribe({
       next: () => {
         this.toastr.success('Tạo danh mục thành công!');
-        setTimeout(() => {
-          this.router.navigate(['/admin/ui-components/category/list']);
-        }, 2000);
-        // this.resetForm(); fix lỗi không reset form sau khi tạo danh mục
+        this.router.navigate(['/admin/ui-components/category/list']);
       },
-      error: () => {
+      error: (err) => {
+        console.error("❌ Thêm danh mục thất bại:", err);
         this.toastr.error('Có lỗi xảy ra khi tạo danh mục!');
       }
     });
   }
+  
 
   resetForm() {
     this.categoryForm.reset({
@@ -151,6 +152,7 @@ export class AddComponent implements OnInit{
 
   onSubmit() {
     this.isSubmitted = true;
+    console.log("Form values:", this.categoryForm.value);
     if (this.categoryForm.invalid) {
       this.toastr.error('Vui lòng điền đầy đủ thông tin!');
       return;

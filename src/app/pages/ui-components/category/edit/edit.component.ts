@@ -39,6 +39,8 @@ import { ToastrService } from 'ngx-toastr';
 export class EditComponent implements OnInit {
   categoryForm: FormGroup;
   selectedFileName = '';
+  selectedFile: File | null = null;
+
   selectedImage: string | null = null;
   selectedFilePreview: string | null = null;
   description = '';
@@ -77,11 +79,14 @@ export class EditComponent implements OnInit {
           if (category.imageUrl) {
             this.selectedImage = category.imageUrl.startsWith('http')
               ? category.imageUrl
-              : `${this.apiUrlImage}/${category.imageUrl}`; ;
-              console.log(this.apiUrlImage + category.imageUrl);
+              : `${this.apiUrlImage}/${category.imageUrl}`;
             this.selectedFileName = category.imageUrl.split('/').pop() || category.imageUrl;
             this.selectedFilePreview = this.selectedImage;
+          } else {
+            // Ảnh mặc định nếu không có ảnh từ DB
+            this.selectedFilePreview = 'https://cdn.viettablet.com/images/companies/1/sua-chua/thay-man-hinh-iphone-chinh-hang-o-dau.gif'; // ảnh placeholder đẹp
           }
+          
         },
         error: () => {
           this.toastr.error('Lỗi khi tải danh mục');
@@ -94,17 +99,17 @@ export class EditComponent implements OnInit {
   onImageUpload(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
-
+  
+    this.selectedFile = file;
+    this.selectedFileName = file.name;
+  
     const reader = new FileReader();
     reader.onload = () => {
       this.selectedFilePreview = reader.result as string;
-      this.selectedImage = reader.result as string;
-      this.categoryForm.patchValue({ imageUrl: this.selectedImage });
     };
     reader.readAsDataURL(file);
-    this.selectedFileName = file.name;
-
   }
+  
 
   removeImage() {
     this.selectedImage = null;
@@ -118,48 +123,47 @@ export class EditComponent implements OnInit {
     return doc.body.textContent || "";
   }
 
+ 
   onSubmit() {
     if (this.categoryForm.invalid) {
       this.categoryForm.markAllAsTouched();
       this.toastr.error('Vui lòng điền đầy đủ thông tin!');
       return;
     }
-
-    const formData = { ...this.categoryForm.value };
-    formData.description = this.stripHtmlTags(this.description);
-
-    if (this.selectedImage?.includes('/uploads/')) {
-      formData.imageUrl = this.selectedImage.split('/uploads/').pop();
-    } else if (this.selectedFileName) {
-      formData.imageUrl = this.selectedFileName;
-    }
-
-    this.updateCategory(formData);
-  }
-
-  updateCategory(formData: ICategory) {
+  
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
-
-    const { id: _, ...rest } = formData;
-    const categoryData = { id: Number(id), ...rest };
-
-    this.categoryService.updateCategory(categoryData).subscribe({
+  
+    const formData = new FormData();
+    formData.append('name', this.categoryForm.get('name')?.value);
+    formData.append('description', this.stripHtmlTags(this.description));
+    formData.append('status', this.categoryForm.get('status')?.value);
+  
+    // Nếu có file mới, gửi file
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile, this.selectedFileName);
+    } else {
+      // Nếu không đổi ảnh, vẫn cần gửi tên file cũ để backend giữ nguyên
+      formData.append('imageUrl', this.categoryForm.get('imageUrl')?.value);
+    }
+  
+    this.updateCategory(id, formData);
+  }
+  
+  updateCategory(id: string, formData: FormData) {
+    this.categoryService.updateCategoryFormData(id, formData).subscribe({
       next: () => {
-        this.selectedImage = null;
-        this.selectedFileName = '';
         this.toastr.success('Cập nhật danh mục thành công!');
         setTimeout(() => {
           this.router.navigate(['/admin/ui-components/category/list']);
         }, 2000);
-        // TODO: Điều hướng hoặc hiển thị thông báo thành công
       },
       error: () => {
         this.toastr.error('Có lỗi xảy ra khi cập nhật danh mục!');
-        // TODO: Thêm xử lý lỗi nếu cần
       }
     });
   }
+  
 
   // TODO: Xem lại nếu bạn không cần biến này nữa
   // [x: string]: any;

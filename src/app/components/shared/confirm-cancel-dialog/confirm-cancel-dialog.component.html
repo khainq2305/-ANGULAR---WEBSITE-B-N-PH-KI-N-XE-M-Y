@@ -1,9 +1,8 @@
 <h2 mat-dialog-title>Xác nhận hủy đơn hàng</h2>
 
 <mat-dialog-content>
-  <p>Bạn có chắc chắn muốn hủy đơn hàng #{{ data.orderId }} không?</p>
+  <p>Bạn có chắc chắn muốn hủy đơn hàng <strong>{{ data.orderCode }}</strong> không?</p>
 
-  <!-- Dropdown chọn lý do hủy -->
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Chọn lý do</mat-label>
     <mat-select [(ngModel)]="selectedReason" (selectionChange)="onReasonChange($event.value)">
@@ -12,7 +11,6 @@
     </mat-select>
   </mat-form-field>
 
-  <!-- Ô nhập lý do khác (chỉ hiển thị khi chọn "Lý do khác") -->
   <mat-form-field *ngIf="isOtherReason" appearance="outline" class="full-width">
     <mat-label>Nhập lý do</mat-label>
     <textarea matInput [(ngModel)]="customReason"></textarea>
@@ -21,5 +19,5 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="dialogRef.close(false)">Hủy</button>
-  <button mat-flat-button color="warn" (click)="dialogRef.close(true)">Xác nhận</button>
+  <button mat-flat-button color="warn" (click)="confirmCancel()">Xác nhận</button>
 </mat-dialog-actions>

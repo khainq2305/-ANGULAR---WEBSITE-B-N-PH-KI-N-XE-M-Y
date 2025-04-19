@@ -254,7 +254,7 @@
     content: "";
     width: 8px;
     height: 8px;
-    background-color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
     border-radius: 50%;
     position: absolute;
     top: 50%;
@@ -278,7 +278,7 @@
     display: block;
     width: 100%;
     padding: 14px;
-    background-color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
     color: white;
     font-size: 16px;
     font-weight: 600;
@@ -374,7 +374,7 @@
   
   .checkout-container .order-summary .voucher-section .apply-btn {
     padding: 10px 15px;
-    background-color: #451111;
+    background: linear-gradient(to right, #000428, #004e92);
     color: #fff;
     font-size: 14px;
     border: 1px solid #ccc;
@@ -427,5 +427,10 @@
     font-size: 12px;
     color: #666;
     margin-top: 10px;
+  }
+  .error-text {
+    color: #d0021b;
+    font-size: 13px;
+    margin-top: 4px;
   }
   

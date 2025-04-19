@@ -46,10 +46,10 @@
   
       <!-- ✅ Danh sách sản phẩm -->
       <div *ngFor="let detail of order.orderDetails" class="product">
-        <img [src]="'http://localhost:3000/uploads/' + detail.product.image" class="product-img" />
+        <img [src]="'http://localhost:3001/uploads/' + detail.product.image" class="product-img" />
         <div class="product-info">
           <div class="name">{{ detail.product.name }}</div>
-          <div class="variant">Phân loại hàng: {{ detail.variant || 'Mặc định' }}</div>
+          <div class="variant">Phân loại hàng: {{ detail.variant || 'SIZE XL' }}</div>
           <div class="qty">x{{ detail.quantity }}</div>
           <div class="price">
             <span class="old" *ngIf="detail.product.price !== detail.price">₫{{ detail.product.price | number }}</span>

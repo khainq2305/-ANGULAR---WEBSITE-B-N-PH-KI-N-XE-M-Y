@@ -51,17 +51,7 @@
       font-weight: 500;
     }
   
-    &__close {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      border: none;
-      background: none;
-      font-size: 16px;
-      font-weight: bold;
-      color: #666;
-      cursor: pointer;
-    }
+  
   }
   
   @keyframes slideIn {
@@ -74,25 +64,29 @@
       transform: translateX(0);
     }
   }
-  .custom-toast__close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #004e92;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    text-align: center;
-    cursor: pointer;
-    padding: 0;
-  
-    &:hover {
-      opacity: 0.9;
-    }
+ .custom-toast__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #004e92;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.9;
   }
+}
+
   

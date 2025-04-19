@@ -5,36 +5,61 @@
     <!-- Bộ lọc -->
     <div class="status-filter-container">
       <div class="status-filter">
-        <button mat-stroked-button class="status-button status-all" (click)="setFilter('all')">
+        <button
+          mat-stroked-button
+          class="status-button status-all"
+          (click)="setFilter('all')"
+        >
           <mat-icon>list</mat-icon> Tất cả
         </button>
-        <button mat-stroked-button class="status-button status-high" (click)="setFilter('highest')">
+        <button
+          mat-stroked-button
+          class="status-button status-high"
+          (click)="setFilter('highest')"
+        >
           <mat-icon>arrow_upward</mat-icon> Bình luận cao nhất
         </button>
-        <button mat-stroked-button class="status-button status-low" (click)="setFilter('lowest')">
+        <button
+          mat-stroked-button
+          class="status-button status-low"
+          (click)="setFilter('lowest')"
+        >
           <mat-icon>arrow_downward</mat-icon> Bình luận thấp nhất
         </button>
       </div>
 
       <div class="status-filter">
-        <button mat-stroked-button class="status-button status-sort" (click)="toggleSortOrder()">
-          <mat-icon>{{ sortOrder === 'asc' ? 'expand_less' : 'expand_more' }}</mat-icon>
-          {{ sortOrder === 'asc' ? 'Sắp xếp tăng dần' : 'Sắp xếp giảm dần' }}
+        <button
+          mat-stroked-button
+          class="status-button status-sort"
+          (click)="toggleSortOrder()"
+        >
+          <mat-icon>{{
+            sortOrder === "asc" ? "expand_less" : "expand_more"
+          }}</mat-icon>
+          {{ sortOrder === "asc" ? "Sắp xếp tăng dần" : "Sắp xếp giảm dần" }}
         </button>
       </div>
 
       <mat-form-field appearance="outline" class="search-box">
         <mat-label>Tìm kiếm sản phẩm</mat-label>
         <mat-icon matPrefix>search</mat-icon>
-        <input matInput [(ngModel)]="searchText" (ngModelChange)="applyFilter()" placeholder="Nhập tên sản phẩm..." />
+        <input
+          matInput
+          [(ngModel)]="searchText"
+          (ngModelChange)="applyFilter()"
+          placeholder="Nhập tên sản phẩm..."
+        />
       </mat-form-field>
     </div>
 
     <!-- Bảng dữ liệu -->
     <div class="table-container">
-      <table mat-table [dataSource]="paginatedData" class="mat-elevation-z8 large-table">
-
-
+      <table
+        mat-table
+        [dataSource]="paginatedData"
+        class="mat-elevation-z8 large-table"
+      >
         <!-- STT -->
         <ng-container matColumnDef="stt">
           <th mat-header-cell *matHeaderCellDef>#</th>
@@ -45,15 +70,23 @@
 
         <!-- Ảnh -->
         <ng-container matColumnDef="image">
-          <th mat-header-cell *matHeaderCellDef>Ảnh sản phẩm</th>
+          <th mat-header-cell *matHeaderCellDef>Ảnh</th>
           <td mat-cell *matCellDef="let element">
-            <img [src]="element.imageUrl" class="product-image" alt="{{ element.productName }}" />
+            <img
+              [src]="
+                element.imageUrl ||
+                'https://i.pinimg.com/736x/8f/1c/a2/8f1ca2029e2efceebd22fa05cca423d7.jpg'
+              "
+              (error)="onImageError($event)"
+              alt="{{ element.productName }}"
+              class="product-image"
+            />
           </td>
         </ng-container>
 
         <!-- Tên sản phẩm -->
         <ng-container matColumnDef="productName">
-          <th mat-header-cell *matHeaderCellDef>Tên sản phẩm</th>
+          <th mat-header-cell *matHeaderCellDef>Tên</th>
           <td mat-cell *matCellDef="let element">{{ element.productName }}</td>
         </ng-container>
 
@@ -61,7 +94,9 @@
         <ng-container matColumnDef="totalComments">
           <th mat-header-cell *matHeaderCellDef>Tổng bình luận</th>
           <td mat-cell *matCellDef="let element">
-            <span class="comment-count">{{ element.totalComments }}</span>
+            <div class="comment-cell-wrapper">
+              <span class="comment-count">{{ element.totalComments }}</span>
+            </div>
           </td>
         </ng-container>
 
@@ -69,13 +104,24 @@
         <ng-container matColumnDef="avgRating">
           <th mat-header-cell *matHeaderCellDef>Sao trung bình</th>
           <td mat-cell *matCellDef="let element">
-            <div *ngIf="isNumber(element.avgRating); else noRating" class="star-rating">
+            <div
+              *ngIf="isNumber(element.avgRating); else noRating"
+              class="star-rating"
+            >
               <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-                <mat-icon [ngClass]="{ filled: star <= Math.round(element.avgRating) }">
-                  {{ star <= Math.round(element.avgRating) ? 'star' : 'star_border' }}
+                <mat-icon
+                  [ngClass]="{ filled: star <= Math.round(element.avgRating) }"
+                >
+                  {{
+                    star <= Math.round(element.avgRating)
+                      ? "star"
+                      : "star_border"
+                  }}
                 </mat-icon>
               </ng-container>
-              <span class="rating-value">({{ element.avgRating | number: '1.1-1' }})</span>
+              <span class="rating-value"
+                >({{ element.avgRating | number : "1.1-1" }})</span
+              >
             </div>
             <ng-template #noRating>
               <span class="text-muted">Chưa có</span>
@@ -87,7 +133,11 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Hành động</th>
           <td mat-cell *matCellDef="let element">
-            <button mat-stroked-button color="primary" (click)="viewDetail(element.productId)">
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="viewDetail(element.productId)"
+            >
               <mat-icon>visibility</mat-icon> Xem chi tiết
             </button>
           </td>
@@ -95,15 +145,15 @@
 
         <!-- Header & Row -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </div>
 
     <app-pagination
-    [currentPage]="currentPage"
-    [totalPages]="totalPages"
-    (pageChange)="changePage($event)">
-  </app-pagination>
-  
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      (pageChange)="changePage($event)"
+    >
+    </app-pagination>
   </mat-card-content>
 </mat-card>

@@ -7,7 +7,8 @@
                 <div class="info-group">
                     <mat-form-field appearance="outline">
                         <mat-label>Mã hóa đơn</mat-label>
-                        <input matInput [value]="order.orderId" name="orderId" readonly>
+                        <input matInput [value]="order.orderCode" name="orderCode" readonly>
+
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
@@ -48,7 +49,11 @@
                         <mat-label>Tổng tiền</mat-label>
                         <input matInput [value]="order.totalAmount" name="totalAmount" readonly>
                     </mat-form-field>
-
+                    <mat-form-field appearance="outline">
+                        <mat-label>Địa chỉ giao hàng</mat-label>
+                        <textarea matInput [value]="order.address" name="address" readonly></textarea>
+                      </mat-form-field>
+                      
                     <mat-form-field *ngIf="order.status === 4" appearance="outline">
                         <mat-label>Lý do hủy đơn</mat-label>
                         <textarea matInput [value]="order.cancelReason" name="cancelReason" readonly></textarea>
@@ -80,17 +85,25 @@
             <ng-container matColumnDef="originalPrice">
                 <th mat-header-cell *matHeaderCellDef>Giá gốc</th>
                 <td mat-cell *matCellDef="let product">
-                    <span class="original-price">{{ product.originalPrice | number }} VNĐ</span>
+                  <span *ngIf="product.originalPrice !== product.discountPrice" style="text-decoration: line-through; color: gray;">
+                    {{ product.originalPrice | number }} VNĐ
+                  </span>
+                  <span *ngIf="product.originalPrice === product.discountPrice">
+                    {{ product.originalPrice | number }} VNĐ
+                  </span>
                 </td>
-            </ng-container>
-
-            <ng-container matColumnDef="discountPrice">
-                <th mat-header-cell *matHeaderCellDef>Giá giảm</th>
+              </ng-container>
+              
+              <ng-container matColumnDef="discountPrice">
+                <th mat-header-cell *matHeaderCellDef>Giá bán</th>
                 <td mat-cell *matCellDef="let product">
-                    <span class="discount-price">{{ product.discountPrice | number }} VNĐ</span>
+                  <span class="discount-price text-danger fw-bold">
+                    {{ product.discountPrice | number }} VNĐ
+                  </span>
                 </td>
-            </ng-container>
-
+              </ng-container>
+              
+              
             <tr mat-header-row *matHeaderRowDef="['image', 'name', 'quantity', 'originalPrice', 'discountPrice']"></tr>
             <tr mat-row *matRowDef="let row; columns: ['image', 'name', 'quantity', 'originalPrice', 'discountPrice']"></tr>
         </table>

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiService } from '../common/api.service';
 import { Observable } from 'rxjs';
@@ -55,6 +55,11 @@ export class CategoryService extends ApiService {
    updateCategory(formData: ICategory): Observable<ICategory> {
     return this.put<ICategory>(API_ENDPOINT.category.base + API_ENDPOINT.category.update + formData.id, formData)
   }
+  updateCategoryFormData(id: number | string, data: FormData): Observable<any> {
+    return this._http.put(`${API_ENDPOINT.category.base + API_ENDPOINT.category.update}${id}`, data);
+  }
+  
+  
     deleteCategory(id: number): Observable<ICategory[]> {
       return this.delete(API_ENDPOINT.category.base + API_ENDPOINT.category.delete + id) as Observable<ICategory[]>;
     }
@@ -67,9 +72,19 @@ export class CategoryService extends ApiService {
     restoreCategory(formData: ICategory): Observable<ICategory> {
       return this.put<ICategory>(API_ENDPOINT.category.base + API_ENDPOINT.category.restore + formData.id, formData) ;
     }
-    getClientCategoryList(): Observable<ICategory[]> {
-      return this.get<ICategory[]>(`${API_ENDPOINT.categoryClient.base}`);
+
+    getActiveCategories(): Observable<{ success: boolean; data: ICategory[] }> {
+      return this._http.get<{ success: boolean; data: ICategory[] }>(
+        API_ENDPOINT.category.base + API_ENDPOINT.category.active,
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('token') || '',
+          }),
+        }
+      );
     }
+    
     
     
     

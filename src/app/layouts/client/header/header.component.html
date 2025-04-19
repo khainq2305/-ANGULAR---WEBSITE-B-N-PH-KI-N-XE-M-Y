@@ -328,39 +328,19 @@
             <h4 class="header__cart-heading">Sản phẩm đã chọn</h4>
             <ul class="header__cart-list-item">
               <li class="header__cart-item" *ngFor="let item of cartItems">
-                <img
-                  *ngIf="item.product?.image as img"
-                  [src]="
-                    img.startsWith('http')
-                      ? img
-                      : 'http://localhost:3000/uploads/' + img
-                  "
-                  class="header__cart-item-img"
-                  alt="item"
-                />
-
+            
+                <img [src]="item.product?.image || 'https://via.placeholder.com/60x60'" class="header__cart-item-img" alt="item" />
                 <div class="header__cart-item-info">
                   <div class="header__cart-item-heading">
-                    <h3 class="header__cart-item-name">
-                      {{ item.product?.name }}
-                    </h3>
-                    <p class="header__cart-item-price">
-                      {{
-                        item.product?.finalPrice || item.product?.price
-                          | number
-                      }}đ
-                    </p>
+                    <h3 class="header__cart-item-name">{{ item.product?.name }}</h3>
+                    <p class="header__cart-item-price">{{ item.product?.finalPrice | number }}đ</p>
                   </div>
                   <div class="header__cart-item-body">
-                    <p class="header__cart-item-number">
-                      x {{ item.quantity }}
-                    </p>
-                    <div class="header__cart-item-close">
-                      Xoá <i class="fas fa-times"></i>
-                    </div>
+                    <p class="header__cart-item-number">x{{ item.quantity }}</p>
                   </div>
                 </div>
               </li>
+              
             </ul>
             <div class="header__cart-footer">
               <a
@@ -372,7 +352,8 @@
             </div>
           </div>
 
-          <div class="header__cart-count">4</div>
+          <div class="header__cart-count">{{ cartItems.length }}</div>
+
         </div>
       </div>
     </div>

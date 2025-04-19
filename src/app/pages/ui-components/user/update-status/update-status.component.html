@@ -1,12 +1,35 @@
 <h2 mat-dialog-title>Cập nhật trạng thái</h2>
+
 <mat-dialog-content>
-  <mat-form-field appearance="outline" class="w-100">
+  <mat-form-field appearance="outline" class="w-100" style="margin-top: 8px;">
     <mat-label>Trạng thái</mat-label>
-    <mat-select [formControl]="statusControl">
+    <mat-select [formControl]="statusControl" (selectionChange)="onStatusChange()">
+
       <mat-option [value]="1">Hoạt động</mat-option>
       <mat-option [value]="0">Tạm ngưng</mat-option>
+      
     </mat-select>
   </mat-form-field>
+  
+
+  <!-- Hiện nếu chọn "Tạm ngưng" -->
+  <div *ngIf="statusControl.value === 0">
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Lý do tạm ngưng</mat-label>
+      <mat-select [formControl]="reasonControl" (selectionChange)="onReasonChange()">
+        <mat-option value="spam">Spam</mat-option>
+        <mat-option value="inactive">Không hoạt động</mat-option>
+        <mat-option value="violation">Vi phạm</mat-option>
+        <mat-option value="other">Khác</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="reasonControl.value == 'other'" appearance="outline" class="w-100">
+      <mat-label>Lý do chi tiết</mat-label>
+      <textarea matInput [formControl]="customReasonControl" rows="3"></textarea>
+    </mat-form-field>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

@@ -14,7 +14,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ICategory } from 'src/app/interface/category.interface'; // đảm bảo đúng đường dẫn
+import { ICategory } from 'src/app/interface/category.interface'; // đảm g đúng đường dẫn
 import { ProductService } from 'src/app/services/apis/product.service';
 import { CategoryService } from 'src/app/services/apis/category.service';
 import { IProduct } from 'src/app/interface/product.interface';
@@ -48,14 +48,25 @@ import { PaginationComponent } from 'src/app/components/shared/pagination/pagina
   styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit {
-  displayedColumns = ['select', 'stt', 'thumbnail', 'name', 'price', 'discount', 'category', 'quantity', 'status', 'action'];
+  displayedColumns = [
+    'select',
+    'stt',
+    'thumbnail',
+    'name',
+    'price',
+    'discount',
+    'category',
+    'quantity',
+    'status',
+    'action',
+  ];
 
   dataSource = new MatTableDataSource<IProduct>([]);
   searchText = '';
   selectedCategory = '';
   selectedDate: Date | null = null;
   sortOrder = '';
-  categoryOptions: { id: number, name: string }[] = [];
+  categoryOptions: { id: number; name: string }[] = [];
   statusFilter: string = '';
   currentTab: string = 'all';
   deleted: string = '';
@@ -73,55 +84,81 @@ export class ProductListComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.productService.getActiveCategories().subscribe((res: any) => {
-      this.categoryOptions = res.data || [];
+    this.categoryService.getActiveCategories().subscribe({
+      next: (res) => {
+        console.log("✅ Danh mục active:", res.data); // ← THÊM DÒNG NÀY
+        this.categoryOptions = res.data || [];
+      },
+      error: (err) => {
+        console.error("❌ Lỗi khi lấy danh mục hoạt động:", err);
+      }
     });
+    
   }
   
-  
-  
-  
+
   currentPage = 1;
   totalPages = 1;
   loadData(): void {
     const filters: any = { page: this.currentPage };
-  
+
     if (this.searchText) filters.search = this.searchText;
     if (this.selectedCategory) filters.category = this.selectedCategory;
     if (this.selectedDate) {
       const key = this.currentTab === 'deleted' ? 'deletedAt' : 'createdAt';
       filters[key] = this.selectedDate.toISOString().split('T')[0];
     }
-  
+
     if (this.sortOrder) filters.sort = this.sortOrder;
     if (this.statusFilter !== '') filters.status = this.statusFilter;
     if (this.deleted !== '') filters.deleted = this.deleted;
-  
-    this.productService.getProductList(filters).subscribe((res: { data: IProduct[], totalPages: number }) => {
-      console.log('🟨 Dữ liệu sản phẩm:', res.data); // 👈 check có "image" không
-      this.dataSource.data = res.data.map(p => ({
-        ...p,
-        selected: false,
-        finalPrice: p.price - p.discount  
-      }));
-      this.totalPages = res.totalPages || 1;
-    });
+
+    this.productService
+      .getProductList(filters)
+      .subscribe((res: { data: IProduct[]; totalPages: number }) => {
     
+        this.dataSource.data = res.data.map((p) => ({
+          ...p,
+          selected: false,
+          finalPrice: p.price - p.discount,
+        }));
+        this.totalPages = res.totalPages || 1;
+      });
   }
-  
+  getImageUrl(imagePath?: string): string {
+    return imagePath
+      ? `http://localhost:3001/uploads/${imagePath}`
+      : 'https://cdn.viettablet.com/images/companies/1/sua-chua/thay-man-hinh-iphone-chinh-hang-o-dau.gif';
+  }
+  onImageError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src =
+      'https://cdn.viettablet.com/images/companies/1/sua-chua/thay-man-hinh-iphone-chinh-hang-o-dau.gif';
+  }
+
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadData();
   }
-    
 
   setTab(tab: string): void {
     this.currentTab = tab;
     switch (tab) {
-      case 'all': this.statusFilter = ''; this.deleted = ''; break;
-      case 'active': this.statusFilter = '1'; this.deleted = ''; break;
-      case 'inactive': this.statusFilter = '0'; this.deleted = ''; break;
-      case 'deleted': this.deleted = 'true'; break;
+      case 'all':
+        this.statusFilter = '';
+        this.deleted = '';
+        break;
+      case 'active':
+        this.statusFilter = '1';
+        this.deleted = '';
+        break;
+      case 'inactive':
+        this.statusFilter = '0';
+        this.deleted = '';
+        break;
+      case 'deleted':
+        this.deleted = 'true';
+        break;
     }
     this.loadData();
   }
@@ -131,7 +168,7 @@ export class ProductListComponent implements OnInit {
       width: '400px',
       data: { message: `Bạn có chắc chắn muốn xóa "${product.name}" không?` },
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) this.deleteProduct(product);
     });
   }
@@ -144,27 +181,30 @@ export class ProductListComponent implements OnInit {
       },
       error: () => {
         this.toastr.error('Không thể xóa sản phẩm', 'Lỗi');
-      }
+      },
     });
   }
 
   deleteSelectedProducts(): void {
-    const ids = this.dataSource.data.filter(p => p.selected).map(p => p.id);
+    const ids = this.dataSource.data.filter((p) => p.selected).map((p) => p.id);
     if (ids.length === 0) return;
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: { message: `Bạn có chắc muốn xóa ${ids.length} sản phẩm?` },
     });
-    dialogRef.afterClosed().subscribe(confirmed => {
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         this.productService.deleteMultipleProducts(ids).subscribe({
           next: () => {
-            this.toastr.success('Đã chuyển sản phẩm vào thùng rác', 'Xóa thành công');
+            this.toastr.success(
+              'Đã chuyển sản phẩm vào thùng rác',
+              'Xóa thành công'
+            );
             this.loadData();
           },
           error: () => {
             this.toastr.error('Không thể xóa sản phẩm đã chọn', 'Lỗi');
-          }
+          },
         });
       }
     });
@@ -178,17 +218,19 @@ export class ProductListComponent implements OnInit {
       },
       error: () => {
         this.toastr.error('Khôi phục thất bại', 'Lỗi');
-      }
+      },
     });
   }
 
   permanentlyDeleteProduct(product: IProduct): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: { message: `Bạn có chắc chắn muốn xóa vĩnh viễn "${product.name}"?` },
+      data: {
+        message: `Bạn có chắc chắn muốn xóa vĩnh viễn "${product.name}"?`,
+      },
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.productService.permanentDeleteProduct(product.id).subscribe({
           next: () => {
@@ -197,26 +239,26 @@ export class ProductListComponent implements OnInit {
           },
           error: () => {
             this.toastr.error('Không thể xóa vĩnh viễn sản phẩm', 'Lỗi');
-          }
+          },
         });
       }
     });
   }
   restoreSelectedProducts(): void {
-    const ids = this.dataSource.data.filter(p => p.selected).map(p => p.id);
+    const ids = this.dataSource.data.filter((p) => p.selected).map((p) => p.id);
     if (ids.length === 0) return;
-  
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: { message: `Bạn có chắc muốn khôi phục ${ids.length} sản phẩm?` },
     });
-  
-    dialogRef.afterClosed().subscribe(confirmed => {
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        const restoreCalls = ids.map(id =>
+        const restoreCalls = ids.map((id) =>
           this.productService.restoreProduct(id).toPromise()
         );
-  
+
         Promise.all(restoreCalls)
           .then(() => {
             this.toastr.success('Đã khôi phục các sản phẩm', 'Thành công');
@@ -229,16 +271,17 @@ export class ProductListComponent implements OnInit {
     });
   }
   permanentlyDeleteSelected(): void {
-    const ids = this.dataSource.data.filter(p => p.selected).map(p => p.id);
+    const ids = this.dataSource.data.filter((p) => p.selected).map((p) => p.id);
     if (ids.length === 0) return;
-  
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: { message: `Bạn có chắc muốn xóa vĩnh viễn ${ids.length} sản phẩm?` },
-
+      data: {
+        message: `Bạn có chắc muốn xóa vĩnh viễn ${ids.length} sản phẩm?`,
+      },
     });
-  
-    dialogRef.afterClosed().subscribe(confirmed => {
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         this.productService.permanentDeleteMultipleProducts(ids).subscribe({
           next: () => {
@@ -247,7 +290,7 @@ export class ProductListComponent implements OnInit {
           },
           error: () => {
             this.toastr.error('Không thể xóa các sản phẩm đã chọn', 'Lỗi');
-          }
+          },
         });
       }
     });
@@ -255,14 +298,19 @@ export class ProductListComponent implements OnInit {
 
   toggleSelectAll(event: any): void {
     const checked = event.checked;
-    this.dataSource.data.forEach(p => (p.selected = checked));
+    this.dataSource.data.forEach((p) => (p.selected = checked));
   }
 
   isAllSelected(): boolean {
-    return this.dataSource.data.length > 0 && this.dataSource.data.every(p => p.selected);
+    return (
+      this.dataSource.data.length > 0 &&
+      this.dataSource.data.every((p) => p.selected)
+    );
   }
 
   isIndeterminate(): boolean {
-    return this.dataSource.data.some(p => p.selected) && !this.isAllSelected();
+    return (
+      this.dataSource.data.some((p) => p.selected) && !this.isAllSelected()
+    );
   }
 }
