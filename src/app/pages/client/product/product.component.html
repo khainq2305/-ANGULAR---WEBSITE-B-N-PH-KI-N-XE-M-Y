@@ -9,6 +9,28 @@
                         Bộ lọc tìm kiếm
                     </h3>
                     <div class="category-group">
+                        <div class="category-group-title">Danh Mục</div>
+                        <ul class="category-group-list">
+                          <li
+                            class="category-group-item"
+                            *ngFor="let category of (showAll ? categories : categories.slice(0, 5))"
+                          >
+                            <input
+                              type="checkbox"
+                              class="category-group-item-check"
+                              [checked]="selectedCategoryIds.includes(category.id)"
+                              (change)="onCategoryChange(category.id, $event)"
+                            />
+                            {{ category.name }}
+                          </li>
+                        </ul>
+                        <button (click)="showAll = !showAll" class="see-more-btn">
+                          {{ showAll ? 'Thu gọn' : 'Xem thêm' }}
+                        </button>
+                      </div>
+                      
+
+                    <div class="category-group">
                         <div class="category-group-title">Nơi Bán</div>
                         <ul class="category-group-list">
                             <li class="category-group-item">

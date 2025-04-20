@@ -37,9 +37,9 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
-    // this.categoryService.getClientCategoryList().subscribe(res => {
-    //   this.categories = res;
-    // });
+    this.categoryService.getActiveCategories().subscribe(res => {
+      this.categories = res.data; 
+    });
   }
 
   toggleSortDropdown(): void {
