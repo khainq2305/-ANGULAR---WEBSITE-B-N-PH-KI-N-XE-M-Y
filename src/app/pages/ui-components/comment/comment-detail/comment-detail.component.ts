@@ -83,20 +83,20 @@ export class CommentDetailComponent implements OnInit {
   }
 
   loadComments() {
-    this.commentService.getCommentsByProduct(this.productId).subscribe({
-      next: (res) => {
-        const comments: Comment[] = res.comments || [];
-        this.originalComments = comments;
-        this.productName = res.productName || 'Sản phẩm';
-        this.applyFilter();
-      },
-      error: (err) => {
-        console.error('❌ Lỗi khi tải bình luận:', err);
-        this.productName = 'Lỗi khi tải sản phẩm';
-        this.originalComments = [];
-        this.filteredComments = [];
-      }
-    });
+    // this.commentService.getCommentsByProduct(this.productId).subscribe({
+    //   next: (res) => {
+    //     const comments: Comment[] = res.comments || [];
+    //     this.originalComments = comments;
+    //     this.productName = res.productName || 'Sản phẩm';
+    //     this.applyFilter();
+    //   },
+    //   error: (err) => {
+    //     console.error('❌ Lỗi khi tải bình luận:', err);
+    //     this.productName = 'Lỗi khi tải sản phẩm';
+    //     this.originalComments = [];
+    //     this.filteredComments = [];
+    //   }
+    // });
   }
 
   get paginatedComments(): Comment[] {

@@ -6,7 +6,7 @@ import { CategoryService } from 'src/app/services/apis/category.service';
 import { ProductService } from 'src/app/services/apis/product.service';
 import { ICategory } from 'src/app/interface/category.interface';
 import { IProduct } from 'src/app/interface/product.interface';
-
+import { CommentComponent } from '../comment/comment.component';
 @Component({
   selector: 'app-product',
   standalone: true,

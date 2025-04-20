@@ -1,0 +1,39 @@
+<!-- Nút "Gửi đánh giá" luôn hiển thị -->
+<div *ngIf="canComment && !isReviewFormVisible" style="display: flex; justify-content: flex-end; margin-top: 12px;">
+  <button class="contact-button-comment" color="primary" (click)="toggleReviewForm()">Gửi đánh giá</button>
+</div>
+
+<!-- Form đánh giá chỉ hiển thị khi showReviewForm = true -->
+<mat-card *ngIf="isReviewFormVisible" style="border-radius: 16px; padding: 16px;">
+  <mat-card-title>Đánh giá sản phẩm</mat-card-title>
+  
+  <!-- Rating stars -->
+  <div style="display: flex; align-items: center; margin-top: 8px;">
+    <ng-container *ngFor="let star of [1,2,3,4,5]">
+      <button mat-icon-button class="star-button" (click)="review.rating = star">
+        <mat-icon color="warn">{{ star <= review.rating ? 'star' : 'star_border' }}</mat-icon>
+      </button>
+    </ng-container>
+  </div>
+  
+  <!-- Comment content -->
+  <div style="position: relative; width: 100%;">
+    <!-- Character limit indicator -->
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 1px; color: #505050; margin-right: 8px;">
+      <span style="font-size: 16px; color: #6b7280; font-weight: 400;">
+        {{ review.content.length || 0 }}/2000
+      </span>
+    </div>
+    <mat-form-field appearance="outline" style="width: 100%; border-radius: 8px;">
+      <mat-label style="color: #4b5563; font-size: 14px;">Viết bình luận của bạn</mat-label>
+      <textarea matInput [(ngModel)]="review.content" rows="12" maxlength="2000"
+        style="font-size: 15px; color: #1a1a1a; border-radius: 8px; resize: none;"></textarea>
+    </mat-form-field>
+  </div>
+  
+  <!-- Action buttons -->
+  <div style="display: flex; justify-content: flex-end; margin-top: 12px; gap: 10px;">
+    <button class="contact-button-comment" color="primary" (click)="submitReview()">Gửi đánh giá</button>
+    <button class="contact-button-comment" (click)="toggleReviewForm()">Huỷ</button>
+  </div>
+</mat-card>

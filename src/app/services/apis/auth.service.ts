@@ -23,8 +23,9 @@ export class ClientUserService {
     );
   }
 
-  getUserId(): number | null {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    return user?.id || null;
-  }
+  getUserId() {
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log('User data là:', userData);  // Kiểm tra dữ liệu user trong localStorage
+    return userData.id || null;
+  }  
 }

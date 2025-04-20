@@ -1,0 +1,131 @@
+<mat-card *ngIf="isEditing" style="border-radius: 16px; padding: 16px;">
+  <mat-card-title>Đánh giá sản phẩm</mat-card-title>
+
+  <!-- Rating stars -->
+  <div style="display: flex; align-items: center; margin-top: 8px;">
+    <ng-container *ngFor="let star of [1,2,3,4,5]">
+      <button mat-icon-button class="star-button" (click)="review.rating = star">
+        <mat-icon color="warn">{{ star <= review.rating ? 'star' : 'star_border' }}</mat-icon>
+      </button>
+    </ng-container>
+  </div>
+
+  <!-- Comment content -->
+  <div style="position: relative; width: 100%;">
+    <!-- Character limit indicator -->
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 1px; color: #505050; margin-right: 8px;">
+      <span style="font-size: 16px; color: #6b7280; font-weight: 400;">
+        {{ review.content.length || 0 }}/2000
+      </span>
+    </div>
+    <mat-form-field appearance="outline" style="width: 100%; border-radius: 8px;">
+      <mat-label style="color: #4b5563; font-size: 14px;">Viết bình luận của bạn</mat-label>
+      <textarea matInput [(ngModel)]="review.content" rows="12" maxlength="2000"
+        style="font-size: 15px; color: #1a1a1a; border-radius: 8px; resize: none;"></textarea>
+    </mat-form-field>
+  </div>
+
+  <!-- Action buttons -->
+  <div style="display: flex; justify-content: flex-end; margin-top: 12px; gap: 10px;">
+    <button class="contact-button-comment" color="primary" (click)="onsubmit()">Gửi đánh giá</button>
+    <button class="contact-button-comment" (click)="toggleReviewForm()">Huỷ</button>
+  </div>
+</mat-card>
+<ng-container *ngIf="comments && comments.length > 0; else noComments">
+  <div class="comments-container bg-white p-4 mt-4 rounded-lg shadow-md">
+    <!-- Comment items -->
+    <div *ngFor="let comment of comments" class="comment-item mb-4 p-4 rounded-lg bg-gray-50 border border-gray-100 hover:border-gray-200 transition-all">
+      <!-- Comment header with user info -->
+      <div class="d-flex">
+        <!-- Avatar -->
+        <div class="me-3">
+          <img *ngIf="comment.user?.avatar" [src]="comment.user?.avatar" 
+               class="rounded-circle border shadow-sm" 
+               width="48" height="48" style="object-fit: cover;" 
+               alt="User avatar" />
+        </div>
+
+        <!-- User info and rating -->
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-center flex-wrap">
+            <strong class="me-2 text-dark">{{ comment.user?.name || 'Không rõ' }}</strong>
+            <div class="text-muted small fst-italic">
+              {{ comment.createdAt | date: 'short' }}
+              <span *ngIf="comment.updatedAt && comment.updatedAt !== comment.createdAt" 
+                    class="ms-1 text-secondary">
+                <i class="small">• Đã chỉnh sửa</i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Rating stars with better styling -->
+          <div class="mt-2 d-flex align-items-center">
+            <ng-container *ngFor="let star of [1,2,3,4,5]">
+              <mat-icon class="star-icon" style="font-size: 20px; margin-right: 3px; color: #FFB800;">
+                {{ star <= comment.rating ? 'star' : 'star_border' }}
+              </mat-icon>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comment content with better spacing -->
+      <div class="comment-content mt-3 mb-3 ps-2 border-start border-3 border-light">
+        <p class="mb-0 lh-base">{{ comment.content }}</p>
+      </div>
+
+      <!-- Action buttons with better styling -->
+      <div *ngIf="isMyComment(comment) && editingCommentId !== comment.id"
+           class="d-flex justify-content-end gap-2 mt-3 pt-2 border-top border-gray-200">
+        <button class="btn btn-outline-primary  py-1"
+                style="font-size: 13px; font-weight: 500;"
+                (click)="startEditing(comment.id)">
+          <i class="bi bi-pencil me-1"></i> Chỉnh sửa
+        </button>
+        <button class="btn btn-outline-danger py-1"
+                style="font-size: 13px; font-weight: 500;"
+                (click)="deleteComment(comment.id)">
+          <i class="bi bi-trash me-1"></i> Xóa
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagination with modern styling -->
+    <div *ngIf="totalPages > 1" class="pagination-container mt-4 d-flex justify-content-center">
+      <nav aria-label="Comment pagination">
+        <ul class="pagination pagination-sm">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="javascript:void(0)" (click)="changePage(1)">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage - 1)">
+              <span aria-hidden="true">&lsaquo;</span>
+            </a>
+          </li>
+          
+          <li class="page-item active">
+            <span class="page-link">{{ currentPage }}/{{ totalPages }}</span>
+          </li>
+          
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage + 1)">
+              <span aria-hidden="true">&rsaquo;</span>
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="javascript:void(0)" (click)="changePage(totalPages)">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Thẻ template sẽ chỉ hiển thị nếu không có bình luận -->
+<ng-template #noComments>
+  <p class="text-muted">Chưa có bình luận nào.</p>
+</ng-template>

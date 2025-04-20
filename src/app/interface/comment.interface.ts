@@ -13,6 +13,7 @@ export interface Comment {
     };
     productName?: string;
     replyDate?: string;
+
   }
   
   export interface ProductCommentSummary {

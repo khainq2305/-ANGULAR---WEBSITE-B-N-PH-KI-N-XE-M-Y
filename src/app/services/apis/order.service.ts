@@ -5,8 +5,7 @@ import { ApiService } from '../common/api.service'; // ✅ import đúng service
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  constructor(private api: ApiService) {} // ✅ inject ApiService
-
+  constructor(private api: ApiService) {} 
   getOrders(params: any = {}): Observable<any> {
     return this.api.get(`${API_ENDPOINT.order.base}${API_ENDPOINT.order.list}`, [], undefined, params);
   }
@@ -25,5 +24,6 @@ export class OrderService {
   getOrdersByUser(): Observable<any> {
     return this.api.get(`${API_ENDPOINT.orderClient.base}${API_ENDPOINT.orderClient.getByUser}`);
   }
+
   
 }

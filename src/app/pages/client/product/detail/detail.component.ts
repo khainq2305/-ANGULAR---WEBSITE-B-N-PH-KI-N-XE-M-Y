@@ -5,11 +5,12 @@ import { ProductService } from 'src/app/services/apis/product.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ToastComponent } from 'src/app/components/shared/custom-toast/custom-toast.component';
-
+import { CommentComponent } from "../../comment/comment.component";
+import { ListCommentsComponent } from "../../list-comments/list-comments.component";
 @Component({
   selector: 'app-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToastComponent], // ✅ THÊM FormsModule
+  imports: [CommonModule, FormsModule, ToastComponent, CommentComponent, ListCommentsComponent], // ✅ THÊM FormsModule
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
@@ -20,7 +21,8 @@ export class DetailComponent implements OnInit {
   labels: string[] = [];
 
   quantity = 1; // ✅ dùng để tăng/giảm số lượng
-
+  userStatusUser: any;
+  reviewFromComment: any; // ✅ dùng để lấy đánh giá từ component comment
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
@@ -47,7 +49,10 @@ export class DetailComponent implements OnInit {
       }
     });
   }
-  
+  onUserStatusUser(event: any) {
+    this.userStatusUser = event;
+    this.reviewFromComment = event.review;
+  }
 
   increaseQuantity() {
     this.quantity++;

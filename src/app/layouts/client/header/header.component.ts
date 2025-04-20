@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   userEmail = '';
   userAvatar = '';
   cartItems: ICartItem[] = [];
-
+  
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {

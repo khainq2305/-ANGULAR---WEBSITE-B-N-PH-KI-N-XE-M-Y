@@ -2,6 +2,7 @@ import { enviroment } from '../../environments/environment';
 
 export const API_BASE_URL = enviroment.apiUrl;
 export const DEFAULT_IMAGE_URL = `${API_BASE_URL}/uploads/default.jpg`;
+export const DEFAULT_IMAGE_USER = 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
 export const API_ENDPOINT = {
   category: {
     base: API_BASE_URL + '/admin/' + 'categories',
@@ -60,13 +61,15 @@ export const API_ENDPOINT = {
   comment: {
     base: `${API_BASE_URL}/admin/comment`,
     summary: '/summary',
-    byProduct: (productId: number) =>
-      `${API_BASE_URL}/admin/comment/product/${productId}`,
+    byProduct: (productId: number, page: number, limit: number) =>
+      `${API_BASE_URL}/admin/comment/product/${productId}?page=${page}&limit=${limit}`,
     reply: (commentId: number) =>
       `${API_BASE_URL}/admin/comment/${commentId}/reply`,
     update: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}`,
     delete: (commentId: number) => `${API_BASE_URL}/admin/comment/${commentId}`,
     create: `${API_BASE_URL}/admin/comment`,
+    getCommentByUser: (userId: number, productId: number,) =>
+      `${API_BASE_URL}/comments?userId=${userId}&productId=${productId}`,    
   },
 
   productClient: {

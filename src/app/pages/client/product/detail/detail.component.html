@@ -198,35 +198,11 @@
               </div>
               
         </div>
-      
-        <!-- ITEM REVIEW -->
-        <div class="mb-4">
-          <div class="d-flex align-items-center mb-2">
-            <div class="rounded-circle bg-light me-3" style="width: 40px; height: 40px"></div>
-            <div>
-              <strong>m*****2</strong>
-              <div class="text-warning">★★★★★</div>
-              <div class="text-muted small">2023-12-14 19:03</div>
-              <div class="text-muted small">
-                Độ tuổi sử dụng: <strong class="text-dark">trên 2t</strong>
-              </div>
-            </div>
-          </div>
-      
-          <p class="mb-2">Giao hàng nhanh, đóng gói kỹ, có quà tặng kèm theo. Date xa, có chương trình thẻ cào trúng thưởng.</p>
-      
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            <img *ngFor="let img of reviewImages" [src]="img" width="70" class="img-thumbnail" style="object-fit: cover; height: 70px;" />
-          </div>
-      
-          <div class="bg-light rounded p-3 text-muted">
-            <strong class="text-dark d-block mb-1">Phản Hồi Của Người Bán</strong>
-            Chào bạn, cảm ơn bạn đã chọn mua sản phẩm... Rất mong tiếp tục nhận được sự ủng hộ của bạn trong thời gian sắp tới.
-          </div>
-      
-          <div class="text-muted mt-2 small">👍 52</div>
-        </div>
-      </div>
+
+        <app-comment (userStatusUser)="onUserStatusUser($event)"></app-comment>
+        <app-list-comments [userId]="userStatusUser?.userId" [review]="reviewFromComment">
+          ></app-list-comments>
+
       
     </div>
   </div>

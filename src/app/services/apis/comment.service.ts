@@ -8,13 +8,32 @@ import { Comment, ProductCommentSummary } from 'src/app/interface/comment.interf
 export class CommentService {
   constructor(private http: HttpClient) {}
 
-  getCommentsByProduct(productId: number): Observable<{ comments: Comment[]; productName: string }> {
-    return this.http.get<{ comments: Comment[]; productName: string }>(API_ENDPOINT.comment.byProduct(productId));
+  getCommentsByProduct(productId: number, page: number, limit: number): Observable<{
+    success: boolean;
+    productName: string;
+    comments: Comment[];
+    totalComments: number;
+    currentPage: number;
+    totalPages: number;
+    message?: string;
+  }> {
+    const url = API_ENDPOINT.comment.byProduct(productId, page, limit);
+    console.log('getCommentsByProduct called:', { productId, page, limit, url });
+    return this.http.get<{
+      success: boolean;
+      productName: string;
+      comments: Comment[];
+      totalComments: number;
+      currentPage: number;
+      totalPages: number;
+      message?: string;
+    }>(url);
   }
-  
 
   getSummary(): Observable<{ data: ProductCommentSummary[] }> {
-    return this.http.get<{ data: ProductCommentSummary[] }>(API_ENDPOINT.comment.base + API_ENDPOINT.comment.summary);
+    return this.http.get<{ data: ProductCommentSummary[] }>(
+      API_ENDPOINT.comment.base + API_ENDPOINT.comment.summary
+    );
   }
 
   deleteComment(commentId: number): Observable<any> {
@@ -23,6 +42,14 @@ export class CommentService {
 
   addComment(data: Partial<Comment>): Observable<any> {
     return this.http.post(API_ENDPOINT.comment.create, data);
+  }
+
+  editComment(commentId: number, data: Partial<Comment>): Observable<any> {
+    return this.http.put(API_ENDPOINT.comment.update(commentId), data);
+  }
+
+  checkUserComment(userId: number, productId: number): Observable<any> {
+    return this.http.get(API_ENDPOINT.comment.getCommentByUser(userId, productId));
   }
 
   replyToComment(commentId: number, reply: string): Observable<any> {
