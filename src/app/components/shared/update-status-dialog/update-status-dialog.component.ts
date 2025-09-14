@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog'; // ✅ Thêm MatDialogModule
+import { MatDialogModule } from '@angular/material/dialog'; 
 
 @Component({
   selector: 'app-update-status-dialog',
@@ -16,7 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog'; // ✅ Thêm MatDial
     MatSelectModule,
     MatButtonModule,
     FormsModule,
-    MatDialogModule // ✅ Fix lỗi `mat-dialog-content` và `mat-dialog-actions`
+    MatDialogModule 
   ],
   templateUrl: './update-status-dialog.component.html',
   styleUrls: ['./update-status-dialog.component.scss']
@@ -44,7 +44,7 @@ export class UpdateStatusDialogComponent {
   }
 
   save() {
-    this.dialogRef.close(this.selectedStatus); // Trả selectedStatus là số
+    this.dialogRef.close(this.selectedStatus); 
   }
 }
 

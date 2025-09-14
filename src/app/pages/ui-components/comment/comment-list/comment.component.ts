@@ -76,19 +76,22 @@ export class CommentComponent implements OnInit, AfterViewInit {
   loadComments() {
     this.commentService.getSummary().subscribe({
       next: (res) => {
+        
         this.originalComments = res.data.map((item) => ({
           ...item,
           avgRating: isNaN(Number(item.avgRating)) ? 0 : item.avgRating,
         }));
+        console.log("resday", res.data)
         console.log(
           'Ảnh trả về:',
           res.data.map((p) => p.imageUrl)
         );
-
+  
         this.dataSource.data = [...this.originalComments];
         this.totalPages = Math.ceil(
           this.dataSource.data.length / this.pageSize
         );
+        
       },
       error: (err) => {
         console.error('Lỗi khi tải danh sách bình luận:', err);

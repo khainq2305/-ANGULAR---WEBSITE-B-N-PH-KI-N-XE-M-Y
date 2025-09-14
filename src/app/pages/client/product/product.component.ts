@@ -37,9 +37,9 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
-    // this.categoryService.getClientCategoryList().subscribe(res => {
-    //   this.categories = res;
-    // });
+    this.categoryService.getActiveCategories().subscribe(res => {
+      this.categories = res.data; 
+    });
   }
 
   toggleSortDropdown(): void {
@@ -58,38 +58,69 @@ export class ProductComponent implements OnInit {
   }
 
   loadProducts(): void {
-    const filters: any = {
-      page: this.currentPage,
-      limit: this.limit,
-      sort: this.sortOrder
-    };
+  const filters: any = {
+    page: this.currentPage,
+    limit: this.limit,
+    sort: this.sortOrder
+  };
 
-    if (this.selectedCategoryIds.length > 0) {
-      filters.categoryIds = this.selectedCategoryIds.join(',');
-    }
+  if (this.selectedCategoryIds.length > 0) {
+    filters.categoryIds = this.selectedCategoryIds.join(',');
+  }
 
-    this.productService.getClientProductsWithFilter(filters).subscribe((res: any) => {
-      this.products = res.data.map((product: IProduct) => {
-        const imageUrl = product.image?.startsWith('http')
-          ? product.image
-          : product.image
-            ? `${enviroment.apiUrl}/uploads/${product.image}`
-            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s';
-      
-        return {
-          ...product,
-          image: imageUrl
-        };
-      });
-      
-      
-      this.totalPages = res.totalPages;
-    });
+  this.productService.getClientProductsWithFilter(filters).subscribe((res: any) => {
+    const sampleImages = [
+      'https://cdn2.fptshop.com.vn/unsafe/360x0/filters:format(webp):quality(75)/00908901_hp_245_g10_a20tfpt_9ce2c339f9.png',
+      'https://cdn2.cellphones.com.vn/358x/media/catalog/product/x/i/xiaomi-14-pro-xanh.png',
+      'https://cdn2.cellphones.com.vn/358x/media/catalog/product/o/p/oppo-find-n3-flip-den.png',
+      'https://cdn2.cellphones.com.vn/358x/media/catalog/product/i/p/iphone-15-pro-max.png',
+      'https://cdn2.cellphones.com.vn/358x/media/catalog/product/r/e/redmi-note-13-pro-plus.png'
+    ];
+
+   this.products = res.data.map((product: IProduct, index: number) => {
+  const sampleImages = [
+    'https://shop2banh.vn/images/thumbs/2025/04/gu-trung-nhom-gh-racing-products-2442.jpg',
+    'https://shop2banh.vn/images/thumbs/2022/10/bao-tay-gu-nhom-x1r-chinh-hang-products-1866.jpg',
+    'https://shop2banh.vn/images/thumbs/2023/09/den-led-2-tang-zhipat-cho-wave-a-wave-s-wave-rsx-wave-rs-future-x-products-652.png',
+    'https://shop2banh.vn/images/thumbs/2023/02/chan-chong-nghieng-inox-salaya-cho-vario-click-products-1641.jpg',
+    'https://shop2banh.vn/images/thumbs/2025/04/phuoc-rcb-c2-den-ty-vang-cho-sirius-jupiter-chinh-hang-products-2432.png',
+    'https://shop2banh.vn/images/thumbs/2020/04/loc-gio-luoi-thep-do-danh-cho-shvn-products-1051.jpg'
+  ];
+
+  let imageUrl = '';
+
+  if (product.image && product.image.startsWith('http')) {
+    imageUrl = product.image;
+  } else if (product.image) {
+    imageUrl = `${enviroment.apiUrl}/uploads/${product.image}`;
+  } else {
+    // Nếu không có ảnh → dùng ảnh mặc định theo index
+    imageUrl = sampleImages[index % sampleImages.length];
   }
-  onImageError(product: IProduct) {
-    product.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s';
-  }
-  
+
+  return {
+    ...product,
+    image: imageUrl
+  };
+});
+
+
+    this.totalPages = res.totalPages;
+  });
+}
+
+onImageError(product: IProduct, index: number) {
+  const fallbackImages = [
+    'https://shop2banh.vn/images/thumbs/2025/04/gu-trung-nhom-gh-racing-products-2442.jpg',
+    'https://shop2banh.vn/images/thumbs/2022/10/bao-tay-gu-nhom-x1r-chinh-hang-products-1866.jpg',
+    'https://shop2banh.vn/images/thumbs/2023/09/den-led-2-tang-zhipat-cho-wave-a-wave-s-wave-rsx-wave-rs-future-x-products-652.png',
+    'https://shop2banh.vn/images/thumbs/2023/02/chan-chong-nghieng-inox-salaya-cho-vario-click-products-1641.jpg',
+    'https://shop2banh.vn/images/thumbs/2025/04/phuoc-rcb-c2-den-ty-vang-cho-sirius-jupiter-chinh-hang-products-2432.png',
+    'https://shop2banh.vn/images/thumbs/2020/04/loc-gio-luoi-thep-do-danh-cho-shvn-products-1051.jpg'
+  ];
+  product.image = fallbackImages[index % fallbackImages.length];
+}
+
   onCategoryChange(categoryId: number, event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
 

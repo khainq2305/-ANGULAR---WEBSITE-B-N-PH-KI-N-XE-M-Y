@@ -3,109 +3,109 @@
         <h2 class="invoice-title">Thông tin hóa đơn</h2>
 
         <form>
-            <div class="invoice-info">
-                <div class="info-group">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Mã hóa đơn</mat-label>
-                        <input matInput [value]="order.orderCode" name="orderCode" readonly>
+  <div class="invoice-info">
+    <div class="info-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Mã hóa đơn</mat-label>
+        <input matInput [value]="order.orderCode" name="orderCode" readonly>
+      </mat-form-field>
 
-                    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Khách hàng</mat-label>
+        <input matInput [value]="order.customerName" name="customerName" readonly>
+      </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Khách hàng</mat-label>
-                        <input matInput [value]="order.customerName" name="customerName" readonly>
-                    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput [value]="order.phoneNumber" name="phoneNumber" readonly>
+      </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Số điện thoại</mat-label>
-                        <input matInput [value]="order.phoneNumber" name="phoneNumber" readonly>
-                    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput [value]="order.email" name="email" readonly>
+      </mat-form-field>
+    </div>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Email</mat-label>
-                        <input matInput [value]="order.email" name="email" readonly>
-                    </mat-form-field>
-                </div>
+    <div class="info-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Ngày đặt hàng</mat-label>
+        <input matInput [value]="order.orderDate" name="orderDate" readonly>
+      </mat-form-field>
 
-                <div class="info-group">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Ngày đặt hàng</mat-label>
-                        <input matInput [value]="order.orderDate" name="orderDate" readonly>
-                    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Trạng thái</mat-label>
+        <mat-select [value]="order.status" name="status" disabled>
+          <mat-option [value]="0">Chờ xác nhận</mat-option>
+          <mat-option [value]="1">Đã xác nhận</mat-option>
+          <mat-option [value]="2">Đang giao</mat-option>
+          <mat-option [value]="3">Đã giao</mat-option>
+          <mat-option [value]="4">Đã hủy</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Trạng thái</mat-label>
-                        <mat-select [value]="order.status" name="status" disabled>
-                          <mat-option [value]="0">Chờ xác nhận</mat-option>
-                          <mat-option [value]="1">Đã xác nhận</mat-option>
-                          <mat-option [value]="2">Đang giao</mat-option>
-                          <mat-option [value]="3">Đã giao</mat-option>
-                          <mat-option [value]="4">Đã hủy</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Tổng tiền</mat-label>
-                        <input matInput [value]="order.totalAmount" name="totalAmount" readonly>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Địa chỉ giao hàng</mat-label>
-                        <textarea matInput [value]="order.address" name="address" readonly></textarea>
-                      </mat-form-field>
-                      
-                    <mat-form-field *ngIf="order.status === 4" appearance="outline">
-                        <mat-label>Lý do hủy đơn</mat-label>
-                        <textarea matInput [value]="order.cancelReason" name="cancelReason" readonly></textarea>
-                      </mat-form-field>
-                      
-                </div>
-            </div>
-        </form>
+      <mat-form-field appearance="outline">
+        <mat-label>Tổng tiền</mat-label>
+        <input matInput [value]="order.totalAmount" name="totalAmount" readonly>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Địa chỉ giao hàng</mat-label>
+        <textarea matInput [value]="order.address" name="address" readonly></textarea>
+      </mat-form-field>
 
-        <h3 style="margin: 10px 0;" class="product-list-title mb-4">Danh sách sản phẩm</h3>
-        <table mat-table [dataSource]="order.products" class="product-table">
-            <ng-container matColumnDef="image">
-                <th mat-header-cell *matHeaderCellDef>Hình ảnh</th>
-                <td mat-cell *matCellDef="let product">
-                    <img [src]="product.image" alt="{{ product.name }}" class="product-image">
-                </td>
-            </ng-container>
 
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Tên sản phẩm</th>
-                <td mat-cell *matCellDef="let product"> {{ product.name }} </td>
-            </ng-container>
+      <mat-form-field *ngIf="order.status === 4" appearance="outline">
+        <mat-label>Lý do hủy đơn</mat-label>
+        <textarea matInput [value]="order.cancelReason" name="cancelReason" readonly></textarea>
+      </mat-form-field>
 
-            <ng-container matColumnDef="quantity">
-                <th mat-header-cell *matHeaderCellDef>Số lượng</th>
-                <td mat-cell *matCellDef="let product"> {{ product.quantity }} </td>
-            </ng-container>
+    </div>
+  </div>
+</form>
 
-            <ng-container matColumnDef="originalPrice">
-                <th mat-header-cell *matHeaderCellDef>Giá gốc</th>
-                <td mat-cell *matCellDef="let product">
-                  <span *ngIf="product.originalPrice !== product.discountPrice" style="text-decoration: line-through; color: gray;">
-                    {{ product.originalPrice | number }} VNĐ
-                  </span>
-                  <span *ngIf="product.originalPrice === product.discountPrice">
-                    {{ product.originalPrice | number }} VNĐ
-                  </span>
-                </td>
-              </ng-container>
-              
-              <ng-container matColumnDef="discountPrice">
-                <th mat-header-cell *matHeaderCellDef>Giá bán</th>
-                <td mat-cell *matCellDef="let product">
-                  <span class="discount-price text-danger fw-bold">
-                    {{ product.discountPrice | number }} VNĐ
-                  </span>
-                </td>
-              </ng-container>
-              
-              
-            <tr mat-header-row *matHeaderRowDef="['image', 'name', 'quantity', 'originalPrice', 'discountPrice']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['image', 'name', 'quantity', 'originalPrice', 'discountPrice']"></tr>
-        </table>
+<h3 style="margin: 10px 0;" class="product-list-title mb-4">Danh sách sản phẩm</h3>
+<table mat-table [dataSource]="order.products" class="product-table">
+  <ng-container matColumnDef="image">
+    <th mat-header-cell *matHeaderCellDef>Hình ảnh</th>
+    <td mat-cell *matCellDef="let product">
+      <img src="[https://shop2banh.vn/images/thumbs/2024/02/nhot-repsol-smarter-scooter-4t-5w-40-08lit-products-1965.jpg](https://shop2banh.vn/images/thumbs/2024/02/nhot-repsol-smarter-scooter-4t-5w-40-08lit-products-1965.jpg)" alt="{{ product.name }}" class="product-image">
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Tên sản phẩm</th>
+    <td mat-cell *matCellDef="let product"> {{ product.name }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="quantity">
+    <th mat-header-cell *matHeaderCellDef>Số lượng</th>
+    <td mat-cell *matCellDef="let product"> {{ product.quantity }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="originalPrice">
+    <th mat-header-cell *matHeaderCellDef>Giá gốc</th>
+    <td mat-cell *matCellDef="let product">
+      <span *ngIf="product.originalPrice !== product.discountPrice" style="text-decoration: line-through; color: gray;">
+        {{ product.originalPrice | number }} VNĐ
+      </span>
+      <span *ngIf="product.originalPrice === product.discountPrice">
+        {{ product.originalPrice | number }} VNĐ
+      </span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="discountPrice">
+    <th mat-header-cell *matHeaderCellDef>Giá bán</th>
+    <td mat-cell *matCellDef="let product">
+      <span class="discount-price text-danger fw-bold">
+        {{ product.discountPrice | number }} VNĐ
+      </span>
+    </td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="['image', 'name', 'quantity', 'originalPrice', 'discountPrice']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['image', 'name', 'quantity', 'originalPrice', 'discountPrice']"></tr>
+</table>
     </mat-card-content>
 </mat-card>

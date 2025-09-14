@@ -1,101 +1,148 @@
 <div class="main-container">
-    <div style="max-width: 1200px; margin: 0 auto">
-      <div class="cart-container">
-        <div class="cart-header">
-          <div class="cart-header__checkbox">
-            <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" class="custom-checkbox" />
-          </div>
-          <div class="cart-header__title">Sản Phẩm</div>
-          <div class="cart-header__price">Đơn Giá</div>
-          <div class="cart-header__quantity">Số Lượng</div>
-          <div class="cart-header__total">Số Tiền</div>
-          <div class="cart-header__action">Thao Tác</div>
+  <div style="max-width: 1200px; margin: 0 auto">
+    <div class="cart-container">
+      <div class="cart-header">
+        <div class="cart-header__checkbox">
+          <input
+            type="checkbox"
+            [(ngModel)]="selectAll"
+            (change)="toggleSelectAll()"
+            class="custom-checkbox"
+          />
         </div>
-  
-        <div *ngFor="let item of cartItems" class="cart-item">
-          <div class="cart-item__checkbox">
-            <input type="checkbox" [(ngModel)]="item.selected" class="custom-checkbox" />
-          </div>
-          <div class="cart-item__details">
-            <img 
-  [src]="item.product?.image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'" 
-  class="cart-item__image" 
-  (error)="item.product.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'" 
-/>
+        <div class="cart-header__title">Sản Phẩm</div>
+        <div class="cart-header__price">Đơn Giá</div>
+        <div class="cart-header__quantity">Số Lượng</div>
+        <div class="cart-header__total">Số Tiền</div>
+        <div class="cart-header__action">Thao Tác</div>
+      </div>
 
-            <div class="cart-item__info">
-              <h3 class="cart-item__name">{{ item.product?.name }}</h3>
-              <p class="cart-item__variant">SIZE XL</p>
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <div class="cart-item__checkbox">
+          <input
+            type="checkbox"
+            [(ngModel)]="item.selected"
+            class="custom-checkbox"
+          />
+        </div>
+        <div class="cart-item__details">
+          <img
+            [src]="
+              item.product?.image ||
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'
+            "
+            class="cart-item__image"
+            (error)="
+              item.product.image =
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'
+            "
+          />
+
+          <div class="cart-item__info">
+            <h3 class="cart-item__name">{{ item.product?.name }}</h3>
+            <p class="cart-item__variant">SIZE XL</p>
+          </div>
+        </div>
+        <div class="cart-item__price">
+          <ng-container *ngIf="item.product?.discount > 0; else noDiscount">
+            <div
+              style="
+                display: flex;
+                gap: 6px;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <span
+                class="old-price"
+                style="text-decoration: line-through; color: #888"
+              >
+                {{ item.product.price | number }} ₫
+              </span>
+              <span class="new-price">
+                {{ item.product.finalPrice | number }} ₫
+              </span>
             </div>
-          </div>
-          <div class="cart-item__price">
-            <ng-container *ngIf="item.product?.discount > 0; else noDiscount">
-              <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
-                <span class="old-price" style="text-decoration: line-through; color: #888;">
-                  {{ item.product.price | number }} ₫
-                </span>
-                <span class="new-price">
-                  {{ item.product.finalPrice | number }} ₫
-                </span>
-              </div>
-            </ng-container>
-          
-            <ng-template #noDiscount>
-              <span class="new-price">{{ item.product.price | number }} ₫</span>
-            </ng-template>
-          </div>
-          
-          <div class="cart-item__quantity">
-       <!-- Giảm -->
-<button class="cart-item__quantity-btn" (click)="decreaseQuantity(item)">-</button>
+          </ng-container>
 
-<!-- Hiển thị -->
-<input type="text" [value]="item.quantity" class="cart-item__quantity-input" readonly />
+          <ng-template #noDiscount>
+            <span class="new-price">{{ item.product.price | number }} ₫</span>
+          </ng-template>
+        </div>
 
-<button
-  class="cart-item__quantity-btn"
-  (click)="increaseQuantity(item)"
-  [disabled]="item.quantity >= item.product.quantity"
->
-  +
-</button>
+        <div class="cart-item__quantity">
+          <!-- Giảm -->
+          <button
+            class="cart-item__quantity-btn"
+            (click)="decreaseQuantity(item)"
+          >
+            -
+          </button>
 
-          </div>
-          <div class="cart-item__total">
-            {{ item.product.finalPrice * item.quantity | number }} ₫
+          <!-- Hiển thị -->
+          <input
+            type="text"
+            [value]="item.quantity"
+            class="cart-item__quantity-input"
+            readonly
+          />
 
-          </div>
-          <div class="cart-item__action">
-            <button type="button" class="cart-item__delete-btn" (click)="removeItem(item)">Xóa</button>
-
-          </div>
+          <button
+            class="cart-item__quantity-btn"
+            (click)="increaseQuantity(item)"
+            [disabled]="item.quantity >= item.product.quantity"
+          >
+            +
+          </button>
+        </div>
+        <div class="cart-item__total">
+          {{ item.product.finalPrice * item.quantity | number }} ₫
+        </div>
+        <div class="cart-item__action">
+          <button
+            type="button"
+            class="cart-item__delete-btn"
+            (click)="removeItem(item)"
+          >
+            Xóa
+          </button>
         </div>
       </div>
-  
-      <div class="shopping-cart__summary">
-        <div class="shopping-cart__summary-bottom">
-          <div class="shopping-cart__summary-lefts">
-            <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" class="custom-checkbox" />
-            <span class="click-all-lefts">Chọn tất cả</span>
-            <a (click)="deleteSelectedItems()" class="shopping-cart__summary-delete-selected">Xóa</a>
+    </div>
+
+    <div class="shopping-cart__summary">
+      <div class="shopping-cart__summary-bottom">
+        <div class="shopping-cart__summary-lefts">
+          <input
+            type="checkbox"
+            [(ngModel)]="selectAll"
+            (change)="toggleSelectAll()"
+            class="custom-checkbox"
+          />
+          <span class="click-all-lefts">Chọn tất cả</span>
+          <a
+            (click)="deleteSelectedItems()"
+            class="shopping-cart__summary-delete-selected"
+            >Xóa</a
+          >
+        </div>
+        <div class="summary-right">
+          <div class="shopping-cart__summary-right">
+            <span class="summary-total-label">Tổng thanh toán:</span>
+            <span class="summary-total-amount"
+              >{{ totalAmount | number }} ₫</span
+            >
           </div>
-          <div class="summary-right">
-            <div class="shopping-cart__summary-right">
-              <span class="summary-total-label">Tổng thanh toán:</span>
-              <span class="summary-total-amount">{{ totalAmount | number }} ₫</span>
-            </div>
-            <a 
-            (click)="goToCheckout()" 
-            [routerLink]="['/thanh-toan']" 
-            class="btn-purchase" 
-            [class.disabled]="isCheckoutDisabled">
+          <a
+            (click)="goToCheckout()"
+            [routerLink]="['/thanh-toan']"
+            class="btn-purchase"
+            [class.disabled]="isCheckoutDisabled"
+          >
             Mua Hàng
           </a>
-          
-
-          </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

@@ -9,6 +9,28 @@
                         Bộ lọc tìm kiếm
                     </h3>
                     <div class="category-group">
+                        <div class="category-group-title">Danh Mục</div>
+                        <ul class="category-group-list">
+                          <li
+                            class="category-group-item"
+                            *ngFor="let category of (showAll ? categories : categories?.slice(0, 5))"
+
+                          >
+                            <input
+                              type="checkbox"
+                              class="category-group-item-check"
+                              [checked]="selectedCategoryIds.includes(category.id)"
+                              (change)="onCategoryChange(category.id, $event)"
+                            />
+                            {{ category.name }}
+                          </li>
+                        </ul>
+                        <button (click)="showAll = !showAll" class="see-more-btn">
+                          {{ showAll ? 'Thu gọn' : 'Xem thêm' }}
+                        </button>
+                      </div>
+                      
+                    <div class="category-group">
                         <div class="category-group-title">Nơi Bán</div>
                         <ul class="category-group-list">
                             <li class="category-group-item">
@@ -66,7 +88,7 @@
                             <i class="fas fa-arrow-right"></i>
                             <input type="number" placeholder="đ ĐẾN" class="category-group-filter-input">
                         </div>
-                        <button class="btn btn--primary category-group-filter-btn">Áp dụng</button>
+                        <button style="background-color: #004e92; color: white;" class="btn  category-group-filter-btn">Áp dụng</button>
                     </div>
                     <div class="category-group">
                         <div class="category-group-title">Loại Shop</div>
@@ -159,7 +181,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn--primary category-group-filter-btn category-group--margin">LÀM MỚI</button>
+                    <button style="background-color: #004e92; color: white;" class="btn  category-group-filter-btn category-group--margin">LÀM MỚI</button>
                 </nav>
             </div>
             <div class="col l-10 m-9 c-12">
@@ -214,16 +236,18 @@
                         </ul>
                     </nav>
                     <div id="list-product" class="row sm-gutter">
-                        <div class="col l-2-4 m-3 c-6 home-product-item" *ngFor="let product of products">
+                        <div class="col l-2-4 m-3 c-6 home-product-item" *ngFor="let product of products; let i = index"
+>
                           <a class="home-product-item-link" [routerLink]="['/chi-tiet-san-pham', product.id]">
                             
-                            <div
-                            class="home-product-item__img"
-                            [ngStyle]="{
-                              'background-image': 'url(' + product.image + ')'
-                            }"
-                            (error)="product.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s'"
-                          ></div>
+<img
+  class="home-product-item__img"
+  [src]="product.image"
+  (error)="onImageError(product, i)"
+  alt="{{ product.name }}"
+/>
+
+
                           
                       
                             <div class="home-product-item__info">
@@ -276,26 +300,7 @@
                       
                       
                 </div>
-                <!-- pagination -->
-                <ul class="pagination home-product-pagination">
-                    <li class="pagination-item" [class.pagination-item-link--disable]="currentPage === 1">
-                      <a (click)="goToPage(currentPage - 1)" class="pagination-item-link">
-                        <i class="fas fa-chevron-left"></i>
-                      </a>
-                    </li>
-                  
-                    <li *ngFor="let page of [].constructor(totalPages); let i = index"
-                        class="pagination-item"
-                        [class.pagination-item--active]="i + 1 === currentPage">
-                      <a (click)="goToPage(i + 1)" class="pagination-item-link">{{ i + 1 }}</a>
-                    </li>
-                  
-                    <li class="pagination-item" [class.pagination-item-link--disable]="currentPage === totalPages">
-                      <a (click)="goToPage(currentPage + 1)" class="pagination-item-link">
-                        <i class="fas fa-chevron-right"></i>
-                      </a>
-                    </li>
-                  </ul>
+               
                   
             </div>
         </div>

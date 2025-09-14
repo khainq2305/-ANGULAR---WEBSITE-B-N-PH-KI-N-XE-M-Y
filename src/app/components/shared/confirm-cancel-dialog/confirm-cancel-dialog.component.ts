@@ -14,9 +14,9 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './confirm-cancel-dialog.component.html',
   styleUrls: ['./confirm-cancel-dialog.component.scss'],
   imports: [
-    CommonModule,  // Cần cho *ngIf, *ngFor
-    MatDialogModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, // Các module của Angular Material
-    FormsModule  // Cần cho [(ngModel)]
+    CommonModule,  
+    MatDialogModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule,
+    FormsModule 
   ]
 })
 export class ConfirmCancelDialogComponent {
@@ -35,7 +35,7 @@ export class ConfirmCancelDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmCancelDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { orderId: number, orderCode: string }, // ✅ bổ sung orderCode
+    public data: { orderId: number, orderCode: string }, 
     private toastr: ToastrService
   ) {}
 

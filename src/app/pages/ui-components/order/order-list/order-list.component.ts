@@ -93,7 +93,7 @@ export class OrderListComponent implements OnInit {
         this.dataSource = res.data.map((order: any) => ({
           orderCode: order.order_code,
           orderId: order.id,
-          rawStatusCode: order.status, // 👈 thêm dòng này để truyền vào dialog
+          rawStatusCode: order.status,
           email: order.customer?.email || 'Không có email',
           createdAt: new Date(order.createdAt).toLocaleDateString(),
           totalAmount: order.total_price,

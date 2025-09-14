@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from 'src/app/services/common/api.service';
-import { API_ENDPOINT } from 'src/app/config/api-endpoint.config'; // nhớ import nếu chưa
+import { API_ENDPOINT } from 'src/app/config/api-endpoint.config'; 
 import { enviroment } from 'src/environments/environment';
 const BASE_IMAGE_URL = `${enviroment.apiUrl}/uploads`;
 
@@ -32,23 +32,23 @@ const BASE_IMAGE_URL = `${enviroment.apiUrl}/uploads`;
   styleUrls: ['./order-detail.component.scss']
 })
 export class OrderDetailComponent implements OnInit {
-  // Inject ActivatedRoute và ApiService bằng cú pháp mới
+  
   route = inject(ActivatedRoute);
   api = inject(ApiService);
 
-  // Khai báo biến hiển thị dữ liệu
+ 
   order: any;
   displayedColumns = ['image', 'name', 'quantity', 'originalPrice', 'discountPrice'];
 
   ngOnInit() {
-    const orderId = this.route.snapshot.paramMap.get('id'); // Lấy id từ URL
+    const orderId = this.route.snapshot.paramMap.get('id');
 
     if (orderId) {
 
       this.api.get<any>(`${API_ENDPOINT.order.base}/${orderId}`).subscribe({
       
         next: (res) => {
-          console.log('API trả về:', res.data); // <- THÊM DÒNG NÀY
+       
           this.order = this.formatOrder(res.data);
         },
         
@@ -59,12 +59,12 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  // Định dạng dữ liệu đơn hàng để hiển thị
+  
   formatOrder(data: any) {
     return {
       
       orderId: data.id,
-      orderCode: data.order_code, // ✅ thêm dòng này
+      orderCode: data.order_code, 
       customerName: data.name || data.customer?.name || 'Không rõ',
       phoneNumber: data.phone || data.customer?.phone || 'Không rõ',
       email: data.customer?.email || 'Không rõ',
@@ -84,11 +84,11 @@ export class OrderDetailComponent implements OnInit {
           return {
             image: item.product?.image 
               ? `${BASE_IMAGE_URL}/${item.product.image}` 
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5-I3nwE8w_QXqUKIaA9R5Rjr-l7UOVLdPWQ&s',
+              : 'https://shop2banh.vn/images/thumbs/2024/02/nhot-repsol-smarter-scooter-4t-5w-40-08lit-products-1965.jpg',
             name: item.product?.name,
             quantity: item.quantity,
             originalPrice: price,
-            discountPrice: finalPrice // ✅ tính lại đúng giá giảm
+            discountPrice: finalPrice 
           };
         }) || []
         

@@ -2,249 +2,317 @@
   [image]="product?.image"
   [name]="product?.name"
   [price]="product?.finalPrice"
-  [visible]="toastVisible">
+  [visible]="toastVisible"
+>
 </app-toast>
 
 <div class="product-detail bg-light py-4">
-    <div class="container-main" style="max-width: 1200px; margin: 0 auto;">
-
-      <div class="row bg-white p-4">
-        <div class="col-md-5">
-          <img
+  <div class="container-main" style="max-width: 1200px; margin: 0 auto">
+    <div class="row bg-white p-4">
+      <div class="col-md-5">
+        <img
           [src]="product?.image"
           class="img-fluid border mb-3"
           (error)="onImageError($event)"
           alt="Ảnh sản phẩm"
-          style="max-width: 100%; width: 100%; height: auto; object-fit: cover; border-radius: 6px;"
+          style="
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 6px;
+          "
         />
-        
-        
-       
-        </div>
-  
-        <div class="col-md-7 text-start">
-          <h4 class="fw-bold mb-3">
-            <span style="background: linear-gradient(to right, #000428, #004e92);" class="badge  me-2">Yêu Thích+</span>
-            {{ product?.name }}
-          </h4>
-  
-          <div class="d-flex align-items-center mb-4">
-            <div class="text-warning me-2 fs-5">★★★★★</div>
-            <span class="fw-semibold me-4">469 Đánh Giá</span>
-            <span class="fw-semibold">778 Đã Bán</span>
-          </div>
-  
-          <div class="bg-light py-3 px-4 mb-4 rounded d-flex align-items-center gap-4">
+      </div>
 
-            <!-- Nếu có giảm giá -->
-            <ng-container *ngIf="product?.discount > 0; else noDiscount">
-              <h3 class="text-danger fw-bold mb-0">
-                {{ (product?.price - product?.discount) | currency:'VND':'symbol' }}
-              </h3>
-          
-              <div class="text-muted text-decoration-line-through">
-                {{ product?.price | currency:'VND':'symbol' }}
-              </div>
-          
-              <span class="badge bg-light text-danger border border-danger px-2 py-1">
-                -{{ ((product?.discount / product?.price) * 100) | number:'1.0-0' }}%
-              </span>
-            </ng-container>
-          
-            <!-- Nếu không giảm giá -->
-            <ng-template #noDiscount>
-              <h3 class="text-danger fw-bold mb-0">
-                {{ product?.price | currency:'VND':'symbol' }}
-              </h3>
-            </ng-template>
+      <div class="col-md-7 text-start">
+        <h4 class="fw-bold mb-3">
+          <span
+            style="background: linear-gradient(to right, #000428, #004e92)"
+            class="badge me-2"
+            >Yêu Thích+</span
+          >
+          {{ product?.name }}
+        </h4>
+
+        <div class="d-flex align-items-center mb-4">
+          <div class="text-warning me-2 fs-5">★★★★★</div>
+          <span class="fw-semibold me-4">469 Đánh Giá</span>
+          <span class="fw-semibold">778 Đã Bán</span>
+        </div>
+
+        <div
+          class="bg-light py-3 px-4 mb-4 rounded d-flex align-items-center gap-4"
+        >
+          <!-- Nếu có giảm giá -->
+          <ng-container *ngIf="product?.discount > 0; else noDiscount">
+            <h3 class="text-danger fw-bold mb-0">
+              {{
+                product?.price - product?.discount | currency : "VND" : "symbol"
+              }}
+            </h3>
+
+            <div class="text-muted text-decoration-line-through">
+              {{ product?.price | currency : "VND" : "symbol" }}
+            </div>
+
+            <span
+              class="badge bg-light text-danger border border-danger px-2 py-1"
+            >
+              -{{
+                (product?.discount / product?.price) * 100 | number : "1.0-0"
+              }}%
+            </span>
+          </ng-container>
+
+          <!-- Nếu không giảm giá -->
+          <ng-template #noDiscount>
+            <h3 class="text-danger fw-bold mb-0">
+              {{ product?.price | currency : "VND" : "symbol" }}
+            </h3>
+          </ng-template>
+        </div>
+
+        <div class="mb-3">
+          <strong>Vận Chuyển:</strong>
+          <span class="text-success fw-semibold"
+            >Nhận vào 3 Th04, phí giao ₫0</span
+          ><br />
+          <small class="text-muted"
+            >Tặng Voucher ₫15.000 nếu đơn giao sau thời gian trên.</small
+          >
+        </div>
+
+        <div class="mb-4 text-muted">
+          <span class="text-danger fw-semibold">Trả hàng miễn phí 15 ngày</span>
+          · Bảo hiểm bảo vệ người tiêu dùng
+        </div>
+
+        <!-- CHOOSE OPTIONS -->
+        <div class="mb-4">
+          <strong class="d-block mb-2">Lựa Chọn:</strong>
+          <div class="d-flex flex-wrap gap-2">
+            <button
+              *ngFor="let label of labels; let i = index"
+              [ngStyle]="{
+                border:
+                  i === 0
+                    ? '1px solid linear-gradient(to right, #000428, #004e92)'
+                    : '1px solid #ccc',
+                color: i === 0 ? 'red' : '#333'
+              }"
+              class="d-flex align-items-center rounded px-3 py-2"
+            >
+              <img
+                [src]="'/img/icon' + (i + 1) + '.png'"
+                width="24"
+                height="24"
+                class="me-2"
+              />
+              {{ label }}
+            </button>
           </div>
-          
-  
-          <div class="mb-3">
-            <strong>Vận Chuyển:</strong>
-            <span class="text-success fw-semibold">Nhận vào 3 Th04, phí giao ₫0</span><br />
-            <small class="text-muted">Tặng Voucher ₫15.000 nếu đơn giao sau thời gian trên.</small>
-          </div>
-  
-          <div class="mb-4 text-muted">
-            <span class="text-danger fw-semibold">Trả hàng miễn phí 15 ngày</span> · Bảo hiểm bảo vệ người tiêu dùng
-          </div>
-  
-          <!-- CHOOSE OPTIONS -->
-          <div class="mb-4">
-            <strong class="d-block mb-2">Lựa Chọn:</strong>
-            <div class="d-flex flex-wrap gap-2">
+        </div>
+
+        <!-- QUANTITY -->
+     
+        <div class="d-flex align-items-start flex-column gap-1 mb-4">
+          <div class="d-flex align-items-center gap-2">
+            <label class="fw-semibold mb-0" style="min-width: 70px"
+              >Số Lượng</label
+            >
+
+            <!-- Nhóm nút + input -->
+            <div
+              class="d-flex align-items-center border rounded overflow-hidden"
+              style="height: 36px"
+            >
               <button
-                *ngFor="let label of labels; let i = index"
-                [ngStyle]="{
-                  'border': i === 0 ? '1px solid linear-gradient(to right, #000428, #004e92)' : '1px solid #ccc',
-                  'color': i === 0 ? 'red' : '#333'
-                }"
-                class="d-flex align-items-center rounded px-3 py-2"
+                class="border-0 bg-light px-3"
+                style="height: 100%"
+                (click)="decreaseQuantity()"
               >
-                <img [src]="'/img/icon' + (i + 1) + '.png'" width="24" height="24" class="me-2" />
-                {{ label }}
+                -
+              </button>
+
+              <input
+                type="text"
+                min="1"
+                [(ngModel)]="quantity"
+                class="text-center border-0"
+                style="width: 50px; height: 100%; outline: none"
+              />
+
+              <button
+                class="border-0 bg-light px-3"
+                style="height: 100%"
+                (click)="increaseQuantity()"
+                [disabled]="quantity + totalInCart >= product?.quantity"
+              >
+                +
               </button>
             </div>
+
+         
+            <span class="text-muted ms-2" style="font-size: 14px">
+              {{ product?.quantity }} sản phẩm có sẵn
+            </span>
           </div>
-  
-          <!-- QUANTITY -->
-          <!-- QUANTITY -->
-<div class="d-flex align-items-start flex-column gap-1 mb-4">
-  <div class="d-flex align-items-center gap-2">
-    <label class="fw-semibold mb-0" style="min-width: 70px;">Số Lượng</label>
 
-    <!-- Nhóm nút + input -->
-    <div class="d-flex align-items-center border rounded overflow-hidden" style="height: 36px;">
-      <button class="border-0 bg-light px-3" style="height: 100%" (click)="decreaseQuantity()">-</button>
-
-      <input
-        type="text"
-        min="1"
-        [(ngModel)]="quantity"
-        class="text-center border-0"
-        style="width: 50px; height: 100%; outline: none;"
-      />
-
-      <button
-        class="border-0 bg-light px-3"
-        style="height: 100%"
-        (click)="increaseQuantity()"
-        [disabled]="quantity + totalInCart >= product?.quantity"
-        >
-        +
-      </button>
-    </div>
-
-    <!-- Sản phẩm có sẵn -->
- <!-- Dòng 1: Tổng số sản phẩm -->
-<span class="text-muted ms-2" style="font-size: 14px;">
-  {{ product?.quantity }} sản phẩm có sẵn
-</span>
-
-
-
-  </div>
-
-  <!-- ✅ Cảnh báo nằm dưới -->
-  <span *ngIf="quantity + totalInCart > product?.quantity" class="text-danger ms-5" style="font-size: 14px;">
-    Bạn chỉ có thể thêm tối đa {{ product?.quantity - totalInCart }} sản phẩm nữa.
-  </span>
-  
-  <!-- ✅ Lỗi khi vượt quá số lượng -->
-
-
-</div>
+         
+          <span
+            *ngIf="quantity + totalInCart > product?.quantity"
+            class="text-danger ms-5"
+            style="font-size: 14px"
+          >
+            Bạn chỉ có thể thêm tối đa {{ product?.quantity - totalInCart }} sản
+            phẩm nữa.
+          </span>
 
           
-          
-  
-          <!-- ACTIONS -->
-          <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
-            <button
+        </div>
+
+        
+        <div class="d-flex flex-wrap align-items-center gap-3 mt-2">
+          <button
             class="btn-action btn-cart"
             (click)="addToCart()"
             [disabled]="quantity + totalInCart >= product?.quantity"
           >
             🛒 Thêm Vào Giỏ Hàng
           </button>
-          
-          
-            
-            <button class="btn-action btn-buy">Mua Ngay</button>
+
+          <button class="btn-action btn-buy">Mua Ngay</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT INFO -->
+    <div class="row bg-white p-4 mt-4">
+      <h5 class="fw-bold mb-4">CHI TIẾT SẢN PHẨM</h5>
+      <div class="col-md-3 fw-semibold text-muted">Danh Mục</div>
+      <div class="col-md-9 text-primary">
+        Shopee > Bách Hóa Online > Sữa - trứng > Sữa
+      </div>
+
+      <div class="col-md-3 fw-semibold text-muted">
+        Số lượng hàng khuyến mãi
+      </div>
+      <div class="col-md-9">95</div>
+
+      <div class="col-md-3 fw-semibold text-muted">Số sản phẩm còn lại</div>
+      <div class="col-md-9">1665</div>
+
+      <div class="col-md-3 fw-semibold text-muted">Thương hiệu</div>
+      <div class="col-md-9 text-primary">GROWPLUS</div>
+
+      <div class="col-md-3 fw-semibold text-muted">Gửi từ</div>
+      <div class="col-md-9">Bình Dương</div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="row bg-white p-4 mt-4">
+      <h5 class="fw-bold mb-3">MÔ TẢ SẢN PHẨM</h5>
+      <div class="col">
+        <p>
+          Sữa Bột Pha Sẵn GrowPLUS+ Ít đường 110ml trên 1 tuổi (Thùng)<br />...
+          (tiếp)
+        </p>
+        <p class="fw-bold mt-3">SẢN PHẨM ĐÃ ĐƯỢC CHỨNG NHẬN</p>
+        <ul>
+          <li>Giúc bé tăng cân...</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="row bg-white p-4 mt-4">
+      <h5 class="fw-bold mb-3">ĐÁNH GIÁ SẢN PHẨM</h5>
+
+      <!-- TỔNG ĐIỂM VÀ BỘ LỌC -->
+      <div class="border p-3 rounded mb-4">
+        <div
+          class="d-flex justify-content-between align-items-center flex-wrap gap-3"
+        >
+          <!-- Đánh giá bên trái -->
+          <div class="d-flex align-items-center gap-2">
+            <div class="fs-3 fw-bold text-danger">4.9</div>
+            <div class="text-muted">trên 5</div>
+            <div class="text-danger ms-2" style="font-size: 1.25rem">★★★★★</div>
+          </div>
+
+          <!-- Nút lọc bên phải -->
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <button
+              class="btn btn-outline-danger fw-semibold rounded-pill px-3 py-1 active"
+            >
+              Tất Cả
+            </button>
+            <button class="btn btn-outline-secondary rounded-pill px-3 py-1">
+              5 Sao (4,4k)
+            </button>
+            <button class="btn btn-outline-secondary rounded-pill px-3 py-1">
+              4 Sao (137)
+            </button>
+            <button class="btn btn-outline-secondary rounded-pill px-3 py-1">
+              3 Sao (43)
+            </button>
+            <button class="btn btn-outline-secondary rounded-pill px-3 py-1">
+              2 Sao (21)
+            </button>
+            <button class="btn btn-outline-secondary rounded-pill px-3 py-1">
+              1 Sao (68)
+            </button>
+            <button class="btn btn-outline-secondary rounded-pill px-3 py-1">
+              Có Hình Ảnh / Video (1,5k)
+            </button>
+            <button class="btn btn-outline-secondary rounded-pill px-3 py-1">
+              Có Bình Luận (2,7k)
+            </button>
           </div>
         </div>
       </div>
-  
-      <!-- PRODUCT INFO -->
-      <div class="row bg-white p-4 mt-4">
-        <h5 class="fw-bold mb-4">CHI TIẾT SẢN PHẨM</h5>
-        <div class="col-md-3 fw-semibold text-muted">Danh Mục</div>
-        <div class="col-md-9 text-primary">Shopee > Bách Hóa Online > Sữa - trứng > Sữa</div>
-  
-        <div class="col-md-3 fw-semibold text-muted">Số lượng hàng khuyến mãi</div>
-        <div class="col-md-9">95</div>
-  
-        <div class="col-md-3 fw-semibold text-muted">Số sản phẩm còn lại</div>
-        <div class="col-md-9">1665</div>
-  
-        <div class="col-md-3 fw-semibold text-muted">Thương hiệu</div>
-        <div class="col-md-9 text-primary">GROWPLUS</div>
-  
-        <div class="col-md-3 fw-semibold text-muted">Gửi từ</div>
-        <div class="col-md-9">Bình Dương</div>
-      </div>
-  
-      <!-- DESCRIPTION -->
-      <div class="row bg-white p-4 mt-4">
-        <h5 class="fw-bold mb-3">MÔ TẢ SẢN PHẨM</h5>
-        <div class="col">
-          <p>Sữa Bột Pha Sẵn GrowPLUS+ Ít đường 110ml trên 1 tuổi (Thùng)<br />... (tiếp)</p>
-          <p class="fw-bold mt-3">SẢN PHẨM ĐÃ ĐƯỢC CHỨNG NHẬN</p>
-          <ul>
-            <li>Giúc bé tăng cân...</li>
-          </ul>
-        </div>
-      </div>
-  
-      <!-- REVIEWS -->
-      <div class="row bg-white p-4 mt-4">
-        <h5 class="fw-bold mb-3">ĐÁNH GIÁ SẢN PHẨM</h5>
-      
-        <!-- TỔNG ĐIỂM VÀ BỘ LỌC -->
-        <div class="border p-3 rounded mb-4">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                <!-- Đánh giá bên trái -->
-                <div class="d-flex align-items-center gap-2">
-                  <div class="fs-3 fw-bold text-danger">4.9</div>
-                  <div class="text-muted">trên 5</div>
-                  <div class="text-danger ms-2" style="font-size: 1.25rem;">★★★★★</div>
-                </div>
-              
-                <!-- Nút lọc bên phải -->
-                <div class="d-flex flex-wrap align-items-center gap-2">
-                  <button class="btn btn-outline-danger fw-semibold rounded-pill px-3 py-1 active">Tất Cả</button>
-                  <button class="btn btn-outline-secondary rounded-pill px-3 py-1">5 Sao (4,4k)</button>
-                  <button class="btn btn-outline-secondary rounded-pill px-3 py-1">4 Sao (137)</button>
-                  <button class="btn btn-outline-secondary rounded-pill px-3 py-1">3 Sao (43)</button>
-                  <button class="btn btn-outline-secondary rounded-pill px-3 py-1">2 Sao (21)</button>
-                  <button class="btn btn-outline-secondary rounded-pill px-3 py-1">1 Sao (68)</button>
-                  <button class="btn btn-outline-secondary rounded-pill px-3 py-1">Có Hình Ảnh / Video (1,5k)</button>
-                  <button class="btn btn-outline-secondary rounded-pill px-3 py-1">Có Bình Luận (2,7k)</button>
-                </div>
-              </div>
-              
-        </div>
-      
-        <!-- ITEM REVIEW -->
-        <div class="mb-4">
-          <div class="d-flex align-items-center mb-2">
-            <div class="rounded-circle bg-light me-3" style="width: 40px; height: 40px"></div>
-            <div>
-              <strong>m*****2</strong>
-              <div class="text-warning">★★★★★</div>
-              <div class="text-muted small">2023-12-14 19:03</div>
-              <div class="text-muted small">
-                Độ tuổi sử dụng: <strong class="text-dark">trên 2t</strong>
-              </div>
+
+      <!-- ITEM REVIEW -->
+      <div class="mb-4">
+        <div class="d-flex align-items-center mb-2">
+          <div
+            class="rounded-circle bg-light me-3"
+            style="width: 40px; height: 40px"
+          ></div>
+          <div>
+            <strong>m*****2</strong>
+            <div class="text-warning">★★★★★</div>
+            <div class="text-muted small">2023-12-14 19:03</div>
+            <div class="text-muted small">
+              Độ tuổi sử dụng: <strong class="text-dark">trên 2t</strong>
             </div>
           </div>
-      
-          <p class="mb-2">Giao hàng nhanh, đóng gói kỹ, có quà tặng kèm theo. Date xa, có chương trình thẻ cào trúng thưởng.</p>
-      
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            <img *ngFor="let img of reviewImages" [src]="img" width="70" class="img-thumbnail" style="object-fit: cover; height: 70px;" />
-          </div>
-      
-          <div class="bg-light rounded p-3 text-muted">
-            <strong class="text-dark d-block mb-1">Phản Hồi Của Người Bán</strong>
-            Chào bạn, cảm ơn bạn đã chọn mua sản phẩm... Rất mong tiếp tục nhận được sự ủng hộ của bạn trong thời gian sắp tới.
-          </div>
-      
-          <div class="text-muted mt-2 small">👍 52</div>
         </div>
+
+        <p class="mb-2">
+          Giao hàng nhanh, đóng gói kỹ, có quà tặng kèm theo. Date xa, có chương
+          trình thẻ cào trúng thưởng.
+        </p>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <img
+            *ngFor="let img of reviewImages"
+            [src]="img"
+            width="70"
+            class="img-thumbnail"
+            style="object-fit: cover; height: 70px"
+          />
+        </div>
+
+        <div class="bg-light rounded p-3 text-muted">
+          <strong class="text-dark d-block mb-1">Phản Hồi Của Người Bán</strong>
+          Chào bạn, cảm ơn bạn đã chọn mua sản phẩm... Rất mong tiếp tục nhận
+          được sự ủng hộ của bạn trong thời gian sắp tới.
+        </div>
+
+        <div class="text-muted mt-2 small">👍 52</div>
       </div>
-      
     </div>
   </div>
-  
+</div>

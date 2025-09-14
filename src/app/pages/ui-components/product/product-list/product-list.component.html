@@ -173,18 +173,18 @@
             <mat-icon>image</mat-icon>
             <!-- Icon hình ảnh -->
           </th>
-          <td mat-cell *matCellDef="let element">
-            <img
-            [src]="getImageUrl(element.image)"
-            alt="Hình sản phẩm"
-            width="80"
-            height="80"
-            style="object-fit: cover"
-            class="rounded"
-            (error)="onImageError($event)"
-          />
-          
-          </td>
+        <td mat-cell *matCellDef="let element; let i = index">
+  <img
+    [src]="getImageUrl(element.image, i)"
+    alt="Hình sản phẩm"
+    width="80"
+    height="80"
+    style="object-fit: cover"
+    class="rounded"
+    (error)="onImageError($event, i)"
+  />
+</td>
+
         </ng-container>
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Tên sản phẩm</th>
@@ -212,13 +212,7 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="discount">
-          <th mat-header-cell *matHeaderCellDef>Giá sau giảm</th>
-          <td mat-cell *matCellDef="let element">
-            <strong> {{ element.discount > 0 ? (element.finalPrice | number : "1.0-0") + ' VNĐ' : '—' }}
-            </strong>
-          </td>
-        </ng-container>
+ 
 
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef>Danh mục</th>
@@ -228,7 +222,7 @@
         </ng-container>
 
         <ng-container matColumnDef="quantity">
-          <th mat-header-cell *matHeaderCellDef>Số lượng</th>
+          <th mat-header-cell *matHeaderCellDef>Sl</th>
           <td mat-cell *matCellDef="let element">{{ element.quantity }} cái</td>
         </ng-container>
 

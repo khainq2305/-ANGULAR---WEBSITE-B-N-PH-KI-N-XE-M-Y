@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINT } from '../../config/api-endpoint.config';
 
-import { ApiService } from '../common/api.service'; // thêm
+import { ApiService } from '../common/api.service'; 
 @Injectable({ providedIn: 'root' })
 export class ShippingService {
   constructor(private http: HttpClient, private api: ApiService ) {}
@@ -28,7 +28,7 @@ export class ShippingService {
   }
   
 
-  // ✅ Đây là đoạn bạn hỏi — đặt trong file này luôn
+
   calculateFee(payload: {
     toDistrictId: number,
     serviceId: number,

@@ -75,15 +75,10 @@ export class CategoryService extends ApiService {
 
     getActiveCategories(): Observable<{ success: boolean; data: ICategory[] }> {
       return this._http.get<{ success: boolean; data: ICategory[] }>(
-        API_ENDPOINT.category.base + API_ENDPOINT.category.active,
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: localStorage.getItem('token') || '',
-          }),
-        }
+        API_ENDPOINT.categoryClient.base // 👉 sử dụng đường dẫn /categories không cần token
       );
     }
+    
     
     
     

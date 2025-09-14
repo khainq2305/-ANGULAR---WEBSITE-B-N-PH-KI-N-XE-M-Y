@@ -4,7 +4,7 @@ export interface IProduct {
   price: number;
   discount: number;        
   quantity: number;
-  
+    imageError?: boolean; // ✅ thêm dòng này
   status: number;
   image: string;
   idCategory: number;

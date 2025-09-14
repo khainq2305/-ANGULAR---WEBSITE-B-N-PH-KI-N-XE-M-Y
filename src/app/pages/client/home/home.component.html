@@ -68,21 +68,20 @@
               <div id="list-product" class="row sm-gutter">
                 <div
                   class="col l-2 m-3 c-6 home-product-item"
-                  *ngFor="let item of featuredProducts"
+                 *ngFor="let item of featuredProducts; let i = index"
                 >
                   <a
                     class="home-product-item-link"
                     [routerLink]="'/chi-tiet-san-pham/' + item.id"
                   >
-                    <div
-                      class="home-product-item__img"
-                      [ngStyle]="{
-                        'background-image':
-                          'url(http://localhost:3000/uploads/' +
-                          item.image +
-                          ')'
-                      }"
-                    ></div>
+<img
+  class="home-product-item__img"
+  [src]="item.image?.startsWith('http') ? item.image : 'http://localhost:3001/uploads/' + item.image"
+  (error)="item.image = fallbackImages[i % fallbackImages.length]"
+  alt="{{ item.name }}"
+/>
+
+
 
                     <div class="home-product-item__info">
                       <h4 class="home-product-item__name">{{ item.name }}</h4>

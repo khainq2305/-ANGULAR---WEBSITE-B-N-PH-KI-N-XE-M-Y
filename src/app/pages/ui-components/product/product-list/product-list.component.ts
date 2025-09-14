@@ -54,7 +54,7 @@ export class ProductListComponent implements OnInit {
     'thumbnail',
     'name',
     'price',
-    'discount',
+ 
     'category',
     'quantity',
     'status',
@@ -125,16 +125,17 @@ export class ProductListComponent implements OnInit {
         this.totalPages = res.totalPages || 1;
       });
   }
-  getImageUrl(imagePath?: string): string {
-    return imagePath
-      ? `http://localhost:3001/uploads/${imagePath}`
-      : 'https://cdn.viettablet.com/images/companies/1/sua-chua/thay-man-hinh-iphone-chinh-hang-o-dau.gif';
+getImageUrl(imagePath?: string, index: number = 0): string {
+  if (imagePath) {
+    return `http://localhost:3001/uploads/${imagePath}`;
   }
-  onImageError(event: Event) {
-    const target = event.target as HTMLImageElement;
-    target.src =
-      'https://cdn.viettablet.com/images/companies/1/sua-chua/thay-man-hinh-iphone-chinh-hang-o-dau.gif';
-  }
+  return this.fallbackImages[index % this.fallbackImages.length];
+}
+
+onImageError(event: Event, index: number) {
+  const target = event.target as HTMLImageElement;
+  target.src = this.fallbackImages[index % this.fallbackImages.length];
+}
 
   onPageChange(page: number): void {
     this.currentPage = page;
@@ -184,6 +185,14 @@ export class ProductListComponent implements OnInit {
       },
     });
   }
+fallbackImages: string[] = [
+  'https://shop2banh.vn/images/thumbs/2025/04/gu-trung-nhom-gh-racing-products-2442.jpg',
+  'https://shop2banh.vn/images/thumbs/2022/10/bao-tay-gu-nhom-x1r-chinh-hang-products-1866.jpg',
+  'https://shop2banh.vn/images/thumbs/2023/09/den-led-2-tang-zhipat-cho-wave-a-wave-s-wave-rsx-wave-rs-future-x-products-652.png',
+  'https://shop2banh.vn/images/thumbs/2023/02/chan-chong-nghieng-inox-salaya-cho-vario-click-products-1641.jpg',
+  'https://shop2banh.vn/images/thumbs/2025/04/phuoc-rcb-c2-den-ty-vang-cho-sirius-jupiter-chinh-hang-products-2432.png',
+  'https://shop2banh.vn/images/thumbs/2020/04/loc-gio-luoi-thep-do-danh-cho-shvn-products-1051.jpg',
+];
 
   deleteSelectedProducts(): void {
     const ids = this.dataSource.data.filter((p) => p.selected).map((p) => p.id);
